@@ -437,11 +437,16 @@
   align-items: start;
 }
 
+.rooms__side {
+  display: grid;
+  gap: clamp(2.5rem, 4vw, 3.5rem);
+  position: sticky;
+  top: calc(var(--header-h) + 2rem);
+}
+
 .rooms__tabs {
   display: grid;
   border-top: 1px solid var(--line-strong);
-  position: sticky;
-  top: calc(var(--header-h) + 2rem);
 }
 
 .room-tab {
@@ -597,6 +602,230 @@
   justify-self: start;
 }
 
+/* ---------- Room photo frame + key tag ---------- */
+
+.room__frame {
+  --fo: clamp(10px, 1.4vw, 20px);
+  position: relative;
+  isolation: isolate;
+}
+
+/* hairline echo, up and to the left */
+.room__frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid rgba(10, 143, 196, 0.45);
+  transform: translate(calc(var(--fo) * -1), calc(var(--fo) * -1));
+}
+
+/* gallery hairline inside the photo */
+.room__media::after {
+  content: "";
+  position: absolute;
+  inset: clamp(10px, 1.2vw, 16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+
+/* Hotel key fob hooked over the top edge of the photo */
+.room__key {
+  position: absolute;
+  top: -12px;
+  right: clamp(28px, 6%, 72px);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: 50% 12px;
+  filter: drop-shadow(0 12px 14px rgba(8, 40, 56, 0.35));
+  pointer-events: none;
+}
+
+.room__key-ring {
+  position: relative;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  border: 3px solid #7d8a93;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.35), 0 2px 3px rgba(8, 40, 56, 0.35);
+}
+
+.room__key-tag {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.3rem;
+  width: 52px;
+  height: 112px;
+  margin-top: -19px;
+  padding-bottom: 16px;
+  border-radius: 26px 26px 26px 26px / 26px 26px 34px 34px;
+  background: radial-gradient(90% 45% at 30% 0%, rgba(160, 228, 252, 0.6), transparent 70%),
+    linear-gradient(170deg, var(--c-water-1), var(--c-water-3));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+  -webkit-mask: radial-gradient(circle at 50% 14px, transparent 5px, #000 5.5px);
+  mask: radial-gradient(circle at 50% 14px, transparent 5px, #000 5.5px);
+  color: #fff;
+}
+
+.room__key-no {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.room__key-brand {
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.room.is-active .room__key {
+  animation: keySwing 1900ms var(--ease-out) both;
+}
+
+.room__frame:hover .room__key {
+  animation: keyNudge 1400ms var(--ease-out);
+}
+
+@keyframes keySwing {
+  0% {
+    rotate: 18deg;
+  }
+  28% {
+    rotate: -10deg;
+  }
+  52% {
+    rotate: 6deg;
+  }
+  74% {
+    rotate: -2.5deg;
+  }
+  100% {
+    rotate: 0deg;
+  }
+}
+
+@keyframes keyNudge {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+  25% {
+    rotate: 7deg;
+  }
+  55% {
+    rotate: -4deg;
+  }
+  80% {
+    rotate: 1.5deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .room.is-active .room__key,
+  .room__frame:hover .room__key {
+    animation: none;
+  }
+}
+
+/* ---------- Door hanger: practical notes under the tabs ---------- */
+
+.hanger {
+  --hole: 22px;
+  --hole-y: 42px;
+  position: relative;
+  width: min(100%, 220px);
+  margin-left: 2.4rem;
+  padding: calc(var(--hole-y) + var(--hole) + 1.2rem) 1.5rem 1.5rem;
+  background: var(--c-white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 34px 50px -34px rgba(8, 40, 56, 0.42), 0 1px 3px rgba(8, 40, 56, 0.06);
+  overflow: hidden;
+  rotate: -3deg;
+  transition: rotate 900ms var(--ease-out);
+}
+
+.hanger:hover {
+  rotate: -1deg;
+}
+
+/* the hole and its slit, cut back to the section colour */
+.hanger::before,
+.hanger::after {
+  content: "";
+  position: absolute;
+  background: var(--bg-alt);
+}
+
+.hanger::before {
+  top: calc(var(--hole-y) - var(--hole));
+  left: calc(50% - var(--hole));
+  width: calc(var(--hole) * 2);
+  height: calc(var(--hole) * 2);
+  border-radius: 50%;
+  box-shadow: inset 0 2px 4px rgba(8, 40, 56, 0.16);
+}
+
+.hanger::after {
+  top: calc(var(--hole-y) - 2px);
+  left: 50%;
+  width: calc(50% + 14px);
+  height: 4px;
+  transform-origin: 0 50%;
+  rotate: 24deg;
+  box-shadow: inset 0 1px 1px rgba(8, 40, 56, 0.12);
+}
+
+.hanger__title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.2;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px dashed rgba(0, 119, 168, 0.4);
+}
+
+.hanger__list > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.hanger__list dt {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hanger__list dd {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.hanger__note {
+  margin-top: 0.8rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
 /* Desktop: tabbed stage with crossfade */
 @media (min-width: 901px) {
   .js .room {
@@ -630,13 +859,25 @@
     display: none;
   }
 
+  /* only the door hanger remains; it follows the room rail */
+  .rooms__side {
+    position: static;
+    order: 1;
+    justify-items: center;
+  }
+
+  .hanger {
+    margin-left: 0;
+  }
+
   .rooms__stage {
     display: flex;
     gap: 1rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     margin-inline: calc(var(--gutter) * -1);
-    padding-inline: var(--gutter);
+    padding-inline: calc(var(--gutter) + 12px) var(--gutter);
+    padding-top: 22px;
     padding-bottom: 1rem;
     scrollbar-width: none;
   }
@@ -674,24 +915,49 @@
 .amenities {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  row-gap: 1rem;
   margin-top: clamp(4rem, 7vw, 6rem);
-  border-top: 1px solid var(--line-strong);
 }
 
 .amenity {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-  padding: 1.6rem 1rem 0 0;
+  gap: 1rem;
+  padding: 0 1rem 1.6rem 0;
   font-size: 0.875rem;
   color: var(--text-2);
 }
 
+/* each item carries its own run of the line, so wrapped rows stay joined */
+.amenity::before {
+  content: "";
+  position: absolute;
+  top: 27px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--line-strong);
+}
+
 .amenity svg {
-  width: 26px;
-  height: 26px;
+  position: relative;
+  width: 54px;
+  height: 54px;
+  padding: 14px;
+  border: 1px solid rgba(0, 119, 168, 0.4);
+  border-radius: 50%;
+  background: var(--c-white);
+  box-shadow: 0 0 0 7px var(--bg-alt);
   color: var(--accent-ink);
   stroke-width: 1.3;
+  transition: background-color var(--dur-med) var(--ease-out), color var(--dur-med) var(--ease-out), border-color var(--dur-med);
+}
+
+.amenity:hover svg {
+  background: var(--accent-ink);
+  border-color: var(--accent-ink);
+  color: #fff;
 }
 
 /* ---------- Dining (dark) ---------- */

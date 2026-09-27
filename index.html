@@ -21,7 +21,7 @@
 
   <link rel="stylesheet" href="assets/css/tokens.css?v=20260927-2">
   <link rel="stylesheet" href="assets/css/base.css?v=20260927-2">
-  <link rel="stylesheet" href="assets/css/sections.css?v=20260927-3">
+  <link rel="stylesheet" href="assets/css/sections.css?v=20260927-4">
   <!-- 21st.dev effects layer (optional): delete this line and fx.js below to remove -->
   <link rel="stylesheet" href="assets/css/fx.css?v=20260927-fx6">
 
@@ -71,7 +71,6 @@
       <symbol id="i-tv" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/></g></symbol>
       <symbol id="i-desk" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round"><path d="M3 9h18M5 9v11M19 9v11M13 9v6h6M8 9V5.5h3"/></g></symbol>
       <symbol id="i-bath" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round"><path d="M3 12h18v2a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5zM6 12V6a2 2 0 0 1 4 0M7 19l-1 2M17 19l1 2"/></g></symbol>
-      <symbol id="i-bell" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round"><path d="M4 17h16M5.5 17a6.5 6.5 0 0 1 13 0M12 10.5V8.5M10.5 8.5h3M3 20h18"/></g></symbol>
       <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g></symbol>
       <symbol id="i-parking" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M10 17V7h3.5a3 3 0 0 1 0 6H10"/></g></symbol>
       <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 3.5h2.7l1.4 4-2 1.3a11 11 0 0 0 6.5 6.5l1.3-2 4 1.4v2.7a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2z" fill="none" stroke="currentColor" stroke-linejoin="round"/></symbol>
@@ -233,33 +232,48 @@
         </header>
 
         <div class="rooms__body" data-rooms>
-          <div class="rooms__tabs" role="tablist" aria-label="Room types" data-i18n-attr="aria-label:rooms.tabs">
-            <button class="room-tab" role="tab" id="tab-single" aria-controls="panel-single" aria-selected="true">
-              <span class="room-tab__no">01</span><span class="room-tab__name" data-i18n="room.single.name">Single Room</span>
-              <span class="room-tab__count" data-i18n="room.single.count">33 rooms</span><span class="room-tab__bar"></span>
-            </button>
-            <button class="room-tab" role="tab" id="tab-double" aria-controls="panel-double" aria-selected="false" tabindex="-1">
-              <span class="room-tab__no">02</span><span class="room-tab__name" data-i18n="room.double.name">Double Room</span>
-              <span class="room-tab__count" data-i18n="room.double.count">9 rooms</span><span class="room-tab__bar"></span>
-            </button>
-            <button class="room-tab" role="tab" id="tab-twin" aria-controls="panel-twin" aria-selected="false" tabindex="-1">
-              <span class="room-tab__no">03</span><span class="room-tab__name" data-i18n="room.twin.name">Twin Room</span>
-              <span class="room-tab__count" data-i18n="room.twin.count">12 rooms</span><span class="room-tab__bar"></span>
-            </button>
-            <button class="room-tab" role="tab" id="tab-apartment" aria-controls="panel-apartment" aria-selected="false" tabindex="-1">
-              <span class="room-tab__no">04</span><span class="room-tab__name" data-i18n="room.apartment.name">Apartment</span>
-              <span class="room-tab__count" data-i18n="room.apartment.count">3 apartments · 30 m²</span><span class="room-tab__bar"></span>
-            </button>
+          <div class="rooms__side">
+            <div class="rooms__tabs" role="tablist" aria-label="Room types" data-i18n-attr="aria-label:rooms.tabs">
+              <button class="room-tab" role="tab" id="tab-single" aria-controls="panel-single" aria-selected="true">
+                <span class="room-tab__no">01</span><span class="room-tab__name" data-i18n="room.single.name">Single Room</span>
+                <span class="room-tab__count" data-i18n="room.single.count">33 rooms</span><span class="room-tab__bar"></span>
+              </button>
+              <button class="room-tab" role="tab" id="tab-double" aria-controls="panel-double" aria-selected="false" tabindex="-1">
+                <span class="room-tab__no">02</span><span class="room-tab__name" data-i18n="room.double.name">Double Room</span>
+                <span class="room-tab__count" data-i18n="room.double.count">9 rooms</span><span class="room-tab__bar"></span>
+              </button>
+              <button class="room-tab" role="tab" id="tab-twin" aria-controls="panel-twin" aria-selected="false" tabindex="-1">
+                <span class="room-tab__no">03</span><span class="room-tab__name" data-i18n="room.twin.name">Twin Room</span>
+                <span class="room-tab__count" data-i18n="room.twin.count">12 rooms</span><span class="room-tab__bar"></span>
+              </button>
+              <button class="room-tab" role="tab" id="tab-apartment" aria-controls="panel-apartment" aria-selected="false" tabindex="-1">
+                <span class="room-tab__no">04</span><span class="room-tab__name" data-i18n="room.apartment.name">Apartment</span>
+                <span class="room-tab__count" data-i18n="room.apartment.count">3 apartments · 30 m²</span><span class="room-tab__bar"></span>
+              </button>
+            </div>
+
+            <aside class="hanger" aria-labelledby="hanger-title" data-reveal>
+              <p class="hanger__title" id="hanger-title" data-i18n="hanger.title">Good to know</p>
+              <dl class="hanger__list">
+                <div><dt data-i18n="hanger.in">Check-in</dt><dd>14:00</dd></div>
+                <div><dt data-i18n="hanger.out">Check-out</dt><dd>12:00</dd></div>
+                <div><dt data-i18n="hanger.rec">Reception</dt><dd>24/7</dd></div>
+              </dl>
+              <p class="hanger__note" data-i18n="hanger.note">In Macedonian &amp; English</p>
+            </aside>
           </div>
 
           <div class="rooms__stage">
             <article class="room is-active" id="panel-single" role="tabpanel" aria-labelledby="title-single">
-              <figure class="room__media media">
-                <img src="images/room-interior-1000.webp" srcset="images/room-interior-640.webp 640w, images/room-interior-1000.webp 1000w, images/room-interior-1440.webp 1440w"
-                     sizes="(max-width: 900px) 86vw, 62vw" width="1440" height="1080" loading="lazy" decoding="async"
-                     alt="Room with oak desk and round mirror, glass-fronted wardrobe, armchair by the window and a black marble TV wall"
-                     data-i18n-attr="alt:room.single.alt">
-              </figure>
+              <div class="room__frame">
+                <figure class="room__media media">
+                  <img src="images/room-interior-1000.webp" srcset="images/room-interior-640.webp 640w, images/room-interior-1000.webp 1000w, images/room-interior-1440.webp 1440w"
+                       sizes="(max-width: 900px) 86vw, 62vw" width="1440" height="1080" loading="lazy" decoding="async"
+                       alt="Room with oak desk and round mirror, glass-fronted wardrobe, armchair by the window and a black marble TV wall"
+                       data-i18n-attr="alt:room.single.alt">
+                </figure>
+                <span class="room__key" aria-hidden="true"><span class="room__key-ring"></span><span class="room__key-tag"><span class="room__key-no">01</span><span class="room__key-brand">Oaza</span></span></span>
+              </div>
               <div class="room__body">
                 <div class="room__head">
                   <h3 class="room__title h3" id="title-single" data-i18n="room.single.name">Single Room</h3>
@@ -267,19 +281,22 @@
                 </div>
                 <p class="room__desc" data-i18n="room.single.desc">A quiet, well-planned room for one — made for business trips, with a proper desk, good light and a comfortable bed.</p>
                 <ul class="room__features" data-i18n="room.single.features">
-                  <li>Air conditioning</li><li>Work desk</li><li>Satellite TV</li><li>Free Wi-Fi</li><li>Private bathroom</li><li>Room service</li>
+                  <li>Air conditioning</li><li>Work desk</li><li>Satellite TV</li><li>Free Wi-Fi</li><li>Private bathroom</li>
                 </ul>
                 <a class="room__cta link-arrow" href="#contact" data-room="single"><span data-i18n="room.cta">Enquire about this room</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
               </div>
             </article>
 
             <article class="room" id="panel-double" role="tabpanel" aria-labelledby="title-double">
-              <figure class="room__media media">
-                <img src="images/room-large-bed-1000.webp" srcset="images/room-large-bed-640.webp 640w, images/room-large-bed-1000.webp 1000w, images/room-large-bed-1440.webp 1440w"
-                     sizes="(max-width: 900px) 86vw, 62vw" width="1440" height="1080" loading="lazy" decoding="async"
-                     alt="Double room with a large bed, grey padded headboard with oak panels, white linen and taupe curtains"
-                     data-i18n-attr="alt:room.double.alt">
-              </figure>
+              <div class="room__frame">
+                <figure class="room__media media">
+                  <img src="images/room-large-bed-1000.webp" srcset="images/room-large-bed-640.webp 640w, images/room-large-bed-1000.webp 1000w, images/room-large-bed-1440.webp 1440w"
+                       sizes="(max-width: 900px) 86vw, 62vw" width="1440" height="1080" loading="lazy" decoding="async"
+                       alt="Double room with a large bed, grey padded headboard with oak panels, white linen and taupe curtains"
+                       data-i18n-attr="alt:room.double.alt">
+                </figure>
+                <span class="room__key" aria-hidden="true"><span class="room__key-ring"></span><span class="room__key-tag"><span class="room__key-no">02</span><span class="room__key-brand">Oaza</span></span></span>
+              </div>
               <div class="room__body">
                 <div class="room__head">
                   <h3 class="room__title h3" id="title-double" data-i18n="room.double.name">Double Room</h3>
@@ -294,12 +311,15 @@
             </article>
 
             <article class="room" id="panel-twin" role="tabpanel" aria-labelledby="title-twin">
-              <figure class="room__media media">
-                <img src="images/room-two-beds-1000.webp" srcset="images/room-two-beds-640.webp 640w, images/room-two-beds-1000.webp 1000w, images/room-two-beds-1440.webp 1440w"
-                     sizes="(max-width: 900px) 86vw, 62vw" width="1440" height="1080" loading="lazy" decoding="async"
-                     alt="Twin room with two single beds on sage-green bases, oak desk with TV, round mirror and a tall arched mirror"
-                     data-i18n-attr="alt:room.twin.alt">
-              </figure>
+              <div class="room__frame">
+                <figure class="room__media media">
+                  <img src="images/room-two-beds-1000.webp" srcset="images/room-two-beds-640.webp 640w, images/room-two-beds-1000.webp 1000w, images/room-two-beds-1440.webp 1440w"
+                       sizes="(max-width: 900px) 86vw, 62vw" width="1440" height="1080" loading="lazy" decoding="async"
+                       alt="Twin room with two single beds on sage-green bases, oak desk with TV, round mirror and a tall arched mirror"
+                       data-i18n-attr="alt:room.twin.alt">
+                </figure>
+                <span class="room__key" aria-hidden="true"><span class="room__key-ring"></span><span class="room__key-tag"><span class="room__key-no">03</span><span class="room__key-brand">Oaza</span></span></span>
+              </div>
               <div class="room__body">
                 <div class="room__head">
                   <h3 class="room__title h3" id="title-twin" data-i18n="room.twin.name">Twin Room</h3>
@@ -314,12 +334,15 @@
             </article>
 
             <article class="room" id="panel-apartment" role="tabpanel" aria-labelledby="title-apartment">
-              <figure class="room__media media">
-                <img src="images/room-inset-960.webp" srcset="images/room-inset-480.webp 480w, images/room-inset-960.webp 960w"
-                     sizes="(max-width: 900px) 86vw, 62vw" width="960" height="720" loading="lazy" decoding="async"
-                     alt="Apartment with a large bed, oak desk and round mirror, cream armchair by the window and a black marble TV wall"
-                     data-i18n-attr="alt:room.apartment.alt">
-              </figure>
+              <div class="room__frame">
+                <figure class="room__media media">
+                  <img src="images/room-inset-960.webp" srcset="images/room-inset-480.webp 480w, images/room-inset-960.webp 960w"
+                       sizes="(max-width: 900px) 86vw, 62vw" width="960" height="720" loading="lazy" decoding="async"
+                       alt="Apartment with a large bed, oak desk and round mirror, cream armchair by the window and a black marble TV wall"
+                       data-i18n-attr="alt:room.apartment.alt">
+                </figure>
+                <span class="room__key" aria-hidden="true"><span class="room__key-ring"></span><span class="room__key-tag"><span class="room__key-no">04</span><span class="room__key-brand">Oaza</span></span></span>
+              </div>
               <div class="room__body">
                 <div class="room__head">
                   <h3 class="room__title h3" id="title-apartment" data-i18n="room.apartment.name">Apartment</h3>
@@ -341,9 +364,8 @@
           <li class="amenity" data-reveal style="--d:2"><svg aria-hidden="true"><use href="#i-tv"/></svg><span data-i18n="amen.tv">Satellite TV</span></li>
           <li class="amenity" data-reveal style="--d:3"><svg aria-hidden="true"><use href="#i-desk"/></svg><span data-i18n="amen.desk">Work desk</span></li>
           <li class="amenity" data-reveal style="--d:4"><svg aria-hidden="true"><use href="#i-bath"/></svg><span data-i18n="amen.bath">Private bathroom</span></li>
-          <li class="amenity" data-reveal style="--d:5"><svg aria-hidden="true"><use href="#i-bell"/></svg><span data-i18n="amen.service">Room service</span></li>
-          <li class="amenity" data-reveal style="--d:6"><svg aria-hidden="true"><use href="#i-clock"/></svg><span data-i18n="amen.reception">24-hour reception</span></li>
-          <li class="amenity" data-reveal style="--d:7"><svg aria-hidden="true"><use href="#i-parking"/></svg><span data-i18n="amen.parking">On-site parking</span></li>
+          <li class="amenity" data-reveal style="--d:5"><svg aria-hidden="true"><use href="#i-clock"/></svg><span data-i18n="amen.reception">24-hour reception</span></li>
+          <li class="amenity" data-reveal style="--d:6"><svg aria-hidden="true"><use href="#i-parking"/></svg><span data-i18n="amen.parking">On-site parking</span></li>
         </ul>
       </div>
     </section>
@@ -371,7 +393,7 @@
           <ul class="dining__list" data-reveal style="--d:4">
             <li><strong data-i18n="dining.l1.t">Cuisine</strong><span data-i18n="dining.l1.d">Traditional &amp; European</span></li>
             <li><strong data-i18n="dining.l2.t">Lobby Bar</strong><span data-i18n="dining.l2.d">Coffee, aperitifs &amp; nightcaps</span></li>
-            <li><strong data-i18n="dining.l3.t">Room service</strong><span data-i18n="dining.l3.d">For evenings you'd rather stay in</span></li>
+            <li><strong data-i18n="dining.l3.t">Banquets</strong><span data-i18n="dining.l3.d">Grand hall for up to 250 guests</span></li>
             <li><strong data-i18n="dining.l4.t">Private dining</strong><span data-i18n="dining.l4.d">Small hall for up to 30 guests</span></li>
           </ul>
 
@@ -721,7 +743,7 @@
     <a href="#contact"><svg aria-hidden="true"><use href="#i-mail"/></svg><span data-i18n="bar.enquire">Book a stay</span></a>
   </nav>
 
-  <script src="assets/js/i18n.js?v=20260927-3" defer></script>
+  <script src="assets/js/i18n.js?v=20260927-4" defer></script>
   <script src="assets/js/main.js?v=20260927-2" defer></script>
   <!-- 21st.dev effects layer (optional) -->
   <script src="assets/js/fx.js?v=20260927-fx6" defer></script>
