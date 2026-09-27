@@ -178,7 +178,7 @@ button {
 }
 
 .display {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-weight: var(--fw-display);
   line-height: var(--lh-tight);
   letter-spacing: -0.015em;
@@ -187,13 +187,13 @@ button {
 .display em,
 .h2 em,
 .statement em {
-  font-style: normal;
+  font-style: italic;
   font-weight: var(--fw-display);
   color: var(--accent-display);
 }
 
 .h2 {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: var(--fs-h2);
   font-weight: var(--fw-display);
   line-height: 1.06;
@@ -202,9 +202,9 @@ button {
 }
 
 .h3 {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: var(--fs-h3);
-  font-weight: 350;
+  font-weight: 500;
   line-height: var(--lh-snug);
   letter-spacing: -0.005em;
 }
@@ -549,7 +549,7 @@ button {
   display: flex;
   align-items: baseline;
   gap: 1rem;
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: clamp(2.4rem, 10vw, 3.5rem);
   font-weight: var(--fw-display);
   line-height: 1.15;
@@ -669,7 +669,7 @@ body.menu-open {
 }
 
 .footer__lead {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.25rem);
   font-weight: var(--fw-display);
   line-height: 1.2;
@@ -677,7 +677,7 @@ body.menu-open {
 }
 
 .footer__lead em {
-  font-style: normal;
+  font-style: italic;
   color: var(--c-azure-hi);
 }
 

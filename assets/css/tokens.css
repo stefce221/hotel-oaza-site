@@ -40,21 +40,24 @@
   --line-on-dark: rgba(242, 245, 247, 0.14);
   --focus: var(--c-azure-ink);
 
-  /* Typography — Jost echoes the logo's thin geometric letters */
-  --font-display: "Jost", "Futura", "Century Gothic", "Segoe UI", sans-serif;
+  /* Typography — Cormorant Garamond for headings and big numbers; Jost, which
+     echoes the logo's thin geometric letters, for small tracked labels, nav and
+     buttons. Jost lacks some Macedonian letters (Љ Њ Џ), so Onest stands in. */
+  --font-heading: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
+  --font-display: "Jost", "Onest", "Futura", "Century Gothic", "Segoe UI", sans-serif;
   --font-body: "Onest", "Segoe UI", system-ui, sans-serif;
 
   --fs-eyebrow: 0.75rem;
   --fs-small: 0.875rem;
   --fs-body: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
   --fs-lede: clamp(1.125rem, 1.02rem + 0.45vw, 1.3125rem);
-  --fs-h3: clamp(1.45rem, 1.25rem + 0.85vw, 1.9rem);
+  --fs-h3: clamp(1.6rem, 1.38rem + 0.95vw, 2.1rem);
   --fs-h2: clamp(2.3rem, 1.6rem + 2.9vw, 4.25rem);
   --fs-h1: clamp(2.8rem, 1.8rem + 4.8vw, 6.6rem);
-  --fs-statement: clamp(1.65rem, 1.15rem + 2.1vw, 3rem);
+  --fs-statement: clamp(1.8rem, 1.25rem + 2.3vw, 3.25rem);
 
-  --fw-display: 300;
-  --fw-numeral: 200;
+  --fw-display: 500;
+  --fw-numeral: 400;
   --lh-tight: 1.04;
   --lh-snug: 1.2;
   --lh-body: 1.65;
