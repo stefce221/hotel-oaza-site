@@ -21,7 +21,7 @@
 
   <link rel="stylesheet" href="assets/css/tokens.css?v=20260927-2">
   <link rel="stylesheet" href="assets/css/base.css?v=20260927-2">
-  <link rel="stylesheet" href="assets/css/sections.css?v=20260927-4">
+  <link rel="stylesheet" href="assets/css/sections.css?v=20260927-7">
   <!-- 21st.dev effects layer (optional): delete this line and fx.js below to remove -->
   <link rel="stylesheet" href="assets/css/fx.css?v=20260927-fx6">
 
@@ -621,10 +621,10 @@
           </dl>
         </div>
 
-        <form class="form" id="enquiry" novalidate>
+        <form class="form" id="enquiry" novalidate data-mode="stay">
           <h3 class="form__title" data-i18n="form.title">Your enquiry</h3>
 
-          <fieldset class="field field--full chips">
+          <fieldset class="chips">
             <legend data-i18n="form.type">I'm interested in</legend>
             <label class="chip"><input type="radio" name="type" value="stay" checked><span data-i18n="form.type.stay">A stay</span></label>
             <label class="chip"><input type="radio" name="type" value="wedding"><span data-i18n="form.type.wedding">Wedding or celebration</span></label>
@@ -632,60 +632,76 @@
             <label class="chip"><input type="radio" name="type" value="group"><span data-i18n="form.type.group">Group booking</span></label>
           </fieldset>
 
-          <div class="field">
-            <label for="f-name" data-i18n="form.name">Full name</label>
-            <input id="f-name" name="name" type="text" autocomplete="name" required>
-            <p class="field__error" aria-live="polite"></p>
+          <div class="fgroup">
+            <div class="field fbox">
+              <label for="f-arrival"><span class="for-stay" data-i18n="booking.arrival">Arrival</span><span class="for-event" data-i18n="form.date">Event date</span></label>
+              <input id="f-arrival" name="arrival" type="date">
+              <p class="field__error" aria-live="polite"></p>
+            </div>
+            <div class="field fbox for-stay">
+              <label for="f-departure" data-i18n="booking.departure">Departure</label>
+              <input id="f-departure" name="departure" type="date">
+              <span class="fbox__aside" data-nights aria-hidden="true"></span>
+              <p class="field__error" aria-live="polite"></p>
+            </div>
+            <div class="field fbox for-stay">
+              <label for="f-guests" data-i18n="booking.guests">Guests</label>
+              <select id="f-guests" name="guests" data-guests="10">
+                <option value="1">1 guest</option>
+                <option value="2" selected>2 guests</option>
+                <option value="3">3 guests</option>
+                <option value="4">4 guests</option>
+                <option value="5">5 guests</option>
+                <option value="6">6 guests</option>
+                <option value="7">7 guests</option>
+                <option value="8">8 guests</option>
+                <option value="9">9 guests</option>
+                <option value="10+">10+ guests</option>
+              </select>
+            </div>
+            <div class="field fbox for-event">
+              <label for="f-eguests" data-i18n="booking.guests">Guests</label>
+              <select id="f-eguests" name="eventGuests">
+                <option value="30" data-i18n="form.eg.30">Up to 30 guests</option>
+                <option value="150" data-i18n="form.eg.150">Up to 150 guests</option>
+                <option value="250" data-i18n="form.eg.250">Up to 250 guests</option>
+              </select>
+            </div>
+            <div class="field fbox for-stay">
+              <label for="f-room" data-i18n="form.room">Room type</label>
+              <select id="f-room" name="room">
+                <option value="any" data-i18n="form.room.any">No preference</option>
+                <option value="single" data-i18n="room.single.name">Single Room</option>
+                <option value="double" data-i18n="room.double.name">Double Room</option>
+                <option value="twin" data-i18n="room.twin.name">Twin Room</option>
+                <option value="apartment" data-i18n="room.apartment.name">Apartment</option>
+              </select>
+            </div>
           </div>
-          <div class="field">
-            <label for="f-email" data-i18n="form.email">Email</label>
-            <input id="f-email" name="email" type="email" autocomplete="email" required>
-            <p class="field__error" aria-live="polite"></p>
+
+          <div class="fgroup fgroup--contact">
+            <div class="field fbox">
+              <label for="f-name" data-i18n="form.name">Full name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required>
+              <p class="field__error" aria-live="polite"></p>
+            </div>
+            <div class="field fbox">
+              <label for="f-email" data-i18n="form.email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" required>
+              <p class="field__error" aria-live="polite"></p>
+            </div>
+            <div class="field fbox">
+              <label for="f-phone"><span data-i18n="form.phone">Phone</span> <span class="opt" data-i18n="form.optional">(optional)</span></label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel">
+              <p class="field__error" aria-live="polite"></p>
+            </div>
           </div>
-          <div class="field">
-            <label for="f-phone"><span data-i18n="form.phone">Phone</span> <span class="opt" data-i18n="form.optional">(optional)</span></label>
-            <input id="f-phone" name="phone" type="tel" autocomplete="tel">
-            <p class="field__error" aria-live="polite"></p>
-          </div>
-          <div class="field">
-            <label for="f-room" data-i18n="form.room">Room type</label>
-            <select id="f-room" name="room">
-              <option value="any" data-i18n="form.room.any">No preference</option>
-              <option value="single" data-i18n="room.single.name">Single Room</option>
-              <option value="double" data-i18n="room.double.name">Double Room</option>
-              <option value="twin" data-i18n="room.twin.name">Twin Room</option>
-              <option value="apartment" data-i18n="room.apartment.name">Apartment</option>
-            </select>
-            <p class="field__error" aria-live="polite"></p>
-          </div>
-          <div class="field">
-            <label for="f-arrival" data-i18n="booking.arrival">Arrival</label>
-            <input id="f-arrival" name="arrival" type="date">
-            <p class="field__error" aria-live="polite"></p>
-          </div>
-          <div class="field">
-            <label for="f-departure" data-i18n="booking.departure">Departure</label>
-            <input id="f-departure" name="departure" type="date">
-            <p class="field__error" aria-live="polite"></p>
-          </div>
-          <div class="field field--full">
-            <label for="f-guests" data-i18n="booking.guests">Guests</label>
-            <select id="f-guests" name="guests" data-guests="10">
-              <option value="1">1 guest</option>
-              <option value="2" selected>2 guests</option>
-              <option value="3">3 guests</option>
-              <option value="4">4 guests</option>
-              <option value="5">5 guests</option>
-              <option value="6">6 guests</option>
-              <option value="7">7 guests</option>
-              <option value="8">8 guests</option>
-              <option value="9">9 guests</option>
-              <option value="10+">10+ guests</option>
-            </select>
-          </div>
-          <div class="field field--full">
-            <label for="f-message" data-i18n="form.message">Message</label>
-            <textarea id="f-message" name="message" rows="4" placeholder="Anything we should know — occasion, arrival time, special requests." data-i18n-attr="placeholder:form.message.ph"></textarea>
+
+          <div class="fgroup">
+            <div class="field fbox">
+              <label for="f-message"><span data-i18n="form.message">Message</span> <span class="opt" data-i18n="form.optional">(optional)</span></label>
+              <textarea id="f-message" name="message" rows="2" placeholder="Anything we should know — occasion, arrival time, special requests." data-i18n-attr="placeholder:form.message.ph"></textarea>
+            </div>
           </div>
 
           <div class="form__foot">
@@ -743,8 +759,8 @@
     <a href="#contact"><svg aria-hidden="true"><use href="#i-mail"/></svg><span data-i18n="bar.enquire">Book a stay</span></a>
   </nav>
 
-  <script src="assets/js/i18n.js?v=20260927-4" defer></script>
-  <script src="assets/js/main.js?v=20260927-2" defer></script>
+  <script src="assets/js/i18n.js?v=20260927-5" defer></script>
+  <script src="assets/js/main.js?v=20260927-6" defer></script>
   <!-- 21st.dev effects layer (optional) -->
   <script src="assets/js/fx.js?v=20260927-fx6" defer></script>
 </body>
