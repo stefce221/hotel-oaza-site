@@ -1,0 +1,14 @@
+{
+  "file": "enhanced/exterior-960.webp",
+  "width": 960,
+  "height": 720,
+  "bytes": 133696,
+  "sha256": "09fd61a36647f80daeb7f9343e6752e4aa7411d79204c4cc8d2c799361428b49",
+  "master": "output/imagegen/masters/exterior.png",
+  "masterSha256": "1c0b1c3a0f5b3ccf62953584294669a65fa19419bebb9d8e84bdd3ea3314cb9d",
+  "original": "output/imagegen/originals/images/oaza-exterior-original.jpeg",
+  "generated": true,
+  "illustrativePlaceholder": false,
+  "use": "Desktop hero",
+  "transformation": "AI-enhanced master; 4:3 crop (centre), sRGB WebP quality 80; no upscaling."
+}

@@ -1,0 +1,14 @@
+{
+  "file": "enhanced/room-two-beds-mobile-1280.webp",
+  "width": 1280,
+  "height": 720,
+  "bytes": 62830,
+  "sha256": "d55d946ed7d0128d5d85a0abdd20c162f75f95ff52e0ba196457dac1358e45f8",
+  "master": "output/imagegen/masters/room-two-beds.png",
+  "masterSha256": "708e037e9df142a66aa5a025871f2fd1de3dd37c45a5625dad5e897c4765a560",
+  "original": "output/imagegen/originals/images/oaza-room-two-beds.jpg",
+  "generated": true,
+  "illustrativePlaceholder": false,
+  "use": "Mobile hero",
+  "transformation": "AI-enhanced master; 16:9 crop (centre), sRGB WebP quality 80; no upscaling."
+}

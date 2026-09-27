@@ -1,0 +1,14 @@
+{
+  "file": "enhanced/room-large-bed-1440.webp",
+  "width": 1440,
+  "height": 1080,
+  "bytes": 113616,
+  "sha256": "b4f5a7be2e6725099362eadec0e4f2bc683bea65dd5c6f005e00d078d9e7c465",
+  "master": "output/imagegen/masters/room-large-bed.png",
+  "masterSha256": "80f70694fc81d4d1add95e7fcd23c04d150ea63708c0935ff9d206c708ea7a7a",
+  "original": "output/imagegen/originals/images/oaza-room-large-bed.jpg",
+  "generated": true,
+  "illustrativePlaceholder": false,
+  "use": "Room gallery",
+  "transformation": "AI-enhanced master; 4:3 crop (centre), sRGB WebP quality 80; no upscaling."
+}

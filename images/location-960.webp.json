@@ -1,0 +1,14 @@
+{
+  "file": "enhanced/location-960.webp",
+  "width": 960,
+  "height": 800,
+  "bytes": 143850,
+  "sha256": "9bda913e240d81459602b7edb6e84d8f285bc439ce6a9b1c4b6e58cd08743b48",
+  "master": "output/imagegen/masters/exterior.png",
+  "masterSha256": "1c0b1c3a0f5b3ccf62953584294669a65fa19419bebb9d8e84bdd3ea3314cb9d",
+  "original": "output/imagegen/originals/images/oaza-exterior-original.jpeg",
+  "generated": true,
+  "illustrativePlaceholder": false,
+  "use": "Location; same building master as desktop hero",
+  "transformation": "AI-enhanced master; 6:5 crop (east), sRGB WebP quality 80; no upscaling."
+}

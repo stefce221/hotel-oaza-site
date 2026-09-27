@@ -1,0 +1,14 @@
+{
+  "file": "enhanced/seminar-960.webp",
+  "width": 960,
+  "height": 640,
+  "bytes": 89552,
+  "sha256": "d6298515f8ca18a83c7f58184249dc8b1e3a74e8ecddbe2629291b563d645462",
+  "master": "output/imagegen/masters/seminar.png",
+  "masterSha256": "4e76dad2d2bf41d7cc40be80ae32b985bd569118349cdbb2c63c6d67b5062a53",
+  "original": "output/imagegen/originals/images/seminar-placeholder.png",
+  "generated": true,
+  "illustrativePlaceholder": true,
+  "use": "seminar illustrative event image",
+  "transformation": "AI-enhanced master; 3:2 crop (centre), sRGB WebP quality 80; no upscaling."
+}

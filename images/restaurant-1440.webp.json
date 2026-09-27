@@ -1,0 +1,14 @@
+{
+  "file": "enhanced/restaurant-1440.webp",
+  "width": 1440,
+  "height": 1080,
+  "bytes": 221708,
+  "sha256": "d99e7aa5204111b34660aed7f39cba931d49e23e623163ca2f19238569baffda",
+  "master": "output/imagegen/masters/restaurant.png",
+  "masterSha256": "e4154c9e4271c72dcf44cbf18f8bd3abdee1421d0370ae867ae497f3e0d1ff4b",
+  "original": "output/imagegen/originals/images/oaza-restaurant-original.jpg",
+  "generated": true,
+  "illustrativePlaceholder": false,
+  "use": "Restaurant",
+  "transformation": "AI-enhanced master; 4:3 crop (centre), sRGB WebP quality 80; no upscaling."
+}

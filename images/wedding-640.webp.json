@@ -1,0 +1,14 @@
+{
+  "file": "enhanced/wedding-640.webp",
+  "width": 640,
+  "height": 427,
+  "bytes": 37658,
+  "sha256": "f8ef735380876a03ea34d27dbc335046f8f7cc0cce973423b543a0ee674fff01",
+  "master": "output/imagegen/masters/wedding.png",
+  "masterSha256": "c17bc08af82b22fb4a87fc52d660aaf2fcd12aa1fab8173cc42ebbdcf3634af2",
+  "original": "output/imagegen/originals/images/wedding-placeholder.png",
+  "generated": true,
+  "illustrativePlaceholder": true,
+  "use": "wedding illustrative event image",
+  "transformation": "AI-enhanced master; 3:2 crop (centre), sRGB WebP quality 80; no upscaling."
+}

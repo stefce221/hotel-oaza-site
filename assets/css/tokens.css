@@ -1,0 +1,89 @@
+/* ==========================================================================
+   Hotel Oaza — design tokens
+   Drawn from the logo: a thin charcoal monoline wordmark (#212121) where the
+   crossbar of each A is replaced by an azure pool of water (#05AFEE).
+   ========================================================================== */
+
+:root {
+  /* Primitive colour */
+  --c-white: #ffffff;
+  --c-paper: #fbfcfc;
+  --c-mist: #eff5f8;
+  --c-mist-deep: #dce8ee;
+  --c-ink: #212121; /* logo charcoal */
+  --c-ink-2: #474c51;
+  --c-muted: #62686e;
+  --c-night: #17191b;
+  --c-night-2: #222528;
+  --c-azure: #05afee; /* logo azure — graphics only, too light for text */
+  --c-azure-hi: #7fd6f7;
+  --c-azure-deep: #0a8fc4; /* large display text on light (>= 3:1) */
+  --c-azure-ink: #0077a8; /* small text and button fills (>= 4.5:1) */
+  --c-water-1: #0b8fc4;
+  --c-water-2: #06709c;
+  --c-water-3: #03435d;
+
+  /* Semantic colour */
+  --bg: var(--c-paper);
+  --bg-alt: var(--c-mist);
+  --bg-dark: var(--c-night);
+  --text: var(--c-ink);
+  --text-2: var(--c-ink-2);
+  --text-muted: var(--c-muted);
+  --text-on-dark: #f2f5f7;
+  --text-on-dark-2: #aab3ba;
+  --accent: var(--c-azure);
+  --accent-ink: var(--c-azure-ink);
+  --accent-display: var(--c-azure-deep);
+  --line: rgba(33, 33, 33, 0.12);
+  --line-strong: rgba(33, 33, 33, 0.26);
+  --line-on-dark: rgba(242, 245, 247, 0.14);
+  --focus: var(--c-azure-ink);
+
+  /* Typography — Jost echoes the logo's thin geometric letters */
+  --font-display: "Jost", "Futura", "Century Gothic", "Segoe UI", sans-serif;
+  --font-body: "Onest", "Segoe UI", system-ui, sans-serif;
+
+  --fs-eyebrow: 0.75rem;
+  --fs-small: 0.875rem;
+  --fs-body: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --fs-lede: clamp(1.125rem, 1.02rem + 0.45vw, 1.3125rem);
+  --fs-h3: clamp(1.45rem, 1.25rem + 0.85vw, 1.9rem);
+  --fs-h2: clamp(2.3rem, 1.6rem + 2.9vw, 4.25rem);
+  --fs-h1: clamp(2.8rem, 1.8rem + 4.8vw, 6.6rem);
+  --fs-statement: clamp(1.65rem, 1.15rem + 2.1vw, 3rem);
+
+  --fw-display: 300;
+  --fw-numeral: 200;
+  --lh-tight: 1.04;
+  --lh-snug: 1.2;
+  --lh-body: 1.65;
+  --tracking-eyebrow: 0.28em;
+
+  /* Space & layout */
+  --gutter: clamp(1rem, 0.4rem + 2.6vw, 2.5rem);
+  --section-y: clamp(5rem, 3.5rem + 7vw, 10rem);
+  --max-w: 1400px;
+  --radius-s: 2px;
+  --radius-m: 6px;
+  --header-h: 76px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 180ms;
+  --dur-med: 480ms;
+  --dur-slow: 1100ms;
+
+  /* Crest — the azure water shape beneath each A in the logo */
+  --crest: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 91 19' preserveAspectRatio='none'%3E%3Cpath d='M0 19L43 1.6Q45.5.6 48 1.6L91 19z' fill='%2305AFEE'/%3E%3C/svg%3E");
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+    --dur-med: 1ms;
+    --dur-slow: 1ms;
+  }
+}

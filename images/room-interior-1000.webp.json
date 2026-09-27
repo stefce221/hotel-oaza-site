@@ -1,0 +1,14 @@
+{
+  "file": "enhanced/room-interior-1000.webp",
+  "width": 1000,
+  "height": 750,
+  "bytes": 60344,
+  "sha256": "2f664d7232859fcdd22f22f709e3a9f1a61d69b389969a0e61e46d658e1043ef",
+  "master": "output/imagegen/masters/room-interior.png",
+  "masterSha256": "c29f3baf71d41b11814ca04e97ea76b689679f77cb21e8e4cf2810afd6ad5ce7",
+  "original": "output/imagegen/originals/images/oaza-room-interior.jpg",
+  "generated": true,
+  "illustrativePlaceholder": false,
+  "use": "Room gallery",
+  "transformation": "AI-enhanced master; 4:3 crop (centre), sRGB WebP quality 80; no upscaling."
+}

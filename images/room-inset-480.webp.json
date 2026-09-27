@@ -1,0 +1,14 @@
+{
+  "file": "enhanced/room-inset-480.webp",
+  "width": 480,
+  "height": 360,
+  "bytes": 16484,
+  "sha256": "9f6db0c79d8333dfee1f26225e6cd84499b70ab931436545ee842c8fb546c108",
+  "master": "output/imagegen/masters/room-inset.png",
+  "masterSha256": "c005ecaba96db324423e06139674c76c9f1f41027122ced257b5cb6d1819fce6",
+  "original": "output/imagegen/originals/images/oaza-rooms-original.jpg",
+  "generated": true,
+  "illustrativePlaceholder": false,
+  "use": "Desktop room inset",
+  "transformation": "AI-enhanced master; 4:3 crop (centre), sRGB WebP quality 80; no upscaling."
+}

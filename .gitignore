@@ -1,0 +1,5 @@
+.playwright-cli/
+.claude/
+.mcp.json
+_backup/
+IMAGE-PROMPTS.md
