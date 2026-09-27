@@ -21,7 +21,7 @@
 
   <link rel="stylesheet" href="assets/css/tokens.css?v=20260927-2">
   <link rel="stylesheet" href="assets/css/base.css?v=20260927-2">
-  <link rel="stylesheet" href="assets/css/sections.css?v=20260927-2">
+  <link rel="stylesheet" href="assets/css/sections.css?v=20260927-3">
   <!-- 21st.dev effects layer (optional): delete this line and fx.js below to remove -->
   <link rel="stylesheet" href="assets/css/fx.css?v=20260927-fx6">
 
@@ -392,31 +392,39 @@
         </header>
 
         <div class="events__cards">
-          <article class="event-card">
-            <figure class="event-card__media media" data-reveal="mask">
-              <img src="images/wedding-960.webp" srcset="images/wedding-640.webp 640w, images/wedding-960.webp 960w, images/wedding-1440.webp 1440w"
-                   sizes="(max-width: 900px) 100vw, 950px" width="1440" height="960" loading="lazy" decoding="async"
-                   alt="Round banquet table with ivory linen, white hydrangeas and roses, candles and glassware"
-                   data-i18n-attr="alt:events.wedAlt">
-              <figcaption class="event-card__note" data-i18n="events.note">Illustrative styling</figcaption>
-            </figure>
+          <article class="event-card event-card--wed">
+            <div class="frame frame--arch">
+              <figure class="event-card__media media" data-reveal="mask">
+                <img src="images/wedding-960.webp" srcset="images/wedding-640.webp 640w, images/wedding-960.webp 960w, images/wedding-1440.webp 1440w"
+                     sizes="(max-width: 900px) 100vw, 950px" width="1440" height="960" loading="lazy" decoding="async"
+                     alt="Round banquet table with ivory linen, white hydrangeas and roses, candles and glassware"
+                     data-i18n-attr="alt:events.wedAlt">
+                <figcaption class="event-card__note" data-i18n="events.note">Illustrative styling</figcaption>
+              </figure>
+            </div>
             <div class="event-card__text" data-reveal>
+              <p class="event-card__kicker"><span class="event-card__num">01</span><span data-i18n="events.wed.k">Celebrations</span></p>
               <h3 class="h3" data-i18n="events.wed.t">Weddings &amp; celebrations</h3>
               <p class="prose" data-i18n="events.wed.d">Engagements, weddings, christenings and birthdays — with menus built around your day and a team that knows how a Macedonian celebration should run.</p>
+              <ul class="event-card__tags" data-i18n="events.wed.tags"><li>Engagements</li><li>Weddings</li><li>Christenings</li><li>Birthdays</li></ul>
             </div>
           </article>
 
-          <article class="event-card">
-            <figure class="event-card__media media" data-reveal="mask">
-              <img src="images/seminar-960.webp" srcset="images/seminar-640.webp 640w, images/seminar-960.webp 960w, images/seminar-1440.webp 1440w"
-                   sizes="(max-width: 900px) 100vw, 600px" width="1440" height="960" loading="lazy" decoding="async"
-                   alt="Seminar layout with a long white table, notepads, water carafes and upholstered chairs beside sheer-curtained windows"
-                   data-i18n-attr="alt:events.semAlt">
-              <figcaption class="event-card__note" data-i18n="events.note">Illustrative styling</figcaption>
-            </figure>
+          <article class="event-card event-card--sem">
+            <div class="frame frame--marks">
+              <figure class="event-card__media media" data-reveal="mask">
+                <img src="images/seminar-960.webp" srcset="images/seminar-640.webp 640w, images/seminar-960.webp 960w, images/seminar-1440.webp 1440w"
+                     sizes="(max-width: 900px) 100vw, 600px" width="1440" height="960" loading="lazy" decoding="async"
+                     alt="Seminar layout with a long white table, notepads, water carafes and upholstered chairs beside sheer-curtained windows"
+                     data-i18n-attr="alt:events.semAlt">
+                <figcaption class="event-card__note" data-i18n="events.note">Illustrative styling</figcaption>
+              </figure>
+            </div>
             <div class="event-card__text" data-reveal>
+              <p class="event-card__kicker"><span class="event-card__num">02</span><span data-i18n="events.sem.k">Business</span></p>
               <h3 class="h3" data-i18n="events.sem.t">Conferences &amp; seminars</h3>
               <p class="prose" data-i18n="events.sem.d">Projector, sound and wireless internet for trainings and seminars — with coffee breaks, lunches and overnight stays arranged in one place.</p>
+              <ul class="event-card__tags" data-i18n="events.sem.tags"><li>Projector</li><li>Sound</li><li>Wi-Fi</li><li>Coffee breaks</li></ul>
             </div>
           </article>
         </div>
@@ -487,16 +495,55 @@
       <div class="wrap">
         <div class="location__top">
           <div class="location__copy">
+            <div class="location__hill" aria-hidden="true">
+              <svg viewBox="0 0 600 420" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  <path id="hill" d="M-100-10C-95-60-40-85 10-80S105-45 100 5 50 80 0 75-105 40-100-10Z"/>
+                  <linearGradient id="river" x1="0" x2="1"><stop offset="0" stop-color="#05afee" stop-opacity="0"/><stop offset=".2" stop-color="#05afee"/><stop offset=".85" stop-color="#05afee"/><stop offset="1" stop-color="#05afee" stop-opacity="0"/></linearGradient>
+                </defs>
+                <g fill="none" stroke="#9fb6c2" stroke-width="1">
+                  <use href="#hill" transform="translate(250 175) rotate(-4) scale(.28)" vector-effect="non-scaling-stroke"/>
+                  <use href="#hill" transform="translate(250 177) rotate(2) scale(.52)" vector-effect="non-scaling-stroke"/>
+                  <use href="#hill" transform="translate(252 180) rotate(7) scale(.78)" vector-effect="non-scaling-stroke"/>
+                  <use href="#hill" transform="translate(256 184) rotate(11) scale(1.06)" vector-effect="non-scaling-stroke" opacity=".85"/>
+                  <use href="#hill" transform="translate(260 190) rotate(15) scale(1.36)" vector-effect="non-scaling-stroke" opacity=".7"/>
+                  <use href="#hill" transform="translate(266 198) rotate(19) scale(1.7)" vector-effect="non-scaling-stroke" opacity=".55"/>
+                  <use href="#hill" transform="translate(272 206) rotate(23) scale(2.08)" vector-effect="non-scaling-stroke" opacity=".4"/>
+                  <use href="#hill" transform="translate(280 216) rotate(27) scale(2.5)" vector-effect="non-scaling-stroke" opacity=".28"/>
+                </g>
+                <path d="M-20 392C90 360 170 408 290 380S470 318 620 350" fill="none" stroke="url(#river)" stroke-width="5" stroke-linecap="round" opacity=".32"/>
+                <g transform="translate(250 175)"><circle r="16" fill="#05afee" opacity=".14"/><circle r="4.5" fill="#0077a8"/></g>
+              </svg>
+              <p class="location__hill-label location__hill-label--peak" data-i18n="stip.isar">Isar Fortress</p>
+              <p class="location__hill-label location__hill-label--river" data-i18n="stip.river">Bregalnica</p>
+            </div>
             <p class="eyebrow" data-i18n="stip.eyebrow" data-reveal>The city</p>
             <h2 class="h2" id="stip-title" data-i18n="stip.title" data-reveal style="--d:1">Štip, <em>on foot</em></h2>
             <p class="prose" data-i18n="stip.body" data-reveal style="--d:2">One of Macedonia's oldest towns, Štip wraps around the hill of Isar Fortress. From our door, the old town, galleries, cafés and the university are all within easy reach — and there's pastrmajlija, the city's famous dish, to try.</p>
           </div>
-          <figure class="location__media media" data-reveal="mask">
-            <img src="images/location-960.webp" srcset="images/location-600.webp 600w, images/location-960.webp 960w, images/location-1296.webp 1296w"
-                 sizes="(max-width: 900px) 100vw, 800px" width="1296" height="1080" loading="lazy" decoding="async"
-                 alt="Hotel Oaza tower rising above central Štip, with red-roofed houses climbing the hills behind"
-                 data-i18n-attr="alt:stip.alt">
-          </figure>
+          <div class="postcard">
+            <figure class="location__media media" data-reveal="mask">
+              <img src="images/location-960.webp" srcset="images/location-600.webp 600w, images/location-960.webp 960w, images/location-1296.webp 1296w"
+                   sizes="(max-width: 900px) 100vw, 800px" width="1296" height="1080" loading="lazy" decoding="async"
+                   alt="Hotel Oaza tower rising above central Štip, with red-roofed houses climbing the hills behind"
+                   data-i18n-attr="alt:stip.alt">
+            </figure>
+            <div class="postcard__stamp" aria-hidden="true"><span class="postcard__stamp-art"><span class="postcard__stamp-mark"></span><span class="postcard__stamp-val">MK</span></span></div>
+            <svg class="postcard__postmark" viewBox="0 0 250 110" aria-hidden="true">
+              <defs><path id="pm-ring" d="M190 55m-38 0a38 38 0 1 1 76 0a38 38 0 1 1-76 0"/></defs>
+              <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                <path d="M0 33q7-5 14 0t14 0 14 0 14 0 14 0 14 0 14 0 14 0 14 0 14 0"/>
+                <path d="M0 47q7-5 14 0t14 0 14 0 14 0 14 0 14 0 14 0 14 0 14 0 14 0"/>
+                <path d="M0 61q7-5 14 0t14 0 14 0 14 0 14 0 14 0 14 0 14 0 14 0 14 0"/>
+                <path d="M0 75q7-5 14 0t14 0 14 0 14 0 14 0 14 0 14 0 14 0 14 0 14 0"/>
+                <circle cx="190" cy="55" r="50"/>
+                <circle cx="190" cy="55" r="28" stroke-width="1.2"/>
+              </g>
+              <text class="postcard__pm-ring"><textPath href="#pm-ring" textLength="232" lengthAdjust="spacing" data-i18n="stip.postmark">Štip · North Macedonia ·</textPath></text>
+              <text class="postcard__pm-core" x="190" y="60" text-anchor="middle">2000</text>
+            </svg>
+            <p class="postcard__caption"><span data-i18n="stip.greet">Greetings from Štip</span><span class="postcard__coords">41°44′ N · 22°12′ E</span></p>
+          </div>
         </div>
 
         <ol class="landmarks">
@@ -674,7 +721,7 @@
     <a href="#contact"><svg aria-hidden="true"><use href="#i-mail"/></svg><span data-i18n="bar.enquire">Book a stay</span></a>
   </nav>
 
-  <script src="assets/js/i18n.js?v=20260927-2" defer></script>
+  <script src="assets/js/i18n.js?v=20260927-3" defer></script>
   <script src="assets/js/main.js?v=20260927-2" defer></script>
   <!-- 21st.dev effects layer (optional) -->
   <script src="assets/js/fx.js?v=20260927-fx6" defer></script>

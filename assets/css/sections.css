@@ -802,20 +802,150 @@
   gap: 1.4rem;
 }
 
-.event-card:nth-child(2) {
-  margin-top: clamp(4rem, 12vw, 11rem);
+.event-card {
+  gap: clamp(1.8rem, 3vw, 2.6rem);
+}
+
+/* Seminar card reads text-first on wide screens, so the column has no empty
+   band above its photo and the two cards zig-zag. */
+.event-card--sem {
+  margin-top: clamp(1.5rem, 4vw, 4.5rem);
+}
+
+.event-card--sem .event-card__text {
+  order: -1;
 }
 
 .event-card__media {
   aspect-ratio: 3 / 2;
 }
 
-.event-card:nth-child(1) .event-card__media {
-  aspect-ratio: 5 / 4;
+.event-card--wed .event-card__media {
+  aspect-ratio: 6 / 5;
+}
+
+.event-card--wed .event-card__media img {
+  object-position: 38% 50%;
+}
+
+.event-card--sem .event-card__media {
+  aspect-ratio: 1 / 1;
+}
+
+.event-card--sem .event-card__media img {
+  object-position: 62% 50%;
 }
 
 .event-card__media img {
   transition: transform 1400ms var(--ease-out);
+}
+
+/* ---------- Frames ---------- */
+
+.frame {
+  --fo: clamp(10px, 1.4vw, 20px); /* frame offset */
+  position: relative;
+  isolation: isolate;
+}
+
+/* Arched doorway with a hairline echo set up and to the right,
+   and the logo's water crest as its keystone. */
+.frame--arch .media {
+  border-radius: 50% 50% 0 0 / 30% 30% 0 0;
+  box-shadow: 0 40px 80px -44px rgba(8, 40, 56, 0.45);
+}
+
+.frame--arch::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid rgba(10, 143, 196, 0.45);
+  border-radius: 50% 50% 0 0 / 30% 30% 0 0;
+  transform: translate(var(--fo), calc(var(--fo) * -1));
+}
+
+.frame--arch::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--fo) * -1 - 11px);
+  left: calc(50% + var(--fo));
+  width: 44px;
+  height: 9px;
+  translate: -50% 0;
+  background: var(--crest) center / 100% 100% no-repeat;
+}
+
+/* Tinted plate offset behind the photo, with photographer's crop marks. */
+.frame--marks::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(150deg, #e3f2f9 0%, #d3e7f0 100%);
+  transform: translate(calc(var(--fo) * -1.4), calc(var(--fo) * 1.4));
+}
+
+.frame--marks::after {
+  --m: 22px; /* mark length */
+  --t: 1px;
+  --c: var(--c-ink);
+  content: "";
+  position: absolute;
+  inset: calc(var(--fo) * -0.9);
+  pointer-events: none;
+  opacity: 0.55;
+  background:
+    linear-gradient(var(--c) 0 0) top left / var(--m) var(--t),
+    linear-gradient(var(--c) 0 0) top left / var(--t) var(--m),
+    linear-gradient(var(--c) 0 0) top right / var(--m) var(--t),
+    linear-gradient(var(--c) 0 0) top right / var(--t) var(--m),
+    linear-gradient(var(--c) 0 0) bottom left / var(--m) var(--t),
+    linear-gradient(var(--c) 0 0) bottom left / var(--t) var(--m),
+    linear-gradient(var(--c) 0 0) bottom right / var(--m) var(--t),
+    linear-gradient(var(--c) 0 0) bottom right / var(--t) var(--m);
+  background-repeat: no-repeat;
+}
+
+.event-card__kicker {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+}
+
+.event-card__num {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 2rem + 1.8vw, 3.6rem);
+  font-weight: var(--fw-numeral);
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  color: var(--accent-display);
+}
+
+.event-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.event-card__tags li {
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  color: var(--text-2);
+  transition: border-color var(--dur-fast), color var(--dur-fast), background-color var(--dur-fast);
+}
+
+.event-card:hover .event-card__tags li {
+  border-color: rgba(0, 119, 168, 0.45);
 }
 
 .event-card:hover .event-card__media img {
@@ -1101,8 +1231,87 @@
 }
 
 .location__copy {
+  position: relative;
   display: grid;
   gap: 1.6rem;
+  align-self: stretch;
+  align-content: end;
+}
+
+/* Contour sketch of Isar hill filling the space above the copy */
+.location__hill {
+  position: relative;
+  width: min(100%, 560px);
+  aspect-ratio: 600 / 420;
+  margin-bottom: auto;
+  margin-left: -4%;
+}
+
+.location__hill svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.location__hill-label {
+  position: absolute;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.location__hill-label--peak {
+  left: calc(41.7% + 18px);
+  top: 41.7%;
+  translate: 0 -50%;
+  color: var(--accent-ink);
+}
+
+.location__hill-label--river {
+  left: 70%;
+  top: 86%;
+  rotate: -7deg;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+}
+
+/* ---------- Postcard frame (Štip photo) ---------- */
+
+.postcard {
+  --mat: clamp(10px, 1.3vw, 18px);
+  position: relative;
+  isolation: isolate;
+  padding: var(--mat) var(--mat) 0;
+}
+
+/* Both card layers are pseudo-elements: inside the isolated stacking context,
+   negative-z children paint above the element's own background. */
+.postcard::before,
+.postcard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid var(--line);
+}
+
+/* a second card peeking out from underneath */
+.postcard::before {
+  background: var(--c-mist);
+  transform: rotate(-2.4deg) translate(-1.5%, 1%);
+  box-shadow: 0 30px 60px -40px rgba(8, 40, 56, 0.35);
+}
+
+/* the white mat of the front card */
+.postcard::after {
+  background: var(--c-white);
+  box-shadow: 0 50px 90px -50px rgba(8, 40, 56, 0.5), 0 2px 8px rgba(8, 40, 56, 0.05);
 }
 
 .location__media {
@@ -1113,33 +1322,160 @@
   object-position: 50% 45%;
 }
 
+.postcard__caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.4rem 1.5rem;
+  padding: 1rem 0.2rem 1.1rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.35rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text);
+}
+
+.postcard__coords {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+}
+
+/* Postage stamp with perforated edge */
+.postcard__stamp {
+  position: absolute;
+  top: calc(var(--mat) + clamp(10px, 1.4vw, 20px));
+  right: calc(var(--mat) + clamp(10px, 1.4vw, 20px));
+  width: 80px;
+  height: 96px;
+  padding: 7px;
+  background: var(--c-white);
+  filter: drop-shadow(0 4px 8px rgba(8, 40, 56, 0.28));
+  -webkit-mask: linear-gradient(#000 0 0) center / calc(100% - 8px) calc(100% - 8px) no-repeat,
+    radial-gradient(circle at 4px 4px, transparent 2.4px, #000 2.9px) -4px -4px / 8px 8px;
+  mask: linear-gradient(#000 0 0) center / calc(100% - 8px) calc(100% - 8px) no-repeat,
+    radial-gradient(circle at 4px 4px, transparent 2.4px, #000 2.9px) -4px -4px / 8px 8px;
+  rotate: 3deg;
+}
+
+.postcard__stamp-art {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(90% 60% at 30% 0%, rgba(160, 228, 252, 0.55), transparent 70%),
+    linear-gradient(170deg, var(--c-water-1), var(--c-water-3));
+}
+
+.postcard__stamp-mark {
+  position: absolute;
+  inset: 26% 22% 22%;
+  background: url("../img/mark.svg") center / contain no-repeat;
+  filter: brightness(0) invert(1);
+  opacity: 0.95;
+}
+
+.postcard__stamp-val {
+  position: absolute;
+  top: 5px;
+  left: 6px;
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #fff;
+}
+
+/* Cancellation mark: waves over the sky, ring over the stamp */
+.postcard__postmark {
+  position: absolute;
+  top: calc(var(--mat) + clamp(52px, 5.6vw, 80px));
+  right: calc(var(--mat) + clamp(44px, 4.8vw, 68px));
+  width: clamp(190px, 20vw, 260px);
+  height: auto;
+  color: #1f2a31;
+  opacity: 0.62;
+  rotate: -9deg;
+  pointer-events: none;
+}
+
+.postcard__pm-ring {
+  font-family: var(--font-display);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  fill: currentColor;
+}
+
+.postcard__pm-core {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  fill: currentColor;
+}
+
+/* ---------- Landmarks: a walking trail ---------- */
+
 .landmarks {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  margin-top: clamp(3.5rem, 7vw, 6rem);
-  border-top: 1px solid var(--line-strong);
+  margin-top: clamp(4.5rem, 8vw, 7rem);
   counter-reset: lm;
+}
+
+/* dashed footpath through the numbered stops */
+.landmarks::before {
+  content: "";
+  position: absolute;
+  top: 19px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--accent) 0 7px, transparent 7px 15px);
+  opacity: 0.55;
+  -webkit-mask: linear-gradient(90deg, #000 85%, transparent);
+  mask: linear-gradient(90deg, #000 85%, transparent);
 }
 
 .landmark {
   display: grid;
   gap: 0.7rem;
   align-content: start;
-  padding: 1.8rem 1.4rem 0 0;
+  padding: 0 1.6rem 1.8rem 0;
   counter-increment: lm;
-}
-
-.landmark + .landmark {
-  padding-left: 1.4rem;
-  border-left: 1px solid var(--line);
 }
 
 .landmark::before {
   content: counter(lm, decimal-leading-zero);
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 0.8rem;
+  border: 1px solid rgba(0, 119, 168, 0.5);
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: 0 0 0 6px var(--bg);
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   color: var(--accent-ink);
+  transition: background-color var(--dur-med) var(--ease-out), color var(--dur-med) var(--ease-out), border-color var(--dur-med);
+}
+
+.landmark:hover::before {
+  background: var(--accent-ink);
+  border-color: var(--accent-ink);
+  color: #fff;
 }
 
 .landmark h3 {
@@ -1555,8 +1891,24 @@
     max-width: 520px;
   }
 
-  .event-card:nth-child(2) {
-    margin-top: 0;
+  .event-card--sem {
+    margin-top: clamp(2.5rem, 8vw, 4rem);
+  }
+
+  .event-card--sem .event-card__text {
+    order: 0;
+  }
+
+  .event-card--sem .event-card__media {
+    aspect-ratio: 3 / 2;
+  }
+
+  .location__hill {
+    display: none;
+  }
+
+  .postcard {
+    margin-top: 1rem;
   }
 
   .halls__list {
@@ -1604,11 +1956,45 @@
     row-gap: 0;
   }
 
-  .landmark,
-  .landmark + .landmark {
-    padding: 1.4rem 0;
-    border-left: 0;
-    border-bottom: 1px solid var(--line);
+  /* the footpath turns vertical, running down through the stops */
+  .landmarks::before {
+    top: 0;
+    bottom: 0;
+    left: 19px;
+    right: auto;
+    width: 2px;
+    height: auto;
+    background: repeating-linear-gradient(180deg, var(--accent) 0 7px, transparent 7px 15px);
+    -webkit-mask: linear-gradient(180deg, #000 88%, transparent);
+    mask: linear-gradient(180deg, #000 88%, transparent);
+  }
+
+  .landmark {
+    grid-template-columns: 40px 1fr;
+    column-gap: 1.1rem;
+    row-gap: 0.4rem;
+    padding: 0 0 1.8rem;
+  }
+
+  .landmark::before {
+    grid-row: 1 / span 2;
+    margin-bottom: 0;
+  }
+
+  .postcard::before {
+    transform: rotate(-1.6deg);
+  }
+
+  .postcard__stamp {
+    width: 64px;
+    height: 80px;
+    padding: 6px;
+  }
+
+  .postcard__postmark {
+    width: 150px;
+    top: calc(var(--mat) + 44px);
+    right: calc(var(--mat) + 36px);
   }
 
   .dining__list {
