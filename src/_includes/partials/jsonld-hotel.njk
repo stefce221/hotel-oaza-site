@@ -1,0 +1,32 @@
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Hotel",
+    "name": "Hotel Oaza",
+    "url": "{{ site.url }}/",
+    "description": "Four-star hotel in the centre of Štip with 57 rooms and apartments, Restaurant Mal Odmor, three event halls and the AquaBella summer resort.",
+    "starRating": { "@type": "Rating", "ratingValue": "4" },
+    "numberOfRooms": 57,
+    "checkinTime": "14:00",
+    "checkoutTime": "12:00",
+    "telephone": "{{ site.phone.display }}",
+    "email": "{{ site.email }}",
+    "image": "{{ site.url }}/images/exterior-1440.webp",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{ site.address.street }}",
+      "postalCode": "{{ site.address.postcode }}",
+      "addressLocality": "{{ site.address.city }}",
+      "addressCountry": "{{ site.address.country }}"
+    },
+    "availableLanguage": ["mk", "en"],
+    "amenityFeature": [
+      { "@type": "LocationFeatureSpecification", "name": "Free Wi-Fi", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Air conditioning", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "24-hour reception", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Restaurant", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Outdoor pool (seasonal)", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Parking", "value": true }
+    ]
+  }
+  </script>

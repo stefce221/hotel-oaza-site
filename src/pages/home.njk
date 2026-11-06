@@ -1,0 +1,17 @@
+---
+pageKey: home
+pagination:
+  data: languages
+  size: 1
+  alias: lang
+permalink: "{{ pageKey | pageUrl(lang) }}"
+layout: layouts/base.njk
+---
+{% include "sections/hero.njk" %}
+{% include "sections/intro.njk" %}
+{% include "sections/rooms.njk" %}
+{% include "sections/dining.njk" %}
+{% include "sections/events.njk" %}
+{% include "sections/aquabella.njk" %}
+{% include "sections/stip.njk" %}
+{% include "sections/contact.njk" %}

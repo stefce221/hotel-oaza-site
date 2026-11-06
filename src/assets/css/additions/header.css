@@ -1,0 +1,10 @@
+/* Language switch: a link to the paired page and a marked current language (were buttons). */
+.lang__btn {
+  display: inline-grid;
+  place-items: center;
+}
+
+.lang__btn[aria-current="true"] {
+  background: var(--c-ink);
+  color: var(--c-paper);
+}

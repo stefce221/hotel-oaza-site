@@ -1,4 +1,9 @@
 <div class="lang" role="group" aria-label="{% ta 'lang.label' %}">
-          <button class="lang__btn" type="button" data-lang="en" aria-pressed="true" lang="en">EN</button>
-          <button class="lang__btn" type="button" data-lang="mk" aria-pressed="false" lang="mk">МК</button>
+          {%- for l in ["en", "mk"] %}
+          {%- if l == lang %}
+          <span class="lang__btn" aria-current="true" lang="{{ l }}">{{ "EN" if l == "en" else "МК" }}</span>
+          {%- else %}
+          <a class="lang__btn" href="{{ (langTargetKey or pageKey) | pageUrl(l) }}" lang="{{ l }}" hreflang="{{ l }}">{{ "EN" if l == "en" else "МК" }}</a>
+          {%- endif %}
+          {%- endfor %}
         </div>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{% ta 'page.' + pageKey + '.title' %}</title>
+  <meta name="description" content="{% ta 'page.' + pageKey + '.description' %}">
+  <meta name="theme-color" content="#fbfcfc">
+  <link rel="icon" href="{% asset '/assets/img/favicon.svg' %}" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:ital,wght@0,200..600;1,300..400&family=Onest:wght@400;500;600&display=swap">
+  {%- if pageKey == "home" %}
+  <link rel="preload" as="image" href="/images/exterior-1440.webp" imagesrcset="{{ '/images/exterior-640.webp 640w, /images/exterior-960.webp 960w, /images/exterior-1440.webp 1440w' | srcsetBase }}" imagesizes="(max-width: 900px) 120vw, 1000px">
+  {%- endif %}
+
+  <link rel="stylesheet" href="{% asset '/assets/css/site.css' %}">
+  <script>document.documentElement.classList.add("js");</script>
+  {%- if pageKey == "home" %}
+  {% include "partials/jsonld-hotel.njk" %}
+  {%- endif %}
+</head>
+<body class="page-{{ pageKey }}">
+  <a class="skip-link" href="#main">{% t 'skip' %}</a>
+
+  {% include "partials/icons.njk" %}
+
+  {% include "partials/header.njk" %}
+
+  <main id="main">
+    {{ content | safe }}
+  </main>
+
+  {% include "partials/footer.njk" %}
+
+  {% include "partials/action-bar.njk" %}
+
+  <script>{% i18nScript %}</script>
+  <script src="{% asset '/assets/js/main.js' %}" defer></script>
+  <script src="{% asset '/assets/js/fx.js' %}" defer></script>
+</body>
+</html>
