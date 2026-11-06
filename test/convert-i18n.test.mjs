@@ -98,3 +98,43 @@ test("extractTables reads MK and RUNTIME out of i18n.js", () => {
   assert.equal(RUNTIME.mk["menu.open"], "Отвори мени");
   assert.equal(RUNTIME.en.x, "X");
 });
+
+test("a data-i18n-attr pair without a key is refused", () => {
+  assert.throws(
+    () => planConversion('<body><img alt="x" data-i18n-attr="alt"></body>'),
+    /data-i18n-attr.*"alt".*name:key/,
+  );
+  assert.throws(() => planConversion('<body><img alt="x" data-i18n-attr="alt:"></body>'), /key/);
+  assert.throws(() => planConversion('<body><img alt="x" data-i18n-attr=":k"></body>'), /name:key/);
+  assert.throws(() => planConversion('<body><img alt="x" data-i18n-attr="alt:a:b"></body>'), /name:key/);
+});
+
+test("a data-i18n-attr list with several pairs is read pair by pair", () => {
+  const html = '<body><a title="T" aria-label="L" data-i18n-attr="title:k.title, aria-label:k.label">x</a></body>';
+  const { en } = planConversion(html);
+  assert.equal(en.get("k.title"), "T");
+  assert.equal(en.get("k.label"), "L");
+});
+
+test("applyEdits refuses edits that overlap", () => {
+  assert.throws(
+    () =>
+      applyEdits("abcdef", [
+        { start: 1, end: 4, text: "" },
+        { start: 3, end: 5, text: "" },
+      ]),
+    /Overlapping/,
+  );
+});
+
+test("an attribute edit inside translated content is refused while planning", () => {
+  assert.throws(
+    () => planConversion('<body><p data-i18n="a">See <a aria-label="X" data-i18n-attr="aria-label:b">here</a></p></body>'),
+    /Overlapping/,
+  );
+});
+
+test("planConversion refuses source that contains Nunjucks syntax", () => {
+  assert.throws(() => planConversion("<body><p>{{x}}</p></body>"), /Nunjucks syntax "\{\{"/);
+  assert.throws(() => planConversion('<body><p data-i18n="a">{% if x %}</p></body>'), /Nunjucks syntax "\{%"/);
+});

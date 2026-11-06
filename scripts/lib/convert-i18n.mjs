@@ -54,8 +54,15 @@ function rawValue(html, loc) {
 }
 
 function checkKey(key) {
-  if (!KEY_RE.test(key)) throw new Error(`Unexpected characters in key "${key}"`);
+  if (typeof key !== "string" || !KEY_RE.test(key)) throw new Error(`Unexpected characters in key "${key}"`);
   return key;
+}
+
+/** One `name:key` pair of a data-i18n-attr list. */
+function parsePair(pair, spec) {
+  const parts = pair.split(":").map((s) => s.trim());
+  if (parts.length !== 2 || !parts[0]) throw new Error(`data-i18n-attr="${spec}": "${pair.trim()}" must look like name:key`);
+  return parts;
 }
 
 function selectedOption(select) {
@@ -89,7 +96,7 @@ export function planConversion(html) {
     const spec = attr(el, "data-i18n-attr");
     if (spec !== undefined) {
       for (const pair of spec.split(",")) {
-        const [name, rawKey] = pair.split(":").map((s) => s.trim());
+        const [name, rawKey] = parsePair(pair, spec);
         const key = checkKey(rawKey);
         const attrLoc = loc.attrs[name];
         if (!attrLoc) throw new Error(`data-i18n-attr names a missing attribute "${name}" (${key})`);
@@ -118,6 +125,7 @@ export function planConversion(html) {
       edits.push({ start: loc.startTag.endOffset, end: loc.endTag.startOffset, text: `{% guestOptions '${selectedOption(el)}' %}` });
     }
   }
+  applyEdits(html, edits); // throws on overlapping edits now, not only when an include is rendered
   return { doc, edits, en, conflicts };
 }
 
