@@ -1,0 +1,19 @@
+<section class="dining section section--dark" id="dining" aria-labelledby="dining-title">
+      <div class="wrap dining__grid">
+        <figure class="dining__media media arch" data-reveal="mask">
+          <img src="/images/restaurant-1000.webp" srcset="/images/restaurant-640.webp 640w, /images/restaurant-1000.webp 1000w, /images/restaurant-1440.webp 1440w"
+               sizes="(max-width: 900px) 100vw, 1000px" width="1440" height="1080" loading="lazy" decoding="async"
+               alt="{% ta 'dining.alt' %}">
+        </figure>
+
+        <div class="dining__copy">
+          <p class="eyebrow" data-reveal>{% t 'dining.eyebrow' %}</p>
+          <h2 class="h2" id="dining-title" data-reveal style="--d:1">{% t 'dining.title' %}</h2>
+          <p class="prose" data-reveal style="--d:2">{% t 'dining.body' %}</p>
+
+          <div data-reveal style="--d:3">
+            <a class="btn btn--light" href="{{ 'restaurant' | pageUrl(lang) }}"><span>{% t 'teaser.dining.link' %}</span><svg class="btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </section>

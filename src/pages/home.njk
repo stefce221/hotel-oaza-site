@@ -1,5 +1,7 @@
 ---
 pageKey: home
+aquaLink: true
+stipLink: true
 pagination:
   data: languages
   size: 1
@@ -9,9 +11,8 @@ layout: layouts/base.njk
 ---
 {% include "sections/hero.njk" %}
 {% include "sections/intro.njk" %}
-{% include "sections/rooms.njk" %}
-{% include "sections/dining.njk" %}
+{% include "partials/rooms-teaser.njk" %}
+{% include "partials/dining-teaser.njk" %}
 {% include "sections/events.njk" %}
 {% include "sections/aquabella.njk" %}
-{% include "sections/stip.njk" %}
-{% include "sections/contact.njk" %}
+{% include "partials/stip-teaser.njk" %}

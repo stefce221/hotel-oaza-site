@@ -25,6 +25,9 @@
             <p class="eyebrow" data-reveal>{% t 'stip.eyebrow' %}</p>
             <{{ titleTag or "h2" }} class="h2" id="stip-title" data-reveal style="--d:1">{% t 'stip.title' %}</{{ titleTag or "h2" }}>
             <p class="prose" data-reveal style="--d:2">{% t 'stip.body' %}</p>
+            {%- if stipLink %}
+            <p class="teaser-link" data-reveal style="--d:3"><a class="link-arrow" href="{{ 'stip' | pageUrl(lang) }}"><span>{% t 'teaser.stip.link' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
+            {%- endif %}
           </div>
           <div class="postcard">
             <figure class="location__media media" data-reveal="mask">

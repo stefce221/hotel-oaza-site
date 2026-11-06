@@ -1,0 +1,41 @@
+/* Home teasers: shortened rooms, restaurant, AquaBella and Štip sections, and links on the event cards. */
+.rooms-teaser__media {
+  aspect-ratio: 16 / 7;
+  border-radius: var(--radius-m);
+}
+
+.rooms-teaser__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.teaser-link {
+  margin-top: 2rem;
+}
+
+.event-card__link {
+  margin-top: 1.5rem;
+  justify-self: start;
+}
+
+.aqua .teaser-link .link-arrow {
+  color: inherit;
+}
+
+/* A long label (Macedonian at phone width) wraps instead of squeezing the arrow to nothing. */
+.teaser-link .link-arrow,
+.event-card__link {
+  max-width: 100%;
+}
+
+.teaser-link .link-arrow svg,
+.event-card__link svg {
+  flex: none;
+}
+
+@media (max-width: 700px) {
+  .rooms-teaser__media {
+    aspect-ratio: 4 / 3;
+  }
+}

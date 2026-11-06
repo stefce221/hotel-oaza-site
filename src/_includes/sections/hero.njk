@@ -9,7 +9,7 @@
           <p class="lede hero__lede hero__fade">{% t 'hero.lede' %}</p>
           <div class="hero__ctas hero__fade">
             <a class="btn" href="#booking"><span>{% t 'hero.cta' %}</span><svg class="btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-            <a class="link-arrow" href="#rooms"><span>{% t 'hero.cta2' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="link-arrow" href="{{ 'rooms' | pageUrl(lang) }}"><span>{% t 'hero.cta2' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
         </div>
 
@@ -41,7 +41,8 @@
       </div>
 
       <div class="wrap">
-        <form class="booking hero__fade" id="booking" novalidate aria-label="{% ta 'hero.cta' %}">
+        <form class="booking hero__fade" id="booking" novalidate aria-label="{% ta 'hero.cta' %}" action="{{ 'contact' | pageUrl(lang) }}" method="get">
+          <input type="hidden" name="type" value="stay">
           <div class="booking__inner">
             <label class="booking__field">
               <span class="booking__label">{% t 'booking.arrival' %}</span>

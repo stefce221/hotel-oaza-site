@@ -328,70 +328,23 @@
     });
   }
 
-  /* ---------- Booking bar → enquiry form ---------- */
+  /* ---------- Availability form: submits to the contact page; an empty arrival opens the picker ---------- */
   function initBooking() {
     var booking = $("#booking");
-    var form = $("#enquiry");
-    if (!booking || !form) return;
-    linkDatePair(booking.elements.arrival, booking.elements.departure);
-    linkDatePair(form.elements.arrival, form.elements.departure);
+    if (!booking) return;
+    var arrival = booking.elements.arrival;
+    linkDatePair(arrival, booking.elements.departure);
 
     booking.addEventListener("submit", function (e) {
+      if (arrival.value) return;
       e.preventDefault();
-      var b = booking.elements;
-      if (!b.arrival.value) {
-        b.arrival.focus();
-        try {
-          b.arrival.showPicker();
-        } catch (err) {
-          /* showPicker is unsupported or blocked here — focusing the field is enough */
-        }
-        return;
+      arrival.focus();
+      try {
+        arrival.showPicker();
+      } catch (err) {
+        /* showPicker is unsupported or blocked here — focusing the field is enough */
       }
-      form.elements.arrival.value = b.arrival.value;
-      form.elements.departure.value = b.departure.value;
-      form.elements.guests.value = b.guests.value;
-      setRadio(form, "type", "stay");
-      goToForm(form);
     });
-
-    $$("[data-room]").forEach(function (link) {
-      link.addEventListener("click", function (e) {
-        e.preventDefault();
-        form.elements.room.value = link.getAttribute("data-room");
-        setRadio(form, "type", "stay");
-        goToForm(form);
-      });
-    });
-
-    $$("[data-enquiry]").forEach(function (link) {
-      link.addEventListener("click", function (e) {
-        e.preventDefault();
-        setRadio(form, "type", link.getAttribute("data-enquiry"));
-        goToForm(form);
-      });
-    });
-  }
-
-  /* Setting .checked fires no event, so announce it for listeners such as syncMode. */
-  function setRadio(form, name, value) {
-    $$('input[name="' + name + '"]', form).forEach(function (r) {
-      r.checked = r.value === value;
-      if (r.checked) r.dispatchEvent(new Event("change", { bubbles: true }));
-    });
-  }
-
-  function goToForm(form) {
-    var section = $("#contact");
-    updateNights(form);
-    section.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
-    window.setTimeout(
-      function () {
-        var target = form.elements.arrival.value ? form.elements.name : form.elements.arrival;
-        target.focus({ preventScroll: true });
-      },
-      reduceMotion ? 0 : 700
-    );
   }
 
   /* ---------- Enquiry form: stay vs event mode ---------- */
@@ -494,6 +447,7 @@
     var form = $("#enquiry");
     if (!form) return;
     var status = $(".form__status", form);
+    linkDatePair(form.elements.arrival, form.elements.departure);
     linkErrors(form);
     syncMode(form);
     updateNights(form);

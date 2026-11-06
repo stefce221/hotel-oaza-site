@@ -1,0 +1,19 @@
+<section class="rooms section rooms-teaser" id="rooms" aria-labelledby="rooms-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow" data-reveal>{% t roomsEyebrow or 'rooms.eyebrow' %}</p>
+          <h2 class="h2" id="rooms-title" data-reveal style="--d:1">{% t 'rooms.title' %}</h2>
+          <p class="lede" data-reveal style="--d:2">{% t 'rooms.lede' %}</p>
+        </header>
+
+        <figure class="rooms-teaser__media media" data-reveal="mask">
+          <img src="/images/room-large-bed-1000.webp" srcset="/images/room-large-bed-640.webp 640w, /images/room-large-bed-1000.webp 1000w, /images/room-large-bed-1440.webp 1440w"
+               sizes="(max-width: 900px) 100vw, 1200px" width="1440" height="1080" loading="lazy" decoding="async"
+               alt="{% ta 'room.double.alt' %}">
+        </figure>
+
+        <p class="teaser-link" data-reveal>
+          <a class="link-arrow" href="{{ 'rooms' | pageUrl(lang) }}"><span>{% t 'teaser.rooms.link' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </p>
+      </div>
+    </section>

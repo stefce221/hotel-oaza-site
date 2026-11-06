@@ -21,6 +21,7 @@
               <h3 class="h3">{% t 'events.wed.t' %}</h3>
               <p class="prose">{% t 'events.wed.d' %}</p>
               <ul class="event-card__tags">{% t 'events.wed.tags' %}</ul>
+              <a class="link-arrow event-card__link" href="{{ 'weddings' | pageUrl(lang) }}"><span>{% t 'events.wed.link' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
             </div>
           </article>
 
@@ -38,10 +39,10 @@
               <h3 class="h3">{% t 'events.sem.t' %}</h3>
               <p class="prose">{% t 'events.sem.d' %}</p>
               <ul class="event-card__tags">{% t 'events.sem.tags' %}</ul>
+              <a class="link-arrow event-card__link" href="{{ 'conferences' | pageUrl(lang) }}"><span>{% t 'events.sem.link' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
             </div>
           </article>
         </div>
 
-        {% include "partials/events-halls.njk" %}
       </div>
     </section>

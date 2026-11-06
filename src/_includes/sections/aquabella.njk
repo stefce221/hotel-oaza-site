@@ -11,6 +11,9 @@
           <p class="eyebrow" data-reveal>{% t 'aqua.eyebrow' %}</p>
           <{{ titleTag or "h2" }} class="h2" id="aqua-title" data-reveal style="--d:1">{% t 'aqua.title' %}</{{ titleTag or "h2" }}>
           <p class="prose" data-reveal style="--d:2">{% t 'aqua.body' %}</p>
+          {%- if aquaLink %}
+          <p class="teaser-link" data-reveal style="--d:3"><a class="link-arrow" href="{{ 'aquabella' | pageUrl(lang) }}"><span>{% t 'teaser.aqua.link' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
+          {%- endif %}
         </div>
 
         <div class="aqua__card" data-reveal style="--d:2">
