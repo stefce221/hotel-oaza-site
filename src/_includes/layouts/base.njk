@@ -37,7 +37,11 @@
   {% include "partials/action-bar.njk" %}
 
   <script>{% i18nScript %}</script>
+  <script src="{% asset '/assets/js/enquiry-rules.js' %}" defer></script>
   <script src="{% asset '/assets/js/main.js' %}" defer></script>
+  {%- if hasForm %}
+  <script src="{% asset '/assets/js/enquiry.js' %}" defer></script>
+  {%- endif %}
   <script src="{% asset '/assets/js/fx.js' %}" defer></script>
 </body>
 </html>

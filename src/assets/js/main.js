@@ -10,7 +10,6 @@
     lang: "en",
     onChange: function () {}
   };
-  var MAIL_TO = "info@oazahotel.com.mk";
   var BASE = document.documentElement.getAttribute("data-base") || "/"; /* site root with the path prefix, e.g. "/" or "/hotel-oaza-site/" */
 
   function $(sel, root) {
@@ -304,36 +303,13 @@
     }
   }
 
-  /* ---------- Dates ---------- */
-  function isoDate(d) {
-    var tz = d.getTimezoneOffset() * 60000;
-    return new Date(d.getTime() - tz).toISOString().slice(0, 10);
-  }
-
-  function addDays(iso, n) {
-    var d = new Date(iso + "T12:00:00");
-    d.setDate(d.getDate() + n);
-    return isoDate(d);
-  }
-
-  function linkDatePair(arrival, departure) {
-    var today = isoDate(new Date());
-    arrival.min = today;
-    departure.min = addDays(today, 1);
-    arrival.addEventListener("change", function () {
-      if (!arrival.value) return;
-      var minDep = addDays(arrival.value, 1);
-      departure.min = minDep;
-      if (!departure.value || departure.value < minDep) departure.value = minDep;
-    });
-  }
-
   /* ---------- Availability form: submits to the contact page; an empty arrival opens the picker ---------- */
   function initBooking() {
     var booking = $("#booking");
-    if (!booking) return;
+    var rules = window.oazaEnquiryRules;
+    if (!booking || !rules) return;
     var arrival = booking.elements.arrival;
-    linkDatePair(arrival, booking.elements.departure);
+    rules.linkDatePair(arrival, booking.elements.departure, rules.todayIso());
 
     booking.addEventListener("submit", function (e) {
       if (arrival.value) return;
@@ -344,141 +320,6 @@
       } catch (err) {
         /* showPicker is unsupported or blocked here — focusing the field is enough */
       }
-    });
-  }
-
-  /* ---------- Enquiry form: stay vs event mode ---------- */
-  var EVENT_TYPES = ["wedding", "conference"];
-
-  function isEventMode(form) {
-    return form.getAttribute("data-mode") === "event";
-  }
-
-  /* Weddings and conferences need one date and a hall size, not departure or room type. */
-  function syncMode(form) {
-    var checked = form.querySelector('input[name="type"]:checked');
-    var isEvent = Boolean(checked) && EVENT_TYPES.indexOf(checked.value) > -1;
-    form.setAttribute("data-mode", isEvent ? "event" : "stay");
-    if (isEvent) setError(form.elements.departure, "");
-  }
-
-  /* Also marks empty date inputs so their mm/dd/yyyy mask can be dimmed. */
-  function updateNights(form) {
-    [form.elements.arrival, form.elements.departure].forEach(function (input) {
-      input.toggleAttribute("data-empty", !input.value);
-    });
-    var out = $("[data-nights]", form);
-    if (!out) return;
-    var a = form.elements.arrival.value;
-    var d = form.elements.departure.value;
-    var n = a && d ? Math.round((Date.parse(d) - Date.parse(a)) / 864e5) : 0;
-    out.textContent = n > 0 ? i18n.t(n === 1 ? "nights.one" : "nights.many", { n: n }) : "";
-  }
-
-  /* ---------- Enquiry form → mailto ---------- */
-  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-  function setError(input, message) {
-    var field = input.closest(".field");
-    if (!field) return;
-    field.classList.toggle("has-error", Boolean(message));
-    input.setAttribute("aria-invalid", message ? "true" : "false");
-    var slot = $(".field__error", field);
-    if (slot) slot.textContent = message || "";
-  }
-
-  function validate(form) {
-    var el = form.elements;
-    var firstBad = null;
-    var checks = [
-      [el.name, el.name.value.trim() ? "" : i18n.t("err.required")],
-      [el.email, !el.email.value.trim() ? i18n.t("err.required") : EMAIL_RE.test(el.email.value.trim()) ? "" : i18n.t("err.email")],
-      [el.departure, !isEventMode(form) && el.arrival.value && el.departure.value && el.departure.value <= el.arrival.value ? i18n.t("err.dates") : ""]
-    ];
-    checks.forEach(function (pair) {
-      setError(pair[0], pair[1]);
-      if (pair[1] && !firstBad) firstBad = pair[0];
-    });
-    return firstBad;
-  }
-
-  function buildMail(form) {
-    var el = form.elements;
-    var type = (form.querySelector('input[name="type"]:checked') || { value: "stay" }).value;
-    var none = i18n.t("mail.none");
-    var typeLabel = i18n.t("type." + type);
-    function optText(select) {
-      var opt = select.options[select.selectedIndex];
-      return opt ? opt.textContent.trim() : none;
-    }
-    var details = isEventMode(form)
-      ? [i18n.t("mail.date") + ": " + (el.arrival.value || none), i18n.t("mail.guests") + ": " + optText(el.eventGuests)]
-      : [
-          i18n.t("mail.room") + ": " + optText(el.room),
-          i18n.t("mail.arrival") + ": " + (el.arrival.value || none),
-          i18n.t("mail.departure") + ": " + (el.departure.value || none),
-          i18n.t("mail.guests") + ": " + optText(el.guests)
-        ];
-    var lines = [i18n.t("mail.greeting"), "", i18n.t("mail.intro"), "", i18n.t("mail.type") + ": " + typeLabel].concat(details, [
-      "",
-      i18n.t("mail.name") + ": " + el.name.value.trim(),
-      i18n.t("mail.email") + ": " + el.email.value.trim(),
-      i18n.t("mail.phone") + ": " + (el.phone.value.trim() || none),
-      "",
-      i18n.t("mail.message") + ":",
-      el.message.value.trim() || none
-    ]);
-    var subject = i18n.t("mail.subject", { type: typeLabel, name: el.name.value.trim() });
-    return "mailto:" + MAIL_TO + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(lines.join("\n"));
-  }
-
-  /* Tie each error slot to its control so the reason is re-read on focus. */
-  function linkErrors(form) {
-    $$(".field", form).forEach(function (field) {
-      var control = $("input, select, textarea", field);
-      var slot = $(".field__error", field);
-      if (!control || !slot || !control.id) return;
-      slot.id = control.id + "-error";
-      control.setAttribute("aria-describedby", slot.id);
-    });
-  }
-
-  function initEnquiry() {
-    var form = $("#enquiry");
-    if (!form) return;
-    var status = $(".form__status", form);
-    linkDatePair(form.elements.arrival, form.elements.departure);
-    linkErrors(form);
-    syncMode(form);
-    updateNights(form);
-
-    form.addEventListener("change", function (e) {
-      if (e.target.name === "type") syncMode(form);
-      if (e.target.name === "arrival" || e.target.name === "departure") updateNights(form);
-    });
-    i18n.onChange(function () {
-      updateNights(form);
-    });
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var bad = validate(form);
-      if (bad) {
-        status.textContent = i18n.t("status.fix");
-        bad.focus();
-        return;
-      }
-      status.textContent = i18n.t("status.sent");
-      window.location.href = buildMail(form);
-    });
-
-    /* Once an error is showing, re-check live. Arrival is included because changing it can fix a departure error. */
-    function revalidate() {
-      if ($('[aria-invalid="true"]', form)) validate(form);
-    }
-    ["name", "email", "arrival", "departure"].forEach(function (name) {
-      form.elements[name].addEventListener("input", revalidate);
-      form.elements[name].addEventListener("change", revalidate);
     });
   }
 
@@ -536,7 +377,6 @@
     initHeroMedia();
     initRooms();
     initBooking();
-    initEnquiry();
     initMap();
     initScrollSpy();
   }

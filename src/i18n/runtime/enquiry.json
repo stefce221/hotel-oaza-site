@@ -1,0 +1,16 @@
+{
+  "en": {
+    "status.sending": "Sending…",
+    "err.long": "This is too long.",
+    "err.date": "Please choose a date from today on.",
+    "err.choice": "Please choose one of the options.",
+    "err.server": "Please check this entry."
+  },
+  "mk": {
+    "status.sending": "Се испраќа…",
+    "err.long": "Текстот е предолг.",
+    "err.date": "Изберете датум од денес натаму.",
+    "err.choice": "Изберете една од понудените опции.",
+    "err.server": "Проверете го овој внес."
+  }
+}
