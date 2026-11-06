@@ -15,6 +15,7 @@
   var STORE_KEY = "oaza-fx";
   var SHOW_PANEL = true; /* review tool: set to false once the effects are decided */
   var root = document.documentElement;
+  var BASE = root.getAttribute("data-base") || "/"; /* site root with the path prefix, e.g. "/" or "/hotel-oaza-site/" */
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   var i18n = window.oazaI18n || { lang: "en", onChange: function () {} };
@@ -150,11 +151,11 @@
     li.className = "fx-ribbon__item fx-ribbon__item--" + photo.shape + (index % 2 ? " fx-ribbon__item--low" : "");
     var srcset = photo.sizes
       .map(function (w) {
-        return "images/" + photo.file + "-" + w + ".webp " + w + "w";
+        return BASE + "images/" + photo.file + "-" + w + ".webp " + w + "w";
       })
       .join(", ");
     var img = document.createElement("img");
-    img.src = "images/" + photo.file + "-" + photo.sizes[0] + ".webp";
+    img.src = BASE + "images/" + photo.file + "-" + photo.sizes[0] + ".webp";
     img.srcset = srcset;
     img.sizes = "(max-width: 760px) 70vw, 560px";
     img.alt = "";

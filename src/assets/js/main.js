@@ -11,6 +11,7 @@
     onChange: function () {}
   };
   var MAIL_TO = "info@oazahotel.com.mk";
+  var BASE = document.documentElement.getAttribute("data-base") || "/"; /* site root with the path prefix, e.g. "/" or "/hotel-oaza-site/" */
 
   function $(sel, root) {
     return (root || document).querySelector(sel);
@@ -183,6 +184,7 @@
     var media = $("img", arch);
 
     var videoSrc = arch.getAttribute("data-video");
+    if (videoSrc && videoSrc.charAt(0) === "/") videoSrc = BASE + videoSrc.slice(1); /* data-* values are not rewritten by the path prefix */
     if (videoSrc && !reduceMotion) {
       var video = document.createElement("video");
       video.muted = true;
