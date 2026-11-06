@@ -1,7 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { contactUrl, otherLang, pageKeys, pageUrl } from "../config/pages.js";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
+import { contactUrl, otherLang, pageKeys, pageUrl, reloadPages } from "../config/pages.js";
 
 test("pageUrl gives each page's address per language", () => {
   assert.equal(pageUrl("home", "mk"), "/");
@@ -64,4 +66,33 @@ test("contactUrl encodes values so they survive a round trip", () => {
   const url = new URL(contactUrl("en", { guests: "10+" }), "http://x");
   assert.equal(url.pathname, "/en/contact/");
   assert.equal(url.searchParams.get("guests"), "10+");
+});
+
+test("reloadPages re-reads pages.json and keeps the addresses", () => {
+  assert.equal(typeof reloadPages, "function");
+  reloadPages();
+  assert.equal(pageUrl("rooms", "mk"), "/sobi/");
+  assert.equal(pageUrl("rooms", "en"), "/en/rooms/");
+  assert.equal(pageKeys().length, 11);
+});
+
+test("reloadPages picks up a changed address table, then goes back to pages.json", () => {
+  const dir = mkdtempSync(path.join(tmpdir(), "oaza-pages-"));
+  const file = path.join(dir, "pages.json");
+  try {
+    const changed = { ...PAGES, urls: { ...PAGES.urls, rooms: { mk: "/sobi-nova/", en: "/en/rooms-new/" } } };
+    writeFileSync(file, JSON.stringify(changed));
+    reloadPages(file);
+    assert.equal(pageUrl("rooms", "mk"), "/sobi-nova/");
+    assert.equal(contactUrl("mk"), "/kontakt/");
+  } finally {
+    reloadPages();
+    rmSync(dir, { recursive: true, force: true });
+  }
+  assert.equal(pageUrl("rooms", "mk"), "/sobi/");
+});
+
+test("reloadPages keeps the old table when the file cannot be read", () => {
+  assert.throws(() => reloadPages(new URL("../src/_data/no-such-pages.json", import.meta.url)));
+  assert.equal(pageUrl("rooms", "mk"), "/sobi/");
 });

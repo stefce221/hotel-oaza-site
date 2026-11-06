@@ -1,8 +1,9 @@
 /* Hotel Oaza — Eleventy config: bilingual shortcodes, asset hashes, path prefix for the GitHub Pages preview. */
-import { writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { HtmlBasePlugin } from "@11ty/eleventy";
 import { assetUrl } from "./config/assets.js";
+import { readBuildEnv } from "./config/build-env.js";
 import { loadSite, telHref, viberHref, whatsappHref } from "./config/contact.js";
 import {
   createTranslator,
@@ -13,24 +14,27 @@ import {
   loadRuntime,
   runtimeScript,
 } from "./config/i18n.js";
-import { contactUrl, pageUrl } from "./config/pages.js";
+import { contactUrl, pageUrl, reloadPages } from "./config/pages.js";
 
-const ENV = process.env.OAZA_ENV || "dev"; // dev | preview | live
-const PATH_PREFIX = process.env.PATH_PREFIX || "/";
+/* Checked once, so a typo or a Git Bash-mangled PATH_PREFIX stops the build with a clear message. */
+const { env: ENV, pathPrefix: PATH_PREFIX } = readBuildEnv(process.env); // env: dev | preview | live
 const I18N_DIR = "src/i18n";
 
 export default function (eleventyConfig) {
-  const site = loadSite();
+  let site = loadSite();
   let runtime = loadRuntime(I18N_DIR);
   let t = createTranslator(loadDictionaries(I18N_DIR));
 
-  /* Re-read the dictionaries on every (watch) build. */
+  /* Re-read the dictionaries, site facts and page addresses on every (watch) build. */
   eleventyConfig.on("eleventy.before", () => {
+    site = loadSite();
+    reloadPages();
     runtime = loadRuntime(I18N_DIR);
     t = createTranslator(loadDictionaries(I18N_DIR));
   });
   /* npm run check reads this to know which build it is looking at. */
   eleventyConfig.on("eleventy.after", ({ dir }) => {
+    mkdirSync(dir.output, { recursive: true }); /* --dryrun writes nothing else, so _site may not exist */
     writeFileSync(path.join(dir.output, ".oaza-build.json"), `${JSON.stringify({ env: ENV, pathPrefix: PATH_PREFIX })}\n`);
   });
 
