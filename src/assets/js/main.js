@@ -27,10 +27,12 @@
     if (!header) return;
     var lastY = window.scrollY;
     var ticking = false;
+    /* Inner pages have no hero behind the header, so it stays solid. */
+    var solid = document.body.classList.contains("page-inner");
 
     function update() {
       var y = window.scrollY;
-      header.classList.toggle("is-scrolled", y > 24);
+      header.classList.toggle("is-scrolled", solid || y > 24);
       var goingDown = y > lastY + 4;
       var goingUp = y < lastY - 4;
       if (!document.body.classList.contains("menu-open")) {

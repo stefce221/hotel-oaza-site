@@ -9,7 +9,7 @@
       <div class="wrap aqua__grid">
         <div class="aqua__copy">
           <p class="eyebrow" data-reveal>{% t 'aqua.eyebrow' %}</p>
-          <h2 class="h2" id="aqua-title" data-reveal style="--d:1">{% t 'aqua.title' %}</h2>
+          <{{ titleTag or "h2" }} class="h2" id="aqua-title" data-reveal style="--d:1">{% t 'aqua.title' %}</{{ titleTag or "h2" }}>
           <p class="prose" data-reveal style="--d:2">{% t 'aqua.body' %}</p>
         </div>
 

@@ -21,7 +21,7 @@
   {% include "partials/jsonld-hotel.njk" %}
   {%- endif %}
 </head>
-<body class="page-{{ pageKey }}">
+<body class="page-{{ pageKey }}{% if pageKey != 'home' %} page-inner{% endif %}">
   <a class="skip-link" href="#main">{% t 'skip' %}</a>
 
   {% include "partials/icons.njk" %}

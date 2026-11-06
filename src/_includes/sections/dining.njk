@@ -8,7 +8,7 @@
 
         <div class="dining__copy">
           <p class="eyebrow" data-reveal>{% t 'dining.eyebrow' %}</p>
-          <h2 class="h2" id="dining-title" data-reveal style="--d:1">{% t 'dining.title' %}</h2>
+          <{{ titleTag or "h2" }} class="h2" id="dining-title" data-reveal style="--d:1">{% t 'dining.title' %}</{{ titleTag or "h2" }}>
           <p class="prose" data-reveal style="--d:2">{% t 'dining.body' %}</p>
 
           <blockquote class="motto" data-reveal style="--d:3">

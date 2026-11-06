@@ -23,7 +23,7 @@
               <p class="location__hill-label location__hill-label--river">{% t 'stip.river' %}</p>
             </div>
             <p class="eyebrow" data-reveal>{% t 'stip.eyebrow' %}</p>
-            <h2 class="h2" id="stip-title" data-reveal style="--d:1">{% t 'stip.title' %}</h2>
+            <{{ titleTag or "h2" }} class="h2" id="stip-title" data-reveal style="--d:1">{% t 'stip.title' %}</{{ titleTag or "h2" }}>
             <p class="prose" data-reveal style="--d:2">{% t 'stip.body' %}</p>
           </div>
           <div class="postcard">

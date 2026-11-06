@@ -2,7 +2,7 @@
       <div class="wrap">
         <header class="section-head">
           <p class="eyebrow" data-reveal>{% t 'rooms.eyebrow' %}</p>
-          <h2 class="h2" id="rooms-title" data-reveal style="--d:1">{% t 'rooms.title' %}</h2>
+          <{{ titleTag or "h2" }} class="h2" id="rooms-title" data-reveal style="--d:1">{% t 'rooms.title' %}</{{ titleTag or "h2" }}>
           <p class="lede" data-reveal style="--d:2">{% t 'rooms.lede' %}</p>
         </header>
 
@@ -55,7 +55,7 @@
                 </div>
                 <p class="room__desc">{% t 'room.single.desc' %}</p>
                 <ul class="room__features">{% t 'room.single.features' %}</ul>
-                <a class="room__cta link-arrow" href="#contact" data-room="single"><span>{% t 'room.cta' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <a class="room__cta link-arrow" href="{% contactHref 'stay', 'single' %}"><span>{% t 'room.cta' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
               </div>
             </article>
 
@@ -75,7 +75,7 @@
                 </div>
                 <p class="room__desc">{% t 'room.double.desc' %}</p>
                 <ul class="room__features">{% t 'room.double.features' %}</ul>
-                <a class="room__cta link-arrow" href="#contact" data-room="double"><span>{% t 'room.cta' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <a class="room__cta link-arrow" href="{% contactHref 'stay', 'double' %}"><span>{% t 'room.cta' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
               </div>
             </article>
 
@@ -95,7 +95,7 @@
                 </div>
                 <p class="room__desc">{% t 'room.twin.desc' %}</p>
                 <ul class="room__features">{% t 'room.twin.features' %}</ul>
-                <a class="room__cta link-arrow" href="#contact" data-room="twin"><span>{% t 'room.cta' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <a class="room__cta link-arrow" href="{% contactHref 'stay', 'twin' %}"><span>{% t 'room.cta' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
               </div>
             </article>
 
@@ -115,7 +115,7 @@
                 </div>
                 <p class="room__desc">{% t 'room.apartment.desc' %}</p>
                 <ul class="room__features">{% t 'room.apartment.features' %}</ul>
-                <a class="room__cta link-arrow" href="#contact" data-room="apartment"><span>{% t 'room.cta' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <a class="room__cta link-arrow" href="{% contactHref 'stay', 'apartment' %}"><span>{% t 'room.cta' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
               </div>
             </article>
           </div>

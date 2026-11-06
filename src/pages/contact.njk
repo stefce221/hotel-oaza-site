@@ -1,0 +1,17 @@
+---
+pageKey: contact
+titleTag: h1
+pagination:
+  data: languages
+  size: 1
+  alias: lang
+permalink: "{{ pageKey | pageUrl(lang) }}"
+layout: layouts/base.njk
+---
+{% include "sections/contact.njk" %}
+
+<section class="location section">
+  <div class="wrap">
+    {% include "partials/location-bottom.njk" %}
+  </div>
+</section>
