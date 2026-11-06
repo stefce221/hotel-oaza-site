@@ -152,7 +152,8 @@ export default defineConfig({
   workers: 1,
   reporter: [["list"]],
   expect: { toHaveScreenshot: { maxDiffPixelRatio: 0.001, animations: "disabled" } },
-  use: { reducedMotion: "reduce", deviceScaleFactor: 1 },
+  // reducedMotion is not a first-class `use` option in Playwright Test (it is silently ignored there); it has to go through contextOptions.
+  use: { contextOptions: { reducedMotion: "reduce" }, deviceScaleFactor: 1 },
   projects: [
     { name: "phone", use: { viewport: { width: 390, height: 844 } } },
     { name: "desktop", use: { viewport: { width: 1440, height: 900 } } },
