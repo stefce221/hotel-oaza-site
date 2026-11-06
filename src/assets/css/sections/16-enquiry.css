@@ -1,0 +1,226 @@
+/* ---------- Enquiry: compact boxed fields ---------- */
+
+/* Boxes share 1px dividers via the gap, so any number of visible
+   fields (stay vs event mode, phone vs desktop) stays evenly ruled. */
+.fgroup {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line-strong);
+}
+
+.fbox {
+  position: relative;
+  gap: 0.2rem;
+  min-width: 0;
+  padding: 0.75rem 0.95rem 0.6rem;
+  background: var(--c-white);
+  cursor: text;
+  transition: background-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+
+.fbox:focus-within {
+  background: #f5fafc;
+  box-shadow: inset 0 -2px 0 var(--c-azure);
+}
+
+.fbox label {
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+  cursor: inherit;
+}
+
+.fbox input,
+.fbox select,
+.fbox textarea {
+  min-height: 30px;
+  padding: 0;
+  border: 0;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.fbox select {
+  padding-right: 1.3rem;
+  cursor: pointer;
+}
+
+.fbox textarea {
+  min-height: 3.2em;
+  max-height: 14em;
+  padding-top: 0.2rem;
+  field-sizing: content;
+  resize: none;
+}
+
+.fbox input:focus,
+.fbox select:focus,
+.fbox textarea:focus {
+  box-shadow: none;
+}
+
+.fbox input[data-empty]::-webkit-datetime-edit {
+  color: var(--text-muted);
+  opacity: 0.75;
+}
+
+.fbox input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.45;
+  cursor: pointer;
+}
+
+.fbox .field__error {
+  min-height: 0;
+  font-size: 0.75rem;
+}
+
+.fbox .field__error:empty {
+  display: none;
+}
+
+.fbox.has-error {
+  box-shadow: inset 0 -2px 0 #b3261e;
+}
+
+.fbox.has-error label {
+  color: #b3261e;
+}
+
+/* nights counter tucked into the departure box */
+.fbox__aside {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.95rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--accent-ink);
+}
+
+/* when the counter shows, the label wraps instead of running under it */
+.fbox:has(.fbox__aside:not(:empty)) label {
+  padding-right: 3.6rem;
+}
+
+.form[data-mode="event"] .for-stay,
+.form:not([data-mode="event"]) .for-event {
+  display: none;
+}
+
+/* Sized by the form's own width, not the viewport: the card is narrow both
+   on phones and in the two-column layout on small laptops. */
+@container (max-width: 620px) {
+  .fgroup {
+    grid-auto-flow: row;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .fgroup > .fbox:only-child,
+  .fgroup--contact > .fbox:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@container (max-width: 440px) {
+  .fgroup--contact {
+    grid-template-columns: 1fr;
+  }
+
+  /* too tight beside the label: the nights count drops under the date */
+  .fbox__aside {
+    position: static;
+  }
+
+  .fbox:has(.fbox__aside:not(:empty)) label {
+    padding-right: 0;
+  }
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.chips legend {
+  width: 100%;
+  margin-bottom: 0.6rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.chips .chip {
+  position: relative;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: var(--text);
+}
+
+.chip input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.chip span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 1rem;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  font-size: 0.875rem;
+  transition: background-color var(--dur-fast), color var(--dur-fast), box-shadow var(--dur-fast);
+}
+
+.chip input:checked + span {
+  background: var(--c-ink);
+  color: var(--c-paper);
+  box-shadow: none;
+}
+
+.chip input:focus-visible + span {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.form__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  padding-top: 0.4rem;
+}
+
+.form__hint {
+  max-width: 26rem;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.form__status:empty {
+  display: none;
+}
+
+.form__status {
+  font-size: 0.9375rem;
+  color: var(--c-azure-ink);
+  min-height: 1.2em;
+}
+

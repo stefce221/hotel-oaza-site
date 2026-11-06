@@ -1,0 +1,136 @@
+/* ---------- Room photo frame + key tag ---------- */
+
+.room__frame {
+  --fo: clamp(10px, 1.4vw, 20px);
+  position: relative;
+  isolation: isolate;
+}
+
+/* hairline echo, up and to the left */
+.room__frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid rgba(10, 143, 196, 0.45);
+  transform: translate(calc(var(--fo) * -1), calc(var(--fo) * -1));
+}
+
+/* gallery hairline inside the photo */
+.room__media::after {
+  content: "";
+  position: absolute;
+  inset: clamp(10px, 1.2vw, 16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+
+/* Hotel key fob hooked over the top edge of the photo */
+.room__key {
+  position: absolute;
+  top: -12px;
+  right: clamp(28px, 6%, 72px);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: 50% 12px;
+  filter: drop-shadow(0 12px 14px rgba(8, 40, 56, 0.35));
+  pointer-events: none;
+}
+
+.room__key-ring {
+  position: relative;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  border: 3px solid #7d8a93;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.35), 0 2px 3px rgba(8, 40, 56, 0.35);
+}
+
+.room__key-tag {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.3rem;
+  width: 52px;
+  height: 112px;
+  margin-top: -19px;
+  padding-bottom: 16px;
+  border-radius: 26px 26px 26px 26px / 26px 26px 34px 34px;
+  background: radial-gradient(90% 45% at 30% 0%, rgba(160, 228, 252, 0.6), transparent 70%),
+    linear-gradient(170deg, var(--c-water-1), var(--c-water-3));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+  -webkit-mask: radial-gradient(circle at 50% 14px, transparent 5px, #000 5.5px);
+  mask: radial-gradient(circle at 50% 14px, transparent 5px, #000 5.5px);
+  color: #fff;
+}
+
+.room__key-no {
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: lining-nums;
+}
+
+.room__key-brand {
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.room.is-active .room__key {
+  animation: keySwing 1900ms var(--ease-out) both;
+}
+
+.room__frame:hover .room__key {
+  animation: keyNudge 1400ms var(--ease-out);
+}
+
+@keyframes keySwing {
+  0% {
+    rotate: 18deg;
+  }
+  28% {
+    rotate: -10deg;
+  }
+  52% {
+    rotate: 6deg;
+  }
+  74% {
+    rotate: -2.5deg;
+  }
+  100% {
+    rotate: 0deg;
+  }
+}
+
+@keyframes keyNudge {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+  25% {
+    rotate: 7deg;
+  }
+  55% {
+    rotate: -4deg;
+  }
+  80% {
+    rotate: 1.5deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .room.is-active .room__key,
+  .room__frame:hover .room__key {
+    animation: none;
+  }
+}
+

@@ -1,0 +1,85 @@
+/* ---------- Booking bar ---------- */
+
+.booking {
+  position: relative;
+  z-index: 4;
+  margin-top: clamp(3.5rem, 7vh, 5.5rem);
+}
+
+.booking__inner {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  align-items: stretch;
+  background: var(--c-paper);
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line);
+}
+
+.booking__field {
+  display: grid;
+  align-content: center;
+  gap: 0.2rem;
+  padding: 1.1rem 1.5rem;
+  border-right: 1px solid var(--line);
+  cursor: text;
+  min-width: 0;
+}
+
+.booking__field:first-child {
+  padding-left: 0;
+}
+
+.booking__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.booking__input {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: var(--text);
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+.booking__input:focus {
+  outline: none;
+}
+
+.booking__field:focus-within {
+  background: var(--c-mist);
+}
+
+.booking__input:invalid::-webkit-datetime-edit {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.booking__input::-webkit-calendar-picker-indicator {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.booking__submit {
+  min-height: 84px;
+  padding-inline: 2.2rem;
+  border-radius: 0;
+}
+
+.booking__note {
+  margin-top: 0.8rem;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+

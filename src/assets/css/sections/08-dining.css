@@ -1,0 +1,95 @@
+/* ---------- Dining (dark) ---------- */
+
+.section--dark {
+  background: var(--bg-dark);
+  color: var(--text-on-dark);
+}
+
+.section--dark .eyebrow {
+  color: var(--c-azure-hi);
+}
+
+.section--dark .h2 em {
+  color: var(--c-azure-hi);
+}
+
+.section--dark .prose {
+  color: var(--text-on-dark-2);
+}
+
+.dining__grid {
+  display: grid;
+  grid-template-columns: 5fr 6fr;
+  gap: clamp(3rem, 7vw, 7rem);
+  align-items: center;
+}
+
+.dining__media {
+  aspect-ratio: 4 / 5;
+  background: var(--c-night-2);
+}
+
+.dining__media img {
+  object-position: 42% 50%;
+}
+
+.dining__copy {
+  display: grid;
+  gap: 1.8rem;
+}
+
+.motto {
+  position: relative;
+  padding: 1.8rem 0 0;
+  border-top: 1px solid var(--line-on-dark);
+}
+
+.motto p {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.4rem);
+  font-style: italic;
+  font-weight: var(--fw-display);
+  line-height: 1.25;
+}
+
+.motto cite {
+  display: block;
+  margin-top: 0.8rem;
+  font-size: 0.8125rem;
+  font-style: normal;
+  color: var(--text-on-dark-2);
+}
+
+.dining__list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid var(--line-on-dark);
+}
+
+.dining__list li {
+  display: grid;
+  gap: 0.3rem;
+  padding: 1.2rem 1.2rem 1.2rem 0;
+  border-bottom: 1px solid var(--line-on-dark);
+}
+
+.dining__list li:nth-child(odd) {
+  border-right: 1px solid var(--line-on-dark);
+}
+
+.dining__list li:nth-child(even) {
+  padding-left: 1.2rem;
+}
+
+.dining__list strong {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.dining__list span {
+  font-size: 0.875rem;
+  color: var(--text-on-dark-2);
+}
+

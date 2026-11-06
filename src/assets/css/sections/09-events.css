@@ -1,0 +1,52 @@
+/* ---------- Events ---------- */
+
+.events__cards {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+}
+
+.event-card {
+  display: grid;
+  gap: 1.4rem;
+}
+
+.event-card {
+  gap: clamp(1.8rem, 3vw, 2.6rem);
+}
+
+/* Seminar card reads text-first on wide screens, so the column has no empty
+   band above its photo and the two cards zig-zag. */
+.event-card--sem {
+  margin-top: clamp(1.5rem, 4vw, 4.5rem);
+}
+
+.event-card--sem .event-card__text {
+  order: -1;
+}
+
+.event-card__media {
+  aspect-ratio: 3 / 2;
+}
+
+.event-card--wed .event-card__media {
+  aspect-ratio: 6 / 5;
+}
+
+.event-card--wed .event-card__media img {
+  object-position: 38% 50%;
+}
+
+.event-card--sem .event-card__media {
+  aspect-ratio: 1 / 1;
+}
+
+.event-card--sem .event-card__media img {
+  object-position: 62% 50%;
+}
+
+.event-card__media img {
+  transition: transform 1400ms var(--ease-out);
+}
+

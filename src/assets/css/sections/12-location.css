@@ -1,0 +1,60 @@
+/* ---------- Location ---------- */
+
+.location__top {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: end;
+}
+
+.location__copy {
+  position: relative;
+  display: grid;
+  gap: 1.6rem;
+  align-self: stretch;
+  align-content: end;
+}
+
+/* Contour sketch of Isar hill filling the space above the copy */
+.location__hill {
+  position: relative;
+  width: min(100%, 560px);
+  aspect-ratio: 600 / 420;
+  margin-bottom: auto;
+  margin-left: -4%;
+}
+
+.location__hill svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.location__hill-label {
+  position: absolute;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.location__hill-label--peak {
+  left: calc(41.7% + 18px);
+  top: 41.7%;
+  translate: 0 -50%;
+  color: var(--accent-ink);
+}
+
+.location__hill-label--river {
+  left: 70%;
+  top: 86%;
+  rotate: -7deg;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+}
+

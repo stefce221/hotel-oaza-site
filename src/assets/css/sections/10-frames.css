@@ -1,0 +1,218 @@
+/* ---------- Frames ---------- */
+
+.frame {
+  --fo: clamp(10px, 1.4vw, 20px); /* frame offset */
+  position: relative;
+  isolation: isolate;
+}
+
+/* Arched doorway with a hairline echo set up and to the right,
+   and the logo's water crest as its keystone. */
+.frame--arch .media {
+  border-radius: 50% 50% 0 0 / 30% 30% 0 0;
+  box-shadow: 0 40px 80px -44px rgba(8, 40, 56, 0.45);
+}
+
+.frame--arch::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid rgba(10, 143, 196, 0.45);
+  border-radius: 50% 50% 0 0 / 30% 30% 0 0;
+  transform: translate(var(--fo), calc(var(--fo) * -1));
+}
+
+.frame--arch::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--fo) * -1 - 11px);
+  left: calc(50% + var(--fo));
+  width: 44px;
+  height: 9px;
+  translate: -50% 0;
+  background: var(--crest) center / 100% 100% no-repeat;
+}
+
+/* Tinted plate offset behind the photo, with photographer's crop marks. */
+.frame--marks::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(150deg, #e3f2f9 0%, #d3e7f0 100%);
+  transform: translate(calc(var(--fo) * -1.4), calc(var(--fo) * 1.4));
+}
+
+.frame--marks::after {
+  --m: 22px; /* mark length */
+  --t: 1px;
+  --c: var(--c-ink);
+  content: "";
+  position: absolute;
+  inset: calc(var(--fo) * -0.9);
+  pointer-events: none;
+  opacity: 0.55;
+  background:
+    linear-gradient(var(--c) 0 0) top left / var(--m) var(--t),
+    linear-gradient(var(--c) 0 0) top left / var(--t) var(--m),
+    linear-gradient(var(--c) 0 0) top right / var(--m) var(--t),
+    linear-gradient(var(--c) 0 0) top right / var(--t) var(--m),
+    linear-gradient(var(--c) 0 0) bottom left / var(--m) var(--t),
+    linear-gradient(var(--c) 0 0) bottom left / var(--t) var(--m),
+    linear-gradient(var(--c) 0 0) bottom right / var(--m) var(--t),
+    linear-gradient(var(--c) 0 0) bottom right / var(--t) var(--m);
+  background-repeat: no-repeat;
+}
+
+.event-card__kicker {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+}
+
+.event-card__num {
+  font-family: var(--font-heading);
+  font-size: clamp(2.6rem, 2rem + 1.8vw, 3.6rem);
+  font-weight: var(--fw-numeral);
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  color: var(--accent-display);
+  font-variant-numeric: lining-nums;
+}
+
+.event-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.event-card__tags li {
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  color: var(--text-2);
+  transition: border-color var(--dur-fast), color var(--dur-fast), background-color var(--dur-fast);
+}
+
+.event-card:hover .event-card__tags li {
+  border-color: rgba(0, 119, 168, 0.45);
+}
+
+.event-card:hover .event-card__media img {
+  transform: scale(1.035);
+}
+
+.event-card__note {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.8rem;
+  padding: 0.3rem 0.6rem;
+  background: rgba(251, 252, 252, 0.9);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.event-card__text {
+  display: grid;
+  gap: 0.6rem;
+  max-width: 34rem;
+}
+
+.halls {
+  margin-top: clamp(4rem, 8vw, 7rem);
+}
+
+.halls__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.halls__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--line-strong);
+}
+
+.hall {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  padding: 2rem 2rem 0 0;
+}
+
+.hall + .hall {
+  padding-left: 2rem;
+  border-left: 1px solid var(--line);
+}
+
+.hall__name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+}
+
+.hall__cap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 2rem + 3.5vw, 5.5rem);
+  font-weight: var(--fw-numeral);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: lining-nums;
+}
+
+.hall__cap small {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  letter-spacing: 0;
+  color: var(--text-muted);
+}
+
+.hall__bar {
+  height: 4px;
+  background: var(--c-mist-deep);
+  position: relative;
+  overflow: hidden;
+}
+
+.hall__bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: var(--w);
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 1600ms var(--ease-out) 200ms;
+}
+
+.hall.is-in .hall__bar::after,
+.no-js .hall__bar::after {
+  transform: scaleX(1);
+}
+
+.hall__uses {
+  font-size: 0.9375rem;
+  color: var(--text-2);
+}
+

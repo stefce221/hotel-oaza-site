@@ -1,0 +1,34 @@
+/* ==========================================================================
+   Sections: hero, intro, rooms, dining, events, aquabella, location, contact
+   ========================================================================== */
+
+/* ---------- Shared media ---------- */
+
+.media {
+  position: relative;
+  overflow: hidden;
+  background: var(--c-mist-deep);
+}
+
+.media img,
+.media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.arch {
+  border-radius: 999px 999px 0 0;
+}
+
+.section-head {
+  display: grid;
+  gap: 1.4rem;
+  max-width: 62rem;
+  margin-bottom: clamp(3rem, 6vw, 5.5rem);
+}
+
+.section-head .lede {
+  max-width: 40rem;
+}
+

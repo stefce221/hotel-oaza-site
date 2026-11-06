@@ -1,0 +1,139 @@
+/* ---------- Postcard frame (Štip photo) ---------- */
+
+.postcard {
+  --mat: clamp(10px, 1.3vw, 18px);
+  position: relative;
+  isolation: isolate;
+  padding: var(--mat) var(--mat) 0;
+}
+
+/* Both card layers are pseudo-elements: inside the isolated stacking context,
+   negative-z children paint above the element's own background. */
+.postcard::before,
+.postcard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid var(--line);
+}
+
+/* a second card peeking out from underneath */
+.postcard::before {
+  background: var(--c-mist);
+  transform: rotate(-2.4deg) translate(-1.5%, 1%);
+  box-shadow: 0 30px 60px -40px rgba(8, 40, 56, 0.35);
+}
+
+/* the white mat of the front card */
+.postcard::after {
+  background: var(--c-white);
+  box-shadow: 0 50px 90px -50px rgba(8, 40, 56, 0.5), 0 2px 8px rgba(8, 40, 56, 0.05);
+}
+
+.location__media {
+  aspect-ratio: 6 / 5;
+}
+
+.location__media img {
+  object-position: 50% 45%;
+}
+
+.postcard__caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.4rem 1.5rem;
+  padding: 1rem 0.2rem 1.1rem;
+  font-family: var(--font-heading);
+  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.35rem);
+  font-weight: 500;
+  font-style: italic;
+  color: var(--text);
+}
+
+.postcard__coords {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+}
+
+/* Postage stamp with perforated edge */
+.postcard__stamp {
+  position: absolute;
+  top: calc(var(--mat) + clamp(10px, 1.4vw, 20px));
+  right: calc(var(--mat) + clamp(10px, 1.4vw, 20px));
+  width: 80px;
+  height: 96px;
+  padding: 7px;
+  background: var(--c-white);
+  filter: drop-shadow(0 4px 8px rgba(8, 40, 56, 0.28));
+  -webkit-mask: linear-gradient(#000 0 0) center / calc(100% - 8px) calc(100% - 8px) no-repeat,
+    radial-gradient(circle at 4px 4px, transparent 2.4px, #000 2.9px) -4px -4px / 8px 8px;
+  mask: linear-gradient(#000 0 0) center / calc(100% - 8px) calc(100% - 8px) no-repeat,
+    radial-gradient(circle at 4px 4px, transparent 2.4px, #000 2.9px) -4px -4px / 8px 8px;
+  rotate: 3deg;
+}
+
+.postcard__stamp-art {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(90% 60% at 30% 0%, rgba(160, 228, 252, 0.55), transparent 70%),
+    linear-gradient(170deg, var(--c-water-1), var(--c-water-3));
+}
+
+.postcard__stamp-mark {
+  position: absolute;
+  inset: 26% 22% 22%;
+  background: url("../img/mark.svg") center / contain no-repeat;
+  filter: brightness(0) invert(1);
+  opacity: 0.95;
+}
+
+.postcard__stamp-val {
+  position: absolute;
+  top: 5px;
+  left: 6px;
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #fff;
+}
+
+/* Cancellation mark: waves over the sky, ring over the stamp */
+.postcard__postmark {
+  position: absolute;
+  top: calc(var(--mat) + clamp(52px, 5.6vw, 80px));
+  right: calc(var(--mat) + clamp(44px, 4.8vw, 68px));
+  width: clamp(190px, 20vw, 260px);
+  height: auto;
+  color: #1f2a31;
+  opacity: 0.62;
+  rotate: -9deg;
+  pointer-events: none;
+}
+
+.postcard__pm-ring {
+  font-family: var(--font-display);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  fill: currentColor;
+}
+
+.postcard__pm-core {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  fill: currentColor;
+}
+

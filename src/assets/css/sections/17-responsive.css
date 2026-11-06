@@ -1,0 +1,263 @@
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (min-width: 901px) and (max-width: 1240px) {
+  .hero__inset {
+    left: -12%;
+    width: 40%;
+  }
+}
+
+@media (max-width: 1080px) {
+  .stats {
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 2rem;
+  }
+
+  .stat:nth-child(4) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .landmarks {
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 2.5rem;
+  }
+
+  .landmark:nth-child(4) {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero__grid {
+    grid-template-columns: 1fr;
+    row-gap: 2.5rem;
+  }
+
+  .hero__copy,
+  .hero__visual {
+    grid-column: 1 / -1;
+  }
+
+  .hero__copy {
+    padding-block: 0;
+  }
+
+  .hero__visual {
+    justify-content: center;
+    padding-inline: 8%;
+  }
+
+  .hero__stage {
+    width: 100%;
+    max-width: 460px;
+  }
+
+  .hero__inset {
+    left: -8%;
+    width: 44%;
+  }
+
+  .hero__badge {
+    left: auto;
+    right: -34px;
+    top: 10%;
+    width: 96px;
+    height: 96px;
+  }
+
+  .booking__inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .booking__field:nth-child(2) {
+    border-right: 0;
+  }
+
+  .booking__field:nth-child(3) {
+    grid-column: 1 / -1;
+    padding-left: 0;
+    border-top: 1px solid var(--line);
+    border-right: 0;
+  }
+
+  .booking__submit {
+    grid-column: 1 / -1;
+    min-height: 60px;
+  }
+
+  .statement,
+  .intro__side {
+    grid-column: 1 / -1;
+  }
+
+  .dining__grid,
+  .events__cards,
+  .aqua__grid,
+  .location__top,
+  .location__bottom,
+  .contact__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dining__media {
+    max-width: 520px;
+  }
+
+  .event-card--sem {
+    margin-top: clamp(2.5rem, 8vw, 4rem);
+  }
+
+  .event-card--sem .event-card__text {
+    order: 0;
+  }
+
+  .event-card--sem .event-card__media {
+    aspect-ratio: 3 / 2;
+  }
+
+  .location__hill {
+    display: none;
+  }
+
+  .postcard {
+    margin-top: 1rem;
+  }
+
+  .halls__list {
+    grid-template-columns: 1fr;
+  }
+
+  .hall,
+  .hall + .hall {
+    padding: 1.6rem 0;
+    border-left: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .contact__intro {
+    position: static;
+  }
+
+  .map {
+    min-height: 340px;
+  }
+}
+
+@media (max-width: 640px) {
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stat,
+  .stat + .stat {
+    padding: 1.4rem 0 0;
+    border-left: 0;
+  }
+
+  .stat:nth-child(even) {
+    padding-left: 1.2rem;
+    border-left: 1px solid var(--line);
+  }
+
+  .stat:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .landmarks {
+    grid-template-columns: 1fr;
+    row-gap: 0;
+  }
+
+  /* the footpath turns vertical, running down through the stops */
+  .landmarks::before {
+    top: 0;
+    bottom: 0;
+    left: 19px;
+    right: auto;
+    width: 2px;
+    height: auto;
+    background: repeating-linear-gradient(180deg, var(--accent) 0 7px, transparent 7px 15px);
+    -webkit-mask: linear-gradient(180deg, #000 88%, transparent);
+    mask: linear-gradient(180deg, #000 88%, transparent);
+  }
+
+  .landmark {
+    grid-template-columns: 40px 1fr;
+    column-gap: 1.1rem;
+    row-gap: 0.4rem;
+    padding: 0 0 1.8rem;
+  }
+
+  .landmark::before {
+    grid-row: 1 / span 2;
+    margin-bottom: 0;
+  }
+
+  .postcard::before {
+    transform: rotate(-1.6deg);
+  }
+
+  .postcard__stamp {
+    width: 64px;
+    height: 80px;
+    padding: 6px;
+  }
+
+  .postcard__postmark {
+    width: 150px;
+    top: calc(var(--mat) + 44px);
+    right: calc(var(--mat) + 36px);
+  }
+
+  .dining__list {
+    grid-template-columns: 1fr;
+  }
+
+  .dining__list li:nth-child(odd) {
+    border-right: 0;
+  }
+
+  .dining__list li:nth-child(even) {
+    padding-left: 0;
+  }
+
+  .fbox {
+    padding-inline: 0.8rem;
+  }
+
+  .fbox input,
+  .fbox select,
+  .fbox textarea {
+    font-size: 0.9375rem;
+  }
+
+  .hero__visual {
+    padding-inline: 0 6%;
+  }
+
+  .hero__badge {
+    right: -14px;
+    width: 88px;
+    height: 88px;
+  }
+
+  .hero__inset {
+    left: -8px;
+  }
+
+  .booking__field {
+    padding: 0.9rem 0.9rem 0.9rem 0;
+  }
+
+  .booking__field:nth-child(2) {
+    padding-left: 0.9rem;
+  }
+
+  .booking__input {
+    font-size: 1.1rem;
+  }
+}
