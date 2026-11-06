@@ -31,9 +31,14 @@
   }
 
   /* Today in the visitor's time zone, as YYYY-MM-DD. */
+  /* Today at the hotel, so the browser and the server (Europe/Skopje) agree on which dates are past. */
   function todayIso() {
     var d = new Date();
-    return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    try {
+      return d.toLocaleDateString("en-CA", { timeZone: "Europe/Skopje" });
+    } catch (e) {
+      return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    }
   }
 
   /* Characters, not UTF-16 units, to match the server's count. */
@@ -112,7 +117,10 @@
     arrival.min = today;
     departure.min = addDays(today, 1);
     arrival.addEventListener("change", function () {
-      if (!isIsoDate(arrival.value)) return;
+      if (!isIsoDate(arrival.value)) {
+        departure.min = addDays(today, 1);
+        return;
+      }
       var minDep = addDays(arrival.value, 1);
       departure.min = minDep;
       if (!departure.value || departure.value < minDep) departure.value = minDep;

@@ -101,3 +101,26 @@ test("linkDatePair sets minimum dates and moves departure after arrival", () => 
   assert.equal(departure.min, "2026-12-11");
   assert.equal(departure.value, "2026-12-11");
 });
+
+test("linkDatePair puts the departure minimum back when the arrival is cleared", () => {
+  const input = () => ({ value: "", min: "", handlers: {}, addEventListener(type, fn) { this.handlers[type] = fn; } });
+  const arrival = input();
+  const departure = input();
+  rules.linkDatePair(arrival, departure, TODAY);
+  arrival.value = "2026-12-10";
+  arrival.handlers.change();
+  arrival.value = "";
+  arrival.handlers.change();
+  assert.equal(departure.min, "2026-11-07");
+});
+
+test("todayIso is the date at the hotel (Europe/Skopje), like the server", () => {
+  /* 23:30 UTC on 6 Nov is 18:30 on 6 Nov in New York but already 7 Nov in Štip. */
+  class NewYorkDate extends Date {
+    constructor(...args) { super(...(args.length ? args : ["2026-11-06T23:30:00Z"])); }
+    getTimezoneOffset() { return 300; }
+  }
+  const box = { window: {}, URLSearchParams, Date: NewYorkDate };
+  vm.runInNewContext(readFileSync("src/assets/js/enquiry-rules.js", "utf8"), box);
+  assert.equal(box.window.oazaEnquiryRules.todayIso(), "2026-11-07");
+});
