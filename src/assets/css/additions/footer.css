@@ -1,0 +1,14 @@
+/* Footer bottom row: legal links and the operator line next to today's © and Back to top. */
+.footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer__operator {
+  flex-basis: 100%;
+  order: 5;
+}

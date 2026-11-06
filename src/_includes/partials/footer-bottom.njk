@@ -1,4 +1,10 @@
 <div class="wrap footer__bottom">
       <p>{% t 'footer.rights' %}</p>
-      <a href="#top">{% t 'footer.top' %}</a>
+      <ul class="footer__legal" aria-label="{% ta 'footer.legal' %}">
+        {%- for key in pages.legal %}
+        <li><a href="{{ key | pageUrl(lang) }}">{% t 'nav.' + key %}</a></li>
+        {%- endfor %}
+      </ul>
+      <p class="footer__operator">{{ site.operator[lang] }}</p>
+      <a href="#main">{% t 'footer.top' %}</a>
     </div>

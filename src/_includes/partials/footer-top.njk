@@ -11,17 +11,17 @@
       <div>
         <p class="footer__title">{% t 'footer.contact' %}</p>
         <ul class="footer__list">
-          <li><a href="tel:+38970310300">+389 70 310 300</a></li>
-          <li><a href="mailto:info@oazahotel.com.mk">info@oazahotel.com.mk</a></li>
+          <li><a href="{% telHref %}">{{ site.phone.display }}</a></li>
+          <li><a href="{% viberHref %}">Viber</a> / <a href="{% waHref pageKey %}">WhatsApp</a>: {{ site.phone.local }}</li>
+          <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
         </ul>
       </div>
       <div>
         <p class="footer__title">{% t 'footer.explore' %}</p>
         <ul class="footer__list">
-          <li><a href="#rooms">{% t 'nav.rooms' %}</a></li>
-          <li><a href="#dining">{% t 'nav.dining' %}</a></li>
-          <li><a href="#events">{% t 'nav.events' %}</a></li>
-          <li><a href="#aquabella">AquaBella</a></li>
+          {%- for key in pages.explore %}
+          <li><a href="{{ key | pageUrl(lang) }}">{% t 'nav.' + key %}</a></li>
+          {%- endfor %}
         </ul>
       </div>
     </div>
