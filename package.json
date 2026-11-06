@@ -1,0 +1,21 @@
+{
+  "name": "hotel-oaza-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Hotel Oaza website: Eleventy, Macedonian at / and English under /en/",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "eleventy --serve --port=5510",
+    "build": "cross-env OAZA_ENV=live eleventy",
+    "build:preview": "cross-env OAZA_ENV=preview PATH_PREFIX=/hotel-oaza-site/ eleventy",
+    "test": "node --test \"test/**/*.test.mjs\""
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.8",
+    "cross-env": "^7.0.3",
+    "parse5": "^8.1.0"
+  }
+}

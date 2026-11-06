@@ -3,3 +3,5 @@
 .mcp.json
 _backup/
 IMAGE-PROMPTS.md
+node_modules/
+_site/
