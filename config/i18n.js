@@ -9,8 +9,25 @@ function jsonFiles(dir) {
   return existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith(".json")).sort() : [];
 }
 
-function readJson(file) {
-  return JSON.parse(readFileSync(file, "utf8"));
+const isObject = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
+
+/** Parse a JSON file (a leading byte order mark is ignored); parse errors name `label`. */
+function readJson(file, label) {
+  const text = readFileSync(file, "utf8").replace(/^\uFEFF/, "");
+  try {
+    return JSON.parse(text);
+  } catch (err) {
+    throw new Error(`${label}: ${err.message}`);
+  }
+}
+
+/** A text table must be a plain object whose values are all strings. */
+function assertTextTable(table, label) {
+  if (!isObject(table)) throw new Error(`${label}: must be an object of texts`);
+  for (const [key, value] of Object.entries(table)) {
+    if (typeof value !== "string") throw new Error(`${label}: "${key}" must be a string`);
+  }
+  return table;
 }
 
 /** Merge `into` with `entries`, refusing a key that is already there. */
@@ -31,7 +48,8 @@ export function loadDictionaries(dir) {
   for (const lang of LANGS) {
     const table = {};
     for (const file of jsonFiles(path.join(dir, lang))) {
-      mergeInto(table, readJson(path.join(dir, lang, file)), `${lang}/${file}`);
+      const label = `${lang}/${file}`;
+      mergeInto(table, assertTextTable(readJson(path.join(dir, lang, file), label), label), label);
     }
     dicts[lang] = table;
   }
@@ -46,8 +64,16 @@ export function loadDictionaries(dir) {
 export function loadRuntime(dir) {
   const runtime = Object.fromEntries(LANGS.map((lang) => [lang, {}]));
   for (const file of jsonFiles(path.join(dir, "runtime"))) {
-    const data = readJson(path.join(dir, "runtime", file));
-    for (const lang of LANGS) mergeInto(runtime[lang], data[lang] ?? {}, `runtime/${file} (${lang})`);
+    const label = `runtime/${file}`;
+    const data = readJson(path.join(dir, "runtime", file), label);
+    if (!isObject(data)) throw new Error(`${label}: must be an object with one table per language`);
+    for (const lang of Object.keys(data)) {
+      if (!LANGS.includes(lang)) throw new Error(`${label}: unknown language "${lang}"`);
+    }
+    for (const lang of LANGS) {
+      const where = `${label} (${lang})`;
+      mergeInto(runtime[lang], assertTextTable(lang in data ? data[lang] : {}, where), where);
+    }
   }
   return runtime;
 }
@@ -83,14 +109,15 @@ export function langFromUrl(url) {
   return typeof url === "string" && url.startsWith("/en/") ? "en" : "mk";
 }
 
-const ENTITY = /^&(?:[a-zA-Z][a-zA-Z0-9]*|#\d+|#x[0-9a-fA-F]+);/;
+const ENTITY = /^&(?:[a-zA-Z][a-zA-Z0-9]*|#\d+|#[xX][0-9a-fA-F]+);/;
 
 /** Escape text for a double-quoted attribute; entities already in the text (from today's markup) are kept. */
 export function escapeAttr(value) {
+  const text = String(value);
   let out = "";
-  for (let i = 0; i < value.length; i += 1) {
-    const ch = value[i];
-    if (ch === "&") out += ENTITY.test(value.slice(i)) ? "&" : "&amp;";
+  for (let i = 0; i < text.length; i += 1) {
+    const ch = text[i];
+    if (ch === "&") out += ENTITY.test(text.slice(i)) ? "&" : "&amp;";
     else if (ch === '"') out += "&quot;";
     else if (ch === "<") out += "&lt;";
     else if (ch === ">") out += "&gt;";
@@ -101,6 +128,7 @@ export function escapeAttr(value) {
 
 /** Inline script that gives main.js and fx.js today's window.oazaI18n API (lang, t, onChange) for one language. */
 export function runtimeScript(strings, lang) {
+  if (!LANGS.includes(lang)) throw new Error(`Unknown language "${lang}"`);
   const json = JSON.stringify(strings).replace(/</g, "\\u003c");
   return (
     "window.oazaI18n=(function(s){return{lang:" +
@@ -116,7 +144,8 @@ export function runtimeScript(strings, lang) {
 export function guestOptionsHtml(strings, selected) {
   return GUEST_VALUES.map((value) => {
     const key = value.includes("+") ? "guest.more" : value === "1" ? "guest.one" : "guest.many";
+    if (typeof strings[key] !== "string") throw new Error(`Missing runtime string "${key}" for the guest options`);
     const label = strings[key].split("{n}").join(value);
-    return `<option value="${value}"${value === selected ? " selected" : ""}>${label}</option>`;
+    return `<option value="${value}"${value === String(selected) ? " selected" : ""}>${label}</option>`;
   }).join("");
 }
