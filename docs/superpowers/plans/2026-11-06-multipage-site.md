@@ -1600,6 +1600,8 @@ Create `scripts/check-css-split.mjs`:
 ```js
 /* Joining src/assets/css/sections/*.css (in name order) must give back today's sections.css exactly. */
 import { readdirSync, readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { ORIGINAL_SHA256, sha256 } from "./lib/css-split.mjs";
 
 export function cssSplitIntact(dir = "src/assets/css/sections") {
@@ -1611,7 +1613,8 @@ export function cssSplitIntact(dir = "src/assets/css/sections") {
   return sha256(joined) === ORIGINAL_SHA256;
 }
 
-if (import.meta.url === `file:///${process.argv[1].replace(/\\/g, "/")}`) {
+/* Compare as file paths: import.meta.url percent-encodes spaces, and this project's folder name has them. */
+if (path.resolve(fileURLToPath(import.meta.url)) === path.resolve(process.argv[1])) {
   if (!cssSplitIntact()) {
     console.error("Section CSS no longer joins to the original sections.css. Put new rules in src/assets/css/additions/.");
     process.exit(1);
@@ -2843,6 +2846,8 @@ Create `scripts/i18n-drop.mjs`:
    node scripts/i18n-drop.mjs nav.dining nav.events          → src/i18n/{en,mk}/base.json
    node scripts/i18n-drop.mjs --runtime "mail.*" status.sent  → src/i18n/runtime/base.json */
 import { readFileSync, writeFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 /** @returns {{ table: Record<string, string>, removed: string[] }} a copy without the matching keys */
 export function dropKeys(table, patterns) {
@@ -2856,7 +2861,8 @@ function rewrite(file, update) {
   writeFileSync(file, `${JSON.stringify(update(data), null, 2)}\n`);
 }
 
-if (import.meta.url === `file:///${process.argv[1].replace(/\\/g, "/")}`) {
+/* Compare as file paths: import.meta.url percent-encodes spaces, and this project's folder name has them. */
+if (path.resolve(fileURLToPath(import.meta.url)) === path.resolve(process.argv[1])) {
   const args = process.argv.slice(2);
   const runtime = args[0] === "--runtime";
   const patterns = runtime ? args.slice(1) : args;
