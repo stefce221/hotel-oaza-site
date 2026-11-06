@@ -499,7 +499,7 @@
     });
   }
 
-  /* ---------- Mobile action bar + active nav ---------- */
+  /* ---------- Mobile action bar ---------- */
   function initScrollSpy() {
     if (!("IntersectionObserver" in window)) return;
     var bar = $(".action-bar");
@@ -526,30 +526,6 @@
         { threshold: 0.15 }
       ).observe(contact);
     }
-
-    var links = $$(".nav__link");
-    var byId = {};
-    links.forEach(function (a) {
-      byId[a.getAttribute("href").slice(1)] = a;
-    });
-    var spy = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          var link = byId[entry.target.id];
-          if (!link) return;
-          if (entry.isIntersecting) {
-            links.forEach(function (l) {
-              l.classList.toggle("is-active", l === link);
-            });
-          }
-        });
-      },
-      { rootMargin: "-45% 0px -50% 0px" }
-    );
-    Object.keys(byId).forEach(function (id) {
-      var section = document.getElementById(id);
-      if (section) spy.observe(section);
-    });
   }
 
   function init() {

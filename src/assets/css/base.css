@@ -579,7 +579,7 @@ body.menu-open {
   overflow: hidden;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1179px) {
   .nav,
   .header-cta {
     display: none;
@@ -590,7 +590,7 @@ body.menu-open {
   }
 }
 
-@media (min-width: 1081px) {
+@media (min-width: 1180px) {
   .menu {
     display: none;
   }

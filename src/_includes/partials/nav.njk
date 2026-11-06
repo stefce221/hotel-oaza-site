@@ -1,8 +1,5 @@
 <nav class="nav" aria-label="{% ta 'nav.label' %}">
-        <a class="nav__link" href="#rooms">{% t 'nav.rooms' %}</a>
-        <a class="nav__link" href="#dining">{% t 'nav.dining' %}</a>
-        <a class="nav__link" href="#events">{% t 'nav.events' %}</a>
-        <a class="nav__link" href="#aquabella">AquaBella</a>
-        <a class="nav__link" href="#stip">{% t 'nav.stip' %}</a>
-        <a class="nav__link" href="#contact">{% t 'nav.contact' %}</a>
+        {%- for key in pages.nav %}
+        <a class="nav__link{% if key == pageKey %} is-active{% endif %}" href="{{ key | pageUrl(lang) }}"{% if key == pageKey %} aria-current="page"{% endif %}>{% t 'nav.' + key %}</a>
+        {%- endfor %}
       </nav>
