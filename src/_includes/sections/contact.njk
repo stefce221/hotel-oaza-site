@@ -1,0 +1,12 @@
+<section class="contact section" id="contact" aria-labelledby="contact-title">
+      <div class="wrap contact__grid">
+        <div class="contact__intro">
+          <p class="eyebrow">{% t 'contact.eyebrow' %}</p>
+          <h2 class="h2" id="contact-title">{% t 'contact.title' %}</h2>
+          <p class="lede">{% t 'contact.lede' %}</p>
+          {% include "partials/contact-details.njk" %}
+        </div>
+
+        {% include "partials/enquiry-form.njk" %}
+      </div>
+    </section>

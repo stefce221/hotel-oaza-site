@@ -1,0 +1,134 @@
+<section class="rooms section" id="rooms" aria-labelledby="rooms-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow" data-reveal>{% t 'rooms.eyebrow' %}</p>
+          <h2 class="h2" id="rooms-title" data-reveal style="--d:1">{% t 'rooms.title' %}</h2>
+          <p class="lede" data-reveal style="--d:2">{% t 'rooms.lede' %}</p>
+        </header>
+
+        <div class="rooms__body" data-rooms>
+          <div class="rooms__side">
+            <div class="rooms__tabs" role="tablist" aria-label="{% ta 'rooms.tabs' %}">
+              <button class="room-tab" role="tab" id="tab-single" aria-controls="panel-single" aria-selected="true">
+                <span class="room-tab__no">01</span><span class="room-tab__name">{% t 'room.single.name' %}</span>
+                <span class="room-tab__count">{% t 'room.single.count' %}</span><span class="room-tab__bar"></span>
+              </button>
+              <button class="room-tab" role="tab" id="tab-double" aria-controls="panel-double" aria-selected="false" tabindex="-1">
+                <span class="room-tab__no">02</span><span class="room-tab__name">{% t 'room.double.name' %}</span>
+                <span class="room-tab__count">{% t 'room.double.count' %}</span><span class="room-tab__bar"></span>
+              </button>
+              <button class="room-tab" role="tab" id="tab-twin" aria-controls="panel-twin" aria-selected="false" tabindex="-1">
+                <span class="room-tab__no">03</span><span class="room-tab__name">{% t 'room.twin.name' %}</span>
+                <span class="room-tab__count">{% t 'room.twin.count' %}</span><span class="room-tab__bar"></span>
+              </button>
+              <button class="room-tab" role="tab" id="tab-apartment" aria-controls="panel-apartment" aria-selected="false" tabindex="-1">
+                <span class="room-tab__no">04</span><span class="room-tab__name">{% t 'room.apartment.name' %}</span>
+                <span class="room-tab__count">{% t 'room.apartment.count' %}</span><span class="room-tab__bar"></span>
+              </button>
+            </div>
+
+            <aside class="hanger" aria-labelledby="hanger-title" data-reveal>
+              <p class="hanger__title" id="hanger-title">{% t 'hanger.title' %}</p>
+              <dl class="hanger__list">
+                <div><dt>{% t 'hanger.in' %}</dt><dd>14:00</dd></div>
+                <div><dt>{% t 'hanger.out' %}</dt><dd>12:00</dd></div>
+                <div><dt>{% t 'hanger.rec' %}</dt><dd>24/7</dd></div>
+              </dl>
+              <p class="hanger__note">{% t 'hanger.note' %}</p>
+            </aside>
+          </div>
+
+          <div class="rooms__stage">
+            <article class="room is-active" id="panel-single" role="tabpanel" aria-labelledby="title-single">
+              <div class="room__frame">
+                <figure class="room__media media">
+                  <img src="/images/room-interior-1000.webp" srcset="/images/room-interior-640.webp 640w, /images/room-interior-1000.webp 1000w, /images/room-interior-1440.webp 1440w"
+                       sizes="(max-width: 900px) 86vw, 62vw" width="1440" height="1080" loading="lazy" decoding="async"
+                       alt="{% ta 'room.single.alt' %}">
+                </figure>
+                <span class="room__key" aria-hidden="true"><span class="room__key-ring"></span><span class="room__key-tag"><span class="room__key-no">01</span><span class="room__key-brand">Oaza</span></span></span>
+              </div>
+              <div class="room__body">
+                <div class="room__head">
+                  <h3 class="room__title h3" id="title-single">{% t 'room.single.name' %}</h3>
+                  <p class="room__meta">{% t 'room.single.meta' %}</p>
+                </div>
+                <p class="room__desc">{% t 'room.single.desc' %}</p>
+                <ul class="room__features">{% t 'room.single.features' %}</ul>
+                <a class="room__cta link-arrow" href="#contact" data-room="single"><span>{% t 'room.cta' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+              </div>
+            </article>
+
+            <article class="room" id="panel-double" role="tabpanel" aria-labelledby="title-double">
+              <div class="room__frame">
+                <figure class="room__media media">
+                  <img src="/images/room-large-bed-1000.webp" srcset="/images/room-large-bed-640.webp 640w, /images/room-large-bed-1000.webp 1000w, /images/room-large-bed-1440.webp 1440w"
+                       sizes="(max-width: 900px) 86vw, 62vw" width="1440" height="1080" loading="lazy" decoding="async"
+                       alt="{% ta 'room.double.alt' %}">
+                </figure>
+                <span class="room__key" aria-hidden="true"><span class="room__key-ring"></span><span class="room__key-tag"><span class="room__key-no">02</span><span class="room__key-brand">Oaza</span></span></span>
+              </div>
+              <div class="room__body">
+                <div class="room__head">
+                  <h3 class="room__title h3" id="title-double">{% t 'room.double.name' %}</h3>
+                  <p class="room__meta">{% t 'room.double.meta' %}</p>
+                </div>
+                <p class="room__desc">{% t 'room.double.desc' %}</p>
+                <ul class="room__features">{% t 'room.double.features' %}</ul>
+                <a class="room__cta link-arrow" href="#contact" data-room="double"><span>{% t 'room.cta' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+              </div>
+            </article>
+
+            <article class="room" id="panel-twin" role="tabpanel" aria-labelledby="title-twin">
+              <div class="room__frame">
+                <figure class="room__media media">
+                  <img src="/images/room-two-beds-1000.webp" srcset="/images/room-two-beds-640.webp 640w, /images/room-two-beds-1000.webp 1000w, /images/room-two-beds-1440.webp 1440w"
+                       sizes="(max-width: 900px) 86vw, 62vw" width="1440" height="1080" loading="lazy" decoding="async"
+                       alt="{% ta 'room.twin.alt' %}">
+                </figure>
+                <span class="room__key" aria-hidden="true"><span class="room__key-ring"></span><span class="room__key-tag"><span class="room__key-no">03</span><span class="room__key-brand">Oaza</span></span></span>
+              </div>
+              <div class="room__body">
+                <div class="room__head">
+                  <h3 class="room__title h3" id="title-twin">{% t 'room.twin.name' %}</h3>
+                  <p class="room__meta">{% t 'room.twin.meta' %}</p>
+                </div>
+                <p class="room__desc">{% t 'room.twin.desc' %}</p>
+                <ul class="room__features">{% t 'room.twin.features' %}</ul>
+                <a class="room__cta link-arrow" href="#contact" data-room="twin"><span>{% t 'room.cta' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+              </div>
+            </article>
+
+            <article class="room" id="panel-apartment" role="tabpanel" aria-labelledby="title-apartment">
+              <div class="room__frame">
+                <figure class="room__media media">
+                  <img src="/images/room-inset-960.webp" srcset="/images/room-inset-480.webp 480w, /images/room-inset-960.webp 960w"
+                       sizes="(max-width: 900px) 86vw, 62vw" width="960" height="720" loading="lazy" decoding="async"
+                       alt="{% ta 'room.apartment.alt' %}">
+                </figure>
+                <span class="room__key" aria-hidden="true"><span class="room__key-ring"></span><span class="room__key-tag"><span class="room__key-no">04</span><span class="room__key-brand">Oaza</span></span></span>
+              </div>
+              <div class="room__body">
+                <div class="room__head">
+                  <h3 class="room__title h3" id="title-apartment">{% t 'room.apartment.name' %}</h3>
+                  <p class="room__meta">{% t 'room.apartment.meta' %}</p>
+                </div>
+                <p class="room__desc">{% t 'room.apartment.desc' %}</p>
+                <ul class="room__features">{% t 'room.apartment.features' %}</ul>
+                <a class="room__cta link-arrow" href="#contact" data-room="apartment"><span>{% t 'room.cta' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <ul class="amenities" aria-label="{% ta 'amen.label' %}">
+          <li class="amenity" data-reveal><svg aria-hidden="true"><use href="#i-snow"/></svg><span>{% t 'amen.ac' %}</span></li>
+          <li class="amenity" data-reveal style="--d:1"><svg aria-hidden="true"><use href="#i-wifi"/></svg><span>{% t 'amen.wifi' %}</span></li>
+          <li class="amenity" data-reveal style="--d:2"><svg aria-hidden="true"><use href="#i-tv"/></svg><span>{% t 'amen.tv' %}</span></li>
+          <li class="amenity" data-reveal style="--d:3"><svg aria-hidden="true"><use href="#i-desk"/></svg><span>{% t 'amen.desk' %}</span></li>
+          <li class="amenity" data-reveal style="--d:4"><svg aria-hidden="true"><use href="#i-bath"/></svg><span>{% t 'amen.bath' %}</span></li>
+          <li class="amenity" data-reveal style="--d:5"><svg aria-hidden="true"><use href="#i-clock"/></svg><span>{% t 'amen.reception' %}</span></li>
+          <li class="amenity" data-reveal style="--d:6"><svg aria-hidden="true"><use href="#i-parking"/></svg><span>{% t 'amen.parking' %}</span></li>
+        </ul>
+      </div>
+    </section>

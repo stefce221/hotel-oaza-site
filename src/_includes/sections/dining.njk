@@ -1,0 +1,31 @@
+<section class="dining section section--dark" id="dining" aria-labelledby="dining-title">
+      <div class="wrap dining__grid">
+        <figure class="dining__media media arch" data-reveal="mask">
+          <img src="/images/restaurant-1000.webp" srcset="/images/restaurant-640.webp 640w, /images/restaurant-1000.webp 1000w, /images/restaurant-1440.webp 1440w"
+               sizes="(max-width: 900px) 100vw, 1000px" width="1440" height="1080" loading="lazy" decoding="async"
+               alt="{% ta 'dining.alt' %}">
+        </figure>
+
+        <div class="dining__copy">
+          <p class="eyebrow" data-reveal>{% t 'dining.eyebrow' %}</p>
+          <h2 class="h2" id="dining-title" data-reveal style="--d:1">{% t 'dining.title' %}</h2>
+          <p class="prose" data-reveal style="--d:2">{% t 'dining.body' %}</p>
+
+          <blockquote class="motto" data-reveal style="--d:3">
+            <p lang="mk">Мал одмор — големо задоволство.</p>
+            <cite>{% t 'dining.motto' %}</cite>
+          </blockquote>
+
+          <ul class="dining__list" data-reveal style="--d:4">
+            <li><strong>{% t 'dining.l1.t' %}</strong><span>{% t 'dining.l1.d' %}</span></li>
+            <li><strong>{% t 'dining.l2.t' %}</strong><span>{% t 'dining.l2.d' %}</span></li>
+            <li><strong>{% t 'dining.l3.t' %}</strong><span>{% t 'dining.l3.d' %}</span></li>
+            <li><strong>{% t 'dining.l4.t' %}</strong><span>{% t 'dining.l4.d' %}</span></li>
+          </ul>
+
+          <div data-reveal style="--d:5">
+            <a class="btn btn--light" href="tel:+38970310300"><span>{% t 'dining.cta' %}</span><svg class="btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </section>

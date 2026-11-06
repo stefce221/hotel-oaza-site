@@ -1,0 +1,47 @@
+<section class="events section" id="events" aria-labelledby="events-title">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow" data-reveal>{% t 'events.eyebrow' %}</p>
+          <h2 class="h2" id="events-title" data-reveal style="--d:1">{% t 'events.title' %}</h2>
+          <p class="lede" data-reveal style="--d:2">{% t 'events.lede' %}</p>
+        </header>
+
+        <div class="events__cards">
+          <article class="event-card event-card--wed">
+            <div class="frame frame--arch">
+              <figure class="event-card__media media" data-reveal="mask">
+                <img src="/images/wedding-960.webp" srcset="/images/wedding-640.webp 640w, /images/wedding-960.webp 960w, /images/wedding-1440.webp 1440w"
+                     sizes="(max-width: 900px) 100vw, 950px" width="1440" height="960" loading="lazy" decoding="async"
+                     alt="{% ta 'events.wedAlt' %}">
+                <figcaption class="event-card__note">{% t 'events.note' %}</figcaption>
+              </figure>
+            </div>
+            <div class="event-card__text" data-reveal>
+              <p class="event-card__kicker"><span class="event-card__num">01</span><span>{% t 'events.wed.k' %}</span></p>
+              <h3 class="h3">{% t 'events.wed.t' %}</h3>
+              <p class="prose">{% t 'events.wed.d' %}</p>
+              <ul class="event-card__tags">{% t 'events.wed.tags' %}</ul>
+            </div>
+          </article>
+
+          <article class="event-card event-card--sem">
+            <div class="frame frame--marks">
+              <figure class="event-card__media media" data-reveal="mask">
+                <img src="/images/seminar-960.webp" srcset="/images/seminar-640.webp 640w, /images/seminar-960.webp 960w, /images/seminar-1440.webp 1440w"
+                     sizes="(max-width: 900px) 100vw, 600px" width="1440" height="960" loading="lazy" decoding="async"
+                     alt="{% ta 'events.semAlt' %}">
+                <figcaption class="event-card__note">{% t 'events.note' %}</figcaption>
+              </figure>
+            </div>
+            <div class="event-card__text" data-reveal>
+              <p class="event-card__kicker"><span class="event-card__num">02</span><span>{% t 'events.sem.k' %}</span></p>
+              <h3 class="h3">{% t 'events.sem.t' %}</h3>
+              <p class="prose">{% t 'events.sem.d' %}</p>
+              <ul class="event-card__tags">{% t 'events.sem.tags' %}</ul>
+            </div>
+          </article>
+        </div>
+
+        {% include "partials/events-halls.njk" %}
+      </div>
+    </section>

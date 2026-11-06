@@ -1,0 +1,27 @@
+<div class="location__bottom">
+          <div class="map" data-map data-reveal>
+            <svg class="map__art" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%">
+              <g fill="none" stroke="#a9bcc6" opacity=".6">
+                <ellipse cx="170" cy="150" rx="55" ry="36"/><ellipse cx="170" cy="150" rx="98" ry="66"/><ellipse cx="170" cy="150" rx="142" ry="100"/><ellipse cx="170" cy="150" rx="190" ry="136"/>
+                <ellipse cx="480" cy="310" rx="48" ry="32"/><ellipse cx="480" cy="310" rx="92" ry="62"/><ellipse cx="480" cy="310" rx="136" ry="94"/>
+              </g>
+              <path d="M-10 320C110 290 200 360 320 318S520 248 610 276" fill="none" stroke="#05afee" stroke-width="7" opacity=".35"/>
+              <g transform="translate(300 200)"><circle r="28" fill="#05afee" opacity=".16"/><circle r="7" fill="#0077a8"/></g>
+            </svg>
+            <p class="map__pin">{% t 'map.pin' %}</p>
+            <div style="position:absolute;inset:auto 1rem 1rem auto;display:grid;justify-items:end;gap:.5rem">
+              <button class="btn btn--light" type="button" data-map-load><span>{% t 'map.load' %}</span></button>
+              <small style="font-size:.75rem;color:var(--text-muted)">{% t 'map.note' %}</small>
+            </div>
+          </div>
+
+          <aside class="getting" data-reveal style="--d:1" aria-labelledby="getting-title">
+            <h3 class="h3" id="getting-title">{% t 'get.title' %}</h3>
+            <dl>
+              <div><dt>{% t 'get.addr.t' %}</dt><dd>{% t 'get.addr.d' %}</dd></div>
+              <div><dt>{% t 'get.air.t' %}</dt><dd>{% t 'get.air.d' %}</dd></div>
+              <div><dt>{% t 'get.park.t' %}</dt><dd>{% t 'get.park.d' %}</dd></div>
+            </dl>
+            <a class="link-arrow" href="https://www.google.com/maps/search/?api=1&amp;query=Hotel+Oaza+Tosho+Arsov+32+Shtip" target="_blank" rel="noopener"><span>{% t 'get.dir' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </aside>
+        </div>

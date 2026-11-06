@@ -1,0 +1,63 @@
+<section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="wrap hero__grid">
+        <div class="hero__copy">
+          <p class="hero__meta">
+            <span class="eyebrow">{% t 'hero.eyebrow' %}</span>
+            <span class="stars" role="img" aria-label="{% ta 'hero.stars' %}">★★★★</span>
+          </p>
+          <h1 class="display hero__title" id="hero-title">{% t 'hero.title' %}</h1>
+          <p class="lede hero__lede hero__fade">{% t 'hero.lede' %}</p>
+          <div class="hero__ctas hero__fade">
+            <a class="btn" href="#booking"><span>{% t 'hero.cta' %}</span><svg class="btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="link-arrow" href="#rooms"><span>{% t 'hero.cta2' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+        </div>
+
+        <div class="hero__visual">
+          <div class="hero__stage">
+          <!-- Optional cinemagraph: set data-video="/images/hero-loop.mp4" once the file exists (see IMAGE-PROMPTS.md). -->
+          <figure class="hero__arch media arch" data-video="" data-parallax>
+            <img src="/images/exterior-1440.webp"
+                 srcset="/images/exterior-640.webp 640w, /images/exterior-960.webp 960w, /images/exterior-1440.webp 1440w"
+                 sizes="(max-width: 900px) 120vw, 1000px" width="1440" height="1080"
+                 alt="{% ta 'hero.alt' %}" fetchpriority="high" decoding="async">
+          </figure>
+
+          <figure class="hero__inset">
+            <img src="/images/room-inset-480.webp" srcset="/images/room-inset-480.webp 480w, /images/room-inset-960.webp 960w" sizes="250px"
+                 width="480" height="360" alt="{% ta 'hero.insetAlt' %}" decoding="async">
+            <figcaption>{% t 'hero.inset' %}</figcaption>
+          </figure>
+
+          <div class="hero__badge" aria-hidden="true">
+            <svg class="hero__badge-ring" viewBox="0 0 124 124">
+              <defs><path id="ring" d="M62 62m-50 0a50 50 0 1 1 100 0a50 50 0 1 1-100 0"/></defs>
+              <text><textPath href="#ring" textLength="306" lengthAdjust="spacing">{% ta 'hero.badge' %}</textPath></text>
+            </svg>
+            <span class="hero__badge-core"></span>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrap">
+        <form class="booking hero__fade" id="booking" novalidate aria-label="{% ta 'hero.cta' %}">
+          <div class="booking__inner">
+            <label class="booking__field">
+              <span class="booking__label">{% t 'booking.arrival' %}</span>
+              <input class="booking__input" type="date" name="arrival" required>
+            </label>
+            <label class="booking__field">
+              <span class="booking__label">{% t 'booking.departure' %}</span>
+              <input class="booking__input" type="date" name="departure" required>
+            </label>
+            <label class="booking__field">
+              <span class="booking__label">{% t 'booking.guests' %}</span>
+              <select class="booking__input" name="guests" data-guests="10">{% guestOptions '2' %}</select>
+            </label>
+            <button class="btn btn--accent booking__submit" type="submit"><span>{% t 'hero.cta' %}</span><svg class="btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+          <p class="booking__note">{% t 'booking.note' %}</p>
+        </form>
+      </div>
+    </section>

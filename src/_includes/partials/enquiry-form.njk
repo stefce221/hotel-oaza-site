@@ -1,0 +1,78 @@
+<form class="form" id="enquiry" novalidate data-mode="stay">
+          <h3 class="form__title">{% t 'form.title' %}</h3>
+
+          <fieldset class="chips">
+            <legend>{% t 'form.type' %}</legend>
+            <label class="chip"><input type="radio" name="type" value="stay" checked><span>{% t 'form.type.stay' %}</span></label>
+            <label class="chip"><input type="radio" name="type" value="wedding"><span>{% t 'form.type.wedding' %}</span></label>
+            <label class="chip"><input type="radio" name="type" value="conference"><span>{% t 'form.type.conf' %}</span></label>
+            <label class="chip"><input type="radio" name="type" value="group"><span>{% t 'form.type.group' %}</span></label>
+          </fieldset>
+
+          <div class="fgroup">
+            <div class="field fbox">
+              <label for="f-arrival"><span class="for-stay">{% t 'booking.arrival' %}</span><span class="for-event">{% t 'form.date' %}</span></label>
+              <input id="f-arrival" name="arrival" type="date">
+              <p class="field__error" aria-live="polite"></p>
+            </div>
+            <div class="field fbox for-stay">
+              <label for="f-departure">{% t 'booking.departure' %}</label>
+              <input id="f-departure" name="departure" type="date">
+              <span class="fbox__aside" data-nights aria-hidden="true"></span>
+              <p class="field__error" aria-live="polite"></p>
+            </div>
+            <div class="field fbox for-stay">
+              <label for="f-guests">{% t 'booking.guests' %}</label>
+              <select id="f-guests" name="guests" data-guests="10">{% guestOptions '2' %}</select>
+            </div>
+            <div class="field fbox for-event">
+              <label for="f-eguests">{% t 'booking.guests' %}</label>
+              <select id="f-eguests" name="eventGuests">
+                <option value="30">{% t 'form.eg.30' %}</option>
+                <option value="150">{% t 'form.eg.150' %}</option>
+                <option value="250">{% t 'form.eg.250' %}</option>
+              </select>
+            </div>
+            <div class="field fbox for-stay">
+              <label for="f-room">{% t 'form.room' %}</label>
+              <select id="f-room" name="room">
+                <option value="any">{% t 'form.room.any' %}</option>
+                <option value="single">{% t 'room.single.name' %}</option>
+                <option value="double">{% t 'room.double.name' %}</option>
+                <option value="twin">{% t 'room.twin.name' %}</option>
+                <option value="apartment">{% t 'room.apartment.name' %}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="fgroup fgroup--contact">
+            <div class="field fbox">
+              <label for="f-name">{% t 'form.name' %}</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required>
+              <p class="field__error" aria-live="polite"></p>
+            </div>
+            <div class="field fbox">
+              <label for="f-email">{% t 'form.email' %}</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" required>
+              <p class="field__error" aria-live="polite"></p>
+            </div>
+            <div class="field fbox">
+              <label for="f-phone"><span>{% t 'form.phone' %}</span> <span class="opt">{% t 'form.optional' %}</span></label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel">
+              <p class="field__error" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <div class="fgroup">
+            <div class="field fbox">
+              <label for="f-message"><span>{% t 'form.message' %}</span> <span class="opt">{% t 'form.optional' %}</span></label>
+              <textarea id="f-message" name="message" rows="2" placeholder="{% ta 'form.message.ph' %}"></textarea>
+            </div>
+          </div>
+
+          <div class="form__foot">
+            <p class="form__hint">{% t 'form.hint' %}</p>
+            <button class="btn btn--accent" type="submit"><span>{% t 'form.submit' %}</span><svg class="btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </div>
+          <p class="form__status" role="status" aria-live="polite"></p>
+        </form>
