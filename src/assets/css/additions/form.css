@@ -1,0 +1,74 @@
+/* Enquiry form: conference-only fields, honeypot, sending spinner, failure box and thank-you panel. */
+.form:not([data-type="conference"]) .for-conf {
+  display: none;
+}
+
+.form__hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.form__fail[hidden],
+.form__done[hidden] {
+  display: none;
+}
+
+.form__fail {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-m);
+  background: var(--bg-alt);
+  font-size: var(--fs-small);
+}
+
+.form__fail-links {
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.form__done {
+  display: grid;
+  align-content: center;
+  gap: 1rem;
+}
+
+.btn.is-sending {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.btn.is-sending .btn__arrow {
+  display: none;
+}
+
+.btn.is-sending::after {
+  content: "";
+  width: 1em;
+  height: 1em;
+  margin-left: 0.5rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: oaza-spin 0.8s linear infinite;
+}
+
+@keyframes oaza-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn.is-sending::after {
+    animation-duration: 2.4s;
+  }
+}
+
+#enquiry,
+#enquiry-done {
+  scroll-margin-top: calc(var(--header-h) + 1rem);
+}

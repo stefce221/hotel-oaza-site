@@ -1,12 +1,13 @@
-<form class="form" id="enquiry" novalidate data-mode="stay">
+{%- set selectedType = formType or "stay" -%}
+<form class="form" id="enquiry" novalidate action="/api/enquiry.php" method="post"
+              data-type="{{ selectedType }}" data-mode="{{ 'event' if (selectedType == 'wedding' or selectedType == 'conference') else 'stay' }}"{% if pageKey == "contact" %} data-prefill{% endif %}>
           <h3 class="form__title">{% t 'form.title' %}</h3>
 
           <fieldset class="chips">
             <legend>{% t 'form.type' %}</legend>
-            <label class="chip"><input type="radio" name="type" value="stay" checked><span>{% t 'form.type.stay' %}</span></label>
-            <label class="chip"><input type="radio" name="type" value="wedding"><span>{% t 'form.type.wedding' %}</span></label>
-            <label class="chip"><input type="radio" name="type" value="conference"><span>{% t 'form.type.conf' %}</span></label>
-            <label class="chip"><input type="radio" name="type" value="group"><span>{% t 'form.type.group' %}</span></label>
+            {%- for type in ["stay", "wedding", "conference", "group"] %}
+            <label class="chip"><input type="radio" name="type" value="{{ type }}"{% if type == selectedType %} checked{% endif %}><span>{% t 'form.type.' + type %}</span></label>
+            {%- endfor %}
           </fieldset>
 
           <div class="fgroup">
@@ -45,20 +46,35 @@
             </div>
           </div>
 
+          <div class="fgroup for-conf">
+            <div class="field fbox">
+              <label for="f-company"><span>{% t 'form.company' %}</span> <span class="opt">{% t 'form.optional' %}</span></label>
+              <input id="f-company" name="company" type="text" autocomplete="organization" maxlength="150">
+              <p class="field__error" aria-live="polite"></p>
+            </div>
+            <div class="field fbox">
+              <label for="f-overnight">{% t 'form.overnight' %}</label>
+              <select id="f-overnight" name="overnight">
+                <option value="no">{% t 'form.overnight.no' %}</option>
+                <option value="yes">{% t 'form.overnight.yes' %}</option>
+              </select>
+            </div>
+          </div>
+
           <div class="fgroup fgroup--contact">
             <div class="field fbox">
               <label for="f-name">{% t 'form.name' %}</label>
-              <input id="f-name" name="name" type="text" autocomplete="name" required>
+              <input id="f-name" name="name" type="text" autocomplete="name" required maxlength="100">
               <p class="field__error" aria-live="polite"></p>
             </div>
             <div class="field fbox">
               <label for="f-email">{% t 'form.email' %}</label>
-              <input id="f-email" name="email" type="email" autocomplete="email" required>
+              <input id="f-email" name="email" type="email" autocomplete="email" required maxlength="200">
               <p class="field__error" aria-live="polite"></p>
             </div>
             <div class="field fbox">
               <label for="f-phone"><span>{% t 'form.phone' %}</span> <span class="opt">{% t 'form.optional' %}</span></label>
-              <input id="f-phone" name="phone" type="tel" autocomplete="tel">
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" maxlength="40">
               <p class="field__error" aria-live="polite"></p>
             </div>
           </div>
@@ -66,13 +82,33 @@
           <div class="fgroup">
             <div class="field fbox">
               <label for="f-message"><span>{% t 'form.message' %}</span> <span class="opt">{% t 'form.optional' %}</span></label>
-              <textarea id="f-message" name="message" rows="2" placeholder="{% ta 'form.message.ph' %}"></textarea>
+              <textarea id="f-message" name="message" rows="2" maxlength="2000" placeholder="{% ta 'form.message.ph' %}"></textarea>
+              <p class="field__error" aria-live="polite"></p>
             </div>
           </div>
 
+          <input type="hidden" name="page" value="{{ pageKey }}">
+          <input type="hidden" name="lang" value="{{ lang }}">
+          <input type="hidden" name="utm_source" value="">
+          <input type="hidden" name="utm_medium" value="">
+          <input type="hidden" name="utm_campaign" value="">
+          <div class="form__hp" aria-hidden="true">
+            <label for="f-website">Website</label>
+            <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
           <div class="form__foot">
-            <p class="form__hint">{% t 'form.hint' %}</p>
+            <p class="form__hint">{% t 'form.privacy' %} <a href="{{ 'privacy' | pageUrl(lang) }}">{% t 'form.privacy.link' %}</a>.</p>
             <button class="btn btn--accent" type="submit"><span>{% t 'form.submit' %}</span><svg class="btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
           </div>
           <p class="form__status" role="status" aria-live="polite"></p>
+          <div class="form__fail" hidden data-fail-generic="{% ta 'form.fail.generic' %}" data-fail-rate="{% ta 'form.fail.rate' %}">
+            <p class="form__fail-text"></p>
+            <p class="form__fail-links"><a href="{% telHref %}">{% t 'bar.call' %} {{ site.phone.display }}</a> · <a href="{% viberHref %}">Viber</a> · <a href="{% waHref pageKey %}">WhatsApp</a></p>
+          </div>
         </form>
+
+        <div class="form form__done" id="enquiry-done" hidden tabindex="-1">
+          <h3 class="form__title">{% t 'form.done.title' %}</h3>
+          <p>{% t 'form.done.body' %}</p>
+        </div>

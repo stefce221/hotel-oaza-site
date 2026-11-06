@@ -1,0 +1,13 @@
+{%- set intro = formIntro or "contact" -%}
+<section class="contact section" id="contact" aria-labelledby="contact-title" data-enquiry-section>
+      <div class="wrap contact__grid">
+        <div class="contact__intro">
+          <p class="eyebrow">{% t intro + '.eyebrow' %}</p>
+          <{{ titleTag or "h2" }} class="h2" id="contact-title">{% t intro + '.title' %}</{{ titleTag or "h2" }}>
+          <p class="lede">{% t intro + '.lede' %}</p>
+          {% include "partials/contact-details.njk" %}
+        </div>
+
+        {% include "partials/enquiry-form.njk" %}
+      </div>
+    </section>

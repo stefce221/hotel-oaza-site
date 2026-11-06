@@ -1,6 +1,6 @@
 <dl class="contact__details">
             <div><dt>{% t 'contact.rec.t' %}</dt><dd>{% t 'contact.rec.d' %}</dd></div>
-            <div><dt>{% t 'contact.tel' %}</dt><dd><a href="tel:+38970310300">+389 70 310 300</a></dd></div>
-            <div><dt>{% t 'contact.mail' %}</dt><dd><a href="mailto:info@oazahotel.com.mk">info@oazahotel.com.mk</a></dd></div>
+            <div><dt>{% t 'contact.tel' %}</dt><dd><a href="{% telHref %}">{{ site.phone.display }}</a><br><a href="{% viberHref %}">Viber</a> · <a href="{% waHref pageKey %}">WhatsApp</a></dd></div>
+            <div><dt>{% t 'contact.mail' %}</dt><dd><a href="mailto:{{ site.email }}">{{ site.email }}</a></dd></div>
             <div><dt>{% t 'contact.times.t' %}</dt><dd>{% t 'contact.times.d' %}</dd></div>
           </dl>
