@@ -1,0 +1,18 @@
+{
+  "urls": {
+    "home": { "mk": "/", "en": "/en/" },
+    "rooms": { "mk": "/sobi/", "en": "/en/rooms/" },
+    "weddings": { "mk": "/svadbi/", "en": "/en/weddings/" },
+    "conferences": { "mk": "/seminari/", "en": "/en/conferences/" },
+    "restaurant": { "mk": "/restoran/", "en": "/en/restaurant/" },
+    "aquabella": { "mk": "/aquabella/", "en": "/en/aquabella/" },
+    "stip": { "mk": "/shtip/", "en": "/en/stip/" },
+    "contact": { "mk": "/kontakt/", "en": "/en/contact/" },
+    "terms": { "mk": "/uslovi/", "en": "/en/terms/" },
+    "privacy": { "mk": "/privatnost/", "en": "/en/privacy/" },
+    "payments": { "mk": "/plakjanje/", "en": "/en/payments/" }
+  },
+  "nav": ["rooms", "weddings", "conferences", "restaurant", "aquabella", "stip", "contact"],
+  "explore": ["rooms", "weddings", "conferences", "restaurant", "aquabella", "stip"],
+  "legal": ["terms", "privacy", "payments"]
+}

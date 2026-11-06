@@ -1,0 +1,31 @@
+{
+  "url": "https://www.oazahotel.com.mk",
+  "phone": { "e164": "+38970310300", "display": "+389 70 310 300", "local": "070 310 300" },
+  "email": "info@oazahotel.com.mk",
+  "address": { "street": "Tošo Arsov 32", "postcode": "2000", "city": "Štip", "country": "MK" },
+  "operator": {
+    "mk": "МБС Угостителство и трговија ДООЕЛ Штип · ЕДБ 4029018520675",
+    "en": "MBS Ugostitelstvo i trgovija DOOEL Štip · Tax no. 4029018520675"
+  },
+  "whatsapp": {
+    "groups": { "weddings": "weddings", "conferences": "conferences", "home": "stay", "rooms": "stay" },
+    "messages": {
+      "weddings": {
+        "mk": "Здраво, ве контактирам за свадба или прослава.",
+        "en": "Hello, I'm getting in touch about a wedding or celebration."
+      },
+      "conferences": {
+        "mk": "Здраво, ве контактирам за семинар или конференција.",
+        "en": "Hello, I'm getting in touch about a seminar or conference."
+      },
+      "stay": {
+        "mk": "Здраво, би сакал/а да резервирам соба.",
+        "en": "Hello, I'd like to book a room."
+      },
+      "default": {
+        "mk": "Здраво, имам прашање за Хотел Оаза.",
+        "en": "Hello, I have a question for Hotel Oaza."
+      }
+    }
+  }
+}
