@@ -1,0 +1,10 @@
+---
+pageKey: privacy
+pagination:
+  data: languages
+  size: 1
+  alias: lang
+permalink: "{{ pageKey | pageUrl(lang) }}"
+layout: layouts/base.njk
+---
+{% include "partials/legal-page.njk" %}

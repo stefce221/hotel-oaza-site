@@ -1,0 +1,32 @@
+/* Policy pages: a readable column; hotel markers highlighted in dev and preview builds. */
+.legal__wrap {
+  max-width: 46rem;
+}
+
+.legal__updated {
+  margin-top: 0.75rem;
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+}
+
+.legal__body {
+  margin-top: 2.5rem;
+}
+
+.legal__body h2 {
+  margin: 2.5rem 0 0.75rem;
+  font-family: var(--font-heading);
+  font-size: var(--fs-h3);
+}
+
+.legal__body p + p,
+.legal__body ul {
+  margin-top: 1rem;
+}
+
+.hotel-marker {
+  padding: 0 0.2em;
+  background: #ffe58a;
+  color: #3d2e00;
+  outline: 1px dashed #b38600;
+}

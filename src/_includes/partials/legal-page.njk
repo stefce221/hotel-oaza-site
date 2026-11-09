@@ -1,0 +1,10 @@
+<section class="section legal" aria-labelledby="page-title">
+      <div class="wrap legal__wrap">
+        <p class="eyebrow">{% t 'footer.legal' %}</p>
+        <h1 class="h2" id="page-title">{% t 'nav.' + pageKey %}</h1>
+        <p class="legal__updated">{% t 'legal.updated' %}</p>
+        <div class="prose legal__body">
+          {% include "legal/" + pageKey + "." + lang + ".njk" %}
+        </div>
+      </div>
+    </section>

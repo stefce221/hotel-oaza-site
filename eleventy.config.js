@@ -6,6 +6,7 @@ import { assetUrl } from "./config/assets.js";
 import { readBuildEnv } from "./config/build-env.js";
 import { loadSite, telHref, viberHref, whatsappHref } from "./config/contact.js";
 import { inOrder } from "./config/lists.js";
+import { highlightMarkers } from "./config/markers.js";
 import {
   createTranslator,
   escapeAttr,
@@ -47,6 +48,13 @@ export default function (eleventyConfig) {
     "src/assets/img": "assets/img",
     "src/assets/js": "assets/js",
   });
+
+  /* Dev and preview builds show markers highlighted; the live build refuses them (scripts/check-markers.mjs). */
+  if (ENV !== "live") {
+    eleventyConfig.addTransform("hotel-markers", function (content) {
+      return (this.page.outputPath || "").endsWith(".html") ? highlightMarkers(content) : content;
+    });
+  }
 
   /* The page language comes from its URL (/en/… = English); a second argument overrides it (404 page). */
   const langOf = (page, lang) => lang || langFromUrl(page.url);
