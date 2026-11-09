@@ -11,6 +11,8 @@
   overflow: hidden;
 }
 
+/* .form is display: grid, which would otherwise beat the [hidden] attribute. */
+.form[hidden],
 .form__fail[hidden],
 .form__done[hidden] {
   display: none;

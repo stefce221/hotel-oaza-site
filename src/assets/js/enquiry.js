@@ -5,6 +5,7 @@
   var rules = window.oazaEnquiryRules;
   var i18n = window.oazaI18n;
   /* Fields that have an error slot under them. */
+  var REQUEST_TIMEOUT_MS = 30000;
   var SLOTS = ["arrival", "departure", "company", "name", "email", "phone", "message"];
 
   function $(sel, root) {
@@ -46,7 +47,8 @@
     field.classList.toggle("has-error", Boolean(message));
     input.setAttribute("aria-invalid", message ? "true" : "false");
     var slot = $(".field__error", field);
-    if (slot) slot.textContent = message || "";
+    /* Only write when the text changes, so a live region doesn't re-announce the same message. */
+    if (slot && slot.textContent !== (message || "")) slot.textContent = message || "";
   }
 
   /* Tie each error slot to its control so the reason is re-read on focus. */
@@ -68,13 +70,14 @@
     return data;
   }
 
-  /* Write each slot's message (or clear it); returns the first field with an error. */
-  function showErrors(form, errors, fromServer) {
+  /* Write each slot's message (or clear it); returns the first visible field with an error, or null. */
+  function showErrors(form, errors) {
     var first = null;
     SLOTS.forEach(function (name) {
       var code = errors[name];
-      setError(form.elements[name], code ? i18n.t(fromServer ? "err.server" : "err." + code) : "");
-      if (code && !first) first = form.elements[name];
+      var input = form.elements[name];
+      setError(input, code ? i18n.t("err." + code) : "");
+      if (code && !first && input.offsetParent !== null) first = input;
     });
     return first;
   }
@@ -102,6 +105,7 @@
   function showFail(ui, kind) {
     $(".form__fail-text", ui.fail).textContent = ui.fail.getAttribute("data-fail-" + kind);
     ui.fail.hidden = false;
+    ui.fail.focus({ preventScroll: true });
     var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     ui.fail.scrollIntoView({ block: "nearest", behavior: calm ? "auto" : "smooth" });
   }
@@ -123,11 +127,16 @@
     if (error.code === "invalid") {
       var errors = {};
       (error.fields || []).forEach(function (field) {
-        errors[field] = "server";
+        errors[field] = field === "arrival" || field === "departure" ? "date" : "server";
       });
-      var bad = showErrors(form, errors, true);
+      var bad = showErrors(form, errors);
+      if (!bad) {
+        /* No visible field can show the error: don't point at highlights that aren't there. */
+        showFail(ui, "generic");
+        return;
+      }
       ui.status.textContent = i18n.t("status.fix");
-      if (bad) bad.focus();
+      bad.focus();
       return;
     }
     /* Server error, rate limit, or no server at all (the GitHub preview): offer phone, Viber and WhatsApp. */
@@ -148,7 +157,12 @@
       handleResult(form, ui, result);
     }
 
-    fetch(form.action, { method: "POST", body: new URLSearchParams(new FormData(form)), headers: { Accept: "application/json" } })
+    var controller = typeof AbortController === "function" ? new AbortController() : null;
+    var timer = controller ? setTimeout(function () { controller.abort(); }, REQUEST_TIMEOUT_MS) : null;
+    var options = { method: "POST", body: new URLSearchParams(new FormData(form)), headers: { Accept: "application/json" } };
+    if (controller) options.signal = controller.signal;
+
+    fetch(form.action, options)
       .then(function (res) {
         return res.json().then(
           function (body) {
@@ -162,7 +176,10 @@
       .catch(function () {
         return { ok: false, body: null };
       })
-      .then(finish);
+      .then(function (result) {
+        if (timer) clearTimeout(timer);
+        finish(result);
+      });
   }
 
   function init() {
@@ -186,10 +203,14 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var errors = rules.validate(values(form), rules.todayIso());
-      var bad = showErrors(form, errors, false);
+      var bad = showErrors(form, errors);
       if (Object.keys(errors).length) {
+        if (!bad) {
+          showFail(ui, "generic");
+          return;
+        }
         ui.status.textContent = i18n.t("status.fix");
-        if (bad) bad.focus();
+        bad.focus();
         return;
       }
       send(form, ui);
@@ -197,7 +218,7 @@
 
     /* Once an error is showing, re-check live. Arrival is included because changing it can fix a departure error. */
     function revalidate() {
-      if ($('[aria-invalid="true"]', form)) showErrors(form, rules.validate(values(form), rules.todayIso()), false);
+      if ($('[aria-invalid="true"]', form)) showErrors(form, rules.validate(values(form), rules.todayIso()));
     }
     SLOTS.forEach(function (name) {
       form.elements[name].addEventListener("input", revalidate);

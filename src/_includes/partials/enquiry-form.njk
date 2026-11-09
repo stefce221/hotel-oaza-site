@@ -102,13 +102,13 @@
             <button class="btn btn--accent" type="submit"><span>{% t 'form.submit' %}</span><svg class="btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
           </div>
           <p class="form__status" role="status" aria-live="polite"></p>
-          <div class="form__fail" role="alert" hidden data-fail-generic="{% ta 'form.fail.generic' %}" data-fail-rate="{% ta 'form.fail.rate' %}">
+          <div class="form__fail" role="alert" tabindex="-1" hidden data-fail-generic="{% ta 'form.fail.generic' %}" data-fail-rate="{% ta 'form.fail.rate' %}">
             <p class="form__fail-text"></p>
             <p class="form__fail-links"><a href="{% telHref %}">{% t 'bar.call' %} {{ site.phone.display }}</a> · <a href="{% viberHref %}">Viber</a> · <a href="{% waHref pageKey %}">WhatsApp</a></p>
           </div>
         </form>
 
-        <div class="form form__done" id="enquiry-done" hidden tabindex="-1">
-          <{{ "h2" if titleTag == "h1" else "h3" }} class="form__title">{% t 'form.done.title' %}</{{ "h2" if titleTag == "h1" else "h3" }}>
+        <div class="form form__done" id="enquiry-done" hidden tabindex="-1" aria-labelledby="enquiry-done-title">
+          <{{ "h2" if titleTag == "h1" else "h3" }} class="form__title" id="enquiry-done-title">{% t 'form.done.title' %}</{{ "h2" if titleTag == "h1" else "h3" }}>
           <p>{% t 'form.done.body' %}</p>
         </div>
