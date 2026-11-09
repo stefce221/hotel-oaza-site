@@ -5,6 +5,7 @@ What only the hotel and the owner can do. Spec: `docs/superpowers/specs/2026-11-
 ## Before the first push of this work
 
 - [ ] In GitHub → hotel-oaza-site → Settings → Pages, set **Source: GitHub Actions**. Until then the preview link stops working after the push, because the old root `index.html` is gone.
+- [ ] If the first push already happened before the source was switched, switch it now, then run the workflow once: Actions → Preview → "Run workflow". If GitHub offers a starter workflow during the switch, don't commit it; the repo already has `.github/workflows/pages.yml`.
 - [ ] Approve the push. Every push updates the preview link your friend uses.
 
 ## Facts the hotel must supply (the live build refuses to run without them)
@@ -39,7 +40,11 @@ Each appears on the site as `[[HOTEL: …]]`, highlighted in yellow on the previ
 
 - [ ] In cPanel, confirm the PHP selector offers PHP 8.0 or newer with the `mbstring` and `openssl` extensions.
 - [ ] Create the sending mailbox on oazahotel.com.mk (for example web@) and note its SMTP settings.
-- [ ] Create `/home/oazahote/private/` outside `public_html`. Copy `deploy/private/config.example.php` there as `config.php` and fill in the mailbox, its password and a random salt.
+- [ ] The site must sit directly in `/home/oazahote/public_html`, because the endpoint looks for `config.php` in `/home/oazahote/private`. If the domain's folder is somewhere else (for example an addon domain), tell the developer before upload.
+- [ ] Create `/home/oazahote/private/` outside `public_html` with permissions **700** (cPanel File Manager → Change Permissions). Then copy `deploy/private/config.example.php` there as `config.php` and fill in the mailbox, its password and a random salt.
+- [ ] The mail login: `username` in `config.php` must be the same mailbox as `from`, and `mail.oazahotel.com.mk` must present a valid certificate for that name (the mail settings page at MKhost says which host name to use). Never switch off certificate checks to make it work; tell the developer instead.
+- [ ] If info@oazahotel.com.mk is read somewhere other than MKhost (for example Gmail or Microsoft 365), set cPanel → Email Routing to **Remote Mail Exchanger** for oazahotel.com.mk. Otherwise enquiries land in an unused mailbox on the server.
+- [ ] Ask MKhost whether a proxy or CDN sits in front of the site. If one does, tell the developer before launch: the visitor limit on enquiries and the redirect to HTTPS both depend on it.
 - [ ] In cPanel → Email Deliverability, fix SPF and DKIM for oazahotel.com.mk if it reports problems.
 - [ ] Set up WhatsApp (ideally WhatsApp Business) and Viber on +389 70 310 300, so the new buttons reach someone.
 - [ ] Before launch, tap the Viber button on an Android phone, an iPhone and a Windows PC with Viber installed. Each must open a chat with +389 70 310 300. If one doesn't, tell the developer which device.
@@ -53,24 +58,21 @@ Open each address in a browser (a private window is fine). If anything below dif
 - [ ] Opening `/api/enquiry.php` in the browser must answer **405** with a short line of JSON text (not a blank page, not a PHP error).
 - [ ] `/cpay/ok.php` must answer **200** and show the short "payment status received" page in Macedonian and English.
 - [ ] If the whole site, every page, answers "500 Internal Server Error" after the upload, the host does not allow `Options` in `.htaccess`. Tell the developer; it is one line to remove.
-- [ ] Create `/home/oazahote/private` with permissions **700** (cPanel File Manager → Change Permissions) before copying `config.php` into it.
-- [ ] The mail login: `username` in `config.php` must be the same mailbox as `from`, and `mail.oazahotel.com.mk` must present a valid certificate for that name (the mail settings page at MKhost says which host name to use). Never switch off certificate checks to make it work; tell the developer instead.
-- [ ] If info@oazahotel.com.mk is read somewhere other than MKhost (for example Gmail or Microsoft 365), set cPanel → Email Routing to **Remote Mail Exchanger** for oazahotel.com.mk. Otherwise enquiries land in an unused mailbox on the server.
-- [ ] Ask MKhost whether a proxy or CDN sits in front of the site. If one does, tell the developer before launch: the visitor limit on enquiries and the redirect to HTTPS both depend on it.
 
 ## Launch (only on the owner's go)
 
 1. Fill every marker above, then run `npm run build` (it must pass) and `npm run check:live` (not only `npm run check`). It fails unless `_site/` is a live build, so a preview or dev build that would hide the site from Google can't be uploaded by mistake.
-2. Switch the account to PHP 8.x in cPanel.
-3. Back up the old site from `public_html`, and list its addresses.
-4. Upload `_site/` over SSH.
-5. Add a 301 redirect to `.htaccess` for each old address, pointing to the matching new page.
-6. Do the checks under "Right after the first upload" above (the 403, 405 and 200 answers).
-7. Send a real enquiry from the site and confirm it reaches info@oazahotel.com.mk.
-8. Redirect oazahotel.com (if renewed) to https://www.oazahotel.com.mk/, and malodmor.mk to /restoran/.
-9. Add the site to Google Search Console and submit `https://www.oazahotel.com.mk/sitemap.xml`.
+2. Back up the old site from `public_html`, and list its addresses.
+3. Empty `public_html`, keeping `.well-known`.
+4. Switch the account to PHP 8.x in cPanel.
+5. Upload with `rsync -av _site/ <ssh-user>@<server>:public_html/` (fill in the real SSH user and host). The trailing slash also copies `.htaccess` and other dotfiles; a `_site/*` glob would skip them.
+6. Add a 301 redirect to `.htaccess` for each old address, pointing to the matching new page.
+7. Do the checks under "Right after the first upload" above (the 403, 405 and 200 answers).
+8. Send a real enquiry from the site and confirm it reaches info@oazahotel.com.mk.
+9. Redirect oazahotel.com (if renewed) to https://www.oazahotel.com.mk/, and malodmor.mk to /restoran/.
+10. Add the site to Google Search Console and submit `https://www.oazahotel.com.mk/sitemap.xml`.
 
 ## Later projects
 
-- cPay card payments: the payment form, the staff page for Booking.com virtual cards and the card logos. They replace `src/cpay/`.
+- cPay card payments: the payment form, the staff page for Booking.com virtual cards and the card logos. They replace `src/cpay/`. The cPay project must also add a retention period and privacy text for the payment-status records the placeholders keep in `private/cpay-inbox` and `cpay-ratelimit.json`.
 - The effects decision. Review the effects at any page with `?fx=panel`.
