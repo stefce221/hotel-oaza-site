@@ -102,6 +102,8 @@
   function showFail(ui, kind) {
     $(".form__fail-text", ui.fail).textContent = ui.fail.getAttribute("data-fail-" + kind);
     ui.fail.hidden = false;
+    var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    ui.fail.scrollIntoView({ block: "nearest", behavior: calm ? "auto" : "smooth" });
   }
 
   function showDone(form, ui) {
@@ -170,6 +172,8 @@
     prefill(form);
     fillUtm(form);
     rules.linkDatePair(form.elements.arrival, form.elements.departure, rules.todayIso());
+    /* Prefill ran before the pair was linked: replay it so departure.min follows the prefilled arrival. */
+    if (form.elements.arrival.value) form.elements.arrival.dispatchEvent(new Event("change"));
     linkErrors(form);
     syncMode(form);
     updateNights(form);

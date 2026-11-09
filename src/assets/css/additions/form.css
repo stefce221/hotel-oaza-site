@@ -30,6 +30,12 @@
   font-weight: 500;
 }
 
+.form__fail-links a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
 .form__done {
   display: grid;
   align-content: center;

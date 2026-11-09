@@ -16,7 +16,7 @@
           </div>
 
           <aside class="getting" data-reveal style="--d:1" aria-labelledby="getting-title">
-            <h3 class="h3" id="getting-title">{% t 'get.title' %}</h3>
+            <{{ "h2" if titleTag == "h1" else "h3" }} class="h3" id="getting-title">{% t 'get.title' %}</{{ "h2" if titleTag == "h1" else "h3" }}>
             <dl>
               <div><dt>{% t 'get.addr.t' %}</dt><dd>{% t 'get.addr.d' %}</dd></div>
               <div><dt>{% t 'get.air.t' %}</dt><dd>{% t 'get.air.d' %}</dd></div>

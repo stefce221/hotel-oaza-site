@@ -17,7 +17,7 @@
         </div>
 
         <div class="aqua__card" data-reveal style="--d:2">
-          <h3 class="h3">{% t 'aqua.card' %}</h3>
+          <{{ "h2" if titleTag == "h1" else "h3" }} class="h3">{% t 'aqua.card' %}</{{ "h2" if titleTag == "h1" else "h3" }}>
           <dl class="aqua__facts">
             <div class="aqua__fact"><dt>{% t 'aqua.f1' %}</dt><dd>22,000 m²</dd></div>
             <div class="aqua__fact"><dt>{% t 'aqua.f2' %}</dt><dd>3</dd></div>

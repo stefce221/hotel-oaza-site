@@ -50,7 +50,7 @@
               </div>
               <div class="room__body">
                 <div class="room__head">
-                  <h3 class="room__title h3" id="title-single">{% t 'room.single.name' %}</h3>
+                  <{{ "h2" if titleTag == "h1" else "h3" }} class="room__title h3" id="title-single">{% t 'room.single.name' %}</{{ "h2" if titleTag == "h1" else "h3" }}>
                   <p class="room__meta">{% t 'room.single.meta' %}</p>
                 </div>
                 <p class="room__desc">{% t 'room.single.desc' %}</p>
@@ -70,7 +70,7 @@
               </div>
               <div class="room__body">
                 <div class="room__head">
-                  <h3 class="room__title h3" id="title-double">{% t 'room.double.name' %}</h3>
+                  <{{ "h2" if titleTag == "h1" else "h3" }} class="room__title h3" id="title-double">{% t 'room.double.name' %}</{{ "h2" if titleTag == "h1" else "h3" }}>
                   <p class="room__meta">{% t 'room.double.meta' %}</p>
                 </div>
                 <p class="room__desc">{% t 'room.double.desc' %}</p>
@@ -90,7 +90,7 @@
               </div>
               <div class="room__body">
                 <div class="room__head">
-                  <h3 class="room__title h3" id="title-twin">{% t 'room.twin.name' %}</h3>
+                  <{{ "h2" if titleTag == "h1" else "h3" }} class="room__title h3" id="title-twin">{% t 'room.twin.name' %}</{{ "h2" if titleTag == "h1" else "h3" }}>
                   <p class="room__meta">{% t 'room.twin.meta' %}</p>
                 </div>
                 <p class="room__desc">{% t 'room.twin.desc' %}</p>
@@ -110,7 +110,7 @@
               </div>
               <div class="room__body">
                 <div class="room__head">
-                  <h3 class="room__title h3" id="title-apartment">{% t 'room.apartment.name' %}</h3>
+                  <{{ "h2" if titleTag == "h1" else "h3" }} class="room__title h3" id="title-apartment">{% t 'room.apartment.name' %}</{{ "h2" if titleTag == "h1" else "h3" }}>
                   <p class="room__meta">{% t 'room.apartment.meta' %}</p>
                 </div>
                 <p class="room__desc">{% t 'room.apartment.desc' %}</p>

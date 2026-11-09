@@ -2,3 +2,11 @@
 .page-inner #main > :first-child:not(.page-hero) {
   padding-top: calc(var(--header-h) + var(--section-y) * 0.6);
 }
+
+/* Landmarks on the Štip page sit under the page h1, so they are h2 elements that look like the old h3. */
+.landmark h2 {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
