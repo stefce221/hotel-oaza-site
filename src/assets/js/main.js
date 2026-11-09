@@ -350,9 +350,14 @@
   /* ---------- Phone bar: after the hero (at once on inner pages), hidden while a form is on screen ---------- */
   function initActionBar() {
     var bar = $(".action-bar");
-    if (!bar || !("IntersectionObserver" in window)) return;
+    if (!bar) return;
     var hero = $(".hero, .page-hero");
     var formSection = $("[data-enquiry-section]");
+    if (!("IntersectionObserver" in window)) {
+      /* No way to watch the hero or the form: show the bar on inner pages that have neither, and leave it hidden elsewhere. */
+      if (!hero && !formSection) bar.classList.add("is-visible");
+      return;
+    }
     var heroOut = !hero;
     var formIn = false;
 

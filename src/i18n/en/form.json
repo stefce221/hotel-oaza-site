@@ -9,5 +9,5 @@
   "form.fail.generic": "We couldn't send your enquiry just now. Your text is still here, so you can try again in a moment, or reach us directly:",
   "form.fail.rate": "You've sent several enquiries in a short time. Please reach us directly:",
   "form.done.title": "Thank you — your enquiry has reached us",
-  "form.done.body": "We'll reply by email as soon as we can. If it's urgent, call us on +389 70 310 300."
+  "form.done.body": "We'll reply by email as soon as we can. If it's urgent, call us on {phone}."
 }

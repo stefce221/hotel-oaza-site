@@ -11,6 +11,11 @@ test("inOrder returns the entries in the requested order, with their key", () =>
   ]);
 });
 
+test("inOrder explains what is missing when the list of keys is not an array", () => {
+  assert.throws(() => inOrder(HALLS, undefined), /inOrder needs a list of keys/);
+  assert.throws(() => inOrder(HALLS, "grand"), /inOrder needs a list of keys/);
+});
+
 test("inOrder refuses a key that does not exist", () => {
   assert.throws(() => inOrder(HALLS, ["ballroom"]), /Unknown entry "ballroom"/);
 });

@@ -110,5 +110,7 @@
 
         <div class="form form__done" id="enquiry-done" hidden tabindex="-1" aria-labelledby="enquiry-done-title">
           <{{ "h2" if titleTag == "h1" else "h3" }} class="form__title" id="enquiry-done-title">{% t 'form.done.title' %}</{{ "h2" if titleTag == "h1" else "h3" }}>
-          <p>{% t 'form.done.body' %}</p>
+          {%- set doneBody %}{% t 'form.done.body' %}{% endset %}
+          {%- set doneTel %}{% telHref %}{% endset %}
+          <p>{{ doneBody | replace("{phone}", '<a href="' + doneTel + '">' + site.phone.display + '</a>') | safe }}</p>
         </div>

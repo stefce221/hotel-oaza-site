@@ -3,7 +3,7 @@
           {%- if l == lang %}
           <span class="lang__btn" aria-current="true" lang="{{ l }}">{{ "EN" if l == "en" else "МК" }}</span>
           {%- else %}
-          <a class="lang__btn" href="{{ (langTargetKey or pageKey) | pageUrl(l) }}" lang="{{ l }}" hreflang="{{ l }}" aria-label="{% ta 'lang.' + l %}">{{ "EN" if l == "en" else "МК" }}</a>
+          <a class="lang__btn" href="{{ (langTargetKey or pageKey) | pageUrl(l) }}" lang="{{ l }}" hreflang="{{ l }}" aria-label="{{ "EN" if l == "en" else "МК" }}, {% ta 'lang.' + l %}">{{ "EN" if l == "en" else "МК" }}</a>
           {%- endif %}
           {%- endfor %}
         </div>
