@@ -5,7 +5,7 @@
   var rules = window.oazaEnquiryRules;
   var i18n = window.oazaI18n;
   /* Fields that have an error slot under them. */
-  var REQUEST_TIMEOUT_MS = 30000;
+  var REQUEST_TIMEOUT_MS = 45000;
   var SLOTS = ["arrival", "departure", "company", "name", "email", "phone", "message"];
 
   function $(sel, root) {

@@ -32,7 +32,8 @@ function build_mailer(array $mail, array $message): PHPMailer
         $mailer->SMTPAuth = true;
         $mailer->Username = $mail['username'];
         $mailer->Password = $mail['password'];
-        $mailer->Timeout = 20;
+        $mailer->Timeout = 10;
+        $mailer->getSMTPInstance()->Timelimit = 10; /* the default 300 s outlasts the browser */
     }
     return $mailer;
 }

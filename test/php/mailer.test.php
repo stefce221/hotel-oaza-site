@@ -46,3 +46,10 @@ test('mailer: the file transport appends one JSON line per message', function ()
         'body' => TEST_MAIL_MESSAGE['body'],
     ], json_decode($lines[0], true));
 });
+
+test('mailer: SMTP waits end after 10 s, well before the browser gives up', function (): void {
+    $smtp = ['transport' => 'smtp', 'host' => 'mail.example.mk', 'port' => 465, 'secure' => 'ssl', 'username' => 'u', 'password' => 'p'] + TEST_MAIL_CONFIG;
+    $mailer = build_mailer($smtp, TEST_MAIL_MESSAGE); /* builds only; nothing connects until send() */
+    same(10, $mailer->Timeout, 'connect and socket timeout');
+    same(10, $mailer->getSMTPInstance()->Timelimit, 'SMTP reply time limit');
+});
