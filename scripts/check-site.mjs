@@ -5,7 +5,7 @@ import { LANGS, loadDictionaries, loadRuntime, missingKeys } from "../config/i18
 import { findMarkers } from "../config/markers.js";
 import { pageKeys, pageUrl } from "../config/pages.js";
 import { cssSplitIntact } from "./check-css-split.mjs";
-import { extractRefs, headIssues, indexingIssues, isExternal, missingFragments, refToFile } from "./lib/site-checks.mjs";
+import { LIVE_SERVER_FILES, extractRefs, headIssues, indexingIssues, isExternal, missingFragments, missingServerFiles, refToFile } from "./lib/site-checks.mjs";
 
 const SITE = "_site";
 const problems = [];
@@ -53,6 +53,8 @@ for (const key of pageKeys()) {
     if (!existsSync(path.join(SITE, file))) problems.push(`missing ${lang} page "${key}" (${file})`);
   }
 }
+
+if (env === "live") for (const file of missingServerFiles(LIVE_SERVER_FILES.filter((rel) => existsSync(path.join(SITE, rel))))) problems.push(`live build is missing ${file}`);
 
 for (const gap of missingKeys(loadDictionaries("src/i18n"))) problems.push(`dictionary: missing ${gap}`);
 for (const gap of missingKeys(loadRuntime("src/i18n"))) problems.push(`runtime strings: missing ${gap}`);

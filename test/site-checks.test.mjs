@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { extractRefs, headIssues, indexingIssues, isExternal, missingFragments, refToFile } from "../scripts/lib/site-checks.mjs";
+import { extractRefs, headIssues, indexingIssues, isExternal, missingFragments, missingServerFiles, refToFile } from "../scripts/lib/site-checks.mjs";
 
 test("extractRefs collects href, src, action and srcset entries, skipping in-page anchors", () => {
   const html = [
@@ -104,4 +104,11 @@ test("indexingIssues: dev and preview need noindex on every page and Disallow: /
     assert.match(issues[0], /en\/index\.html/);
     assert.match(issues[1], /robots\.txt.*Disallow/);
   }
+});
+
+test("missingServerFiles lists the live server files that are absent", () => {
+  const all = [".htaccess", "api/.htaccess", "api/.user.ini", "api/enquiry.php", "cpay/.htaccess", "cpay/.user.ini", "cpay/ok.php", "cpay/fail.php"];
+  assert.deepEqual(missingServerFiles(new Set(all)), []);
+  assert.deepEqual(missingServerFiles(all.filter((file) => file !== "api/.user.ini" && file !== "cpay/fail.php")), ["api/.user.ini", "cpay/fail.php"]);
+  assert.equal(missingServerFiles([]).length, 8);
 });

@@ -50,6 +50,24 @@ export function headIssues(html, { notFound = false } = {}) {
   return issues;
 }
 
+/** Server files that only the live build ships. */
+export const LIVE_SERVER_FILES = [
+  ".htaccess",
+  "api/.htaccess",
+  "api/.user.ini",
+  "api/enquiry.php",
+  "cpay/.htaccess",
+  "cpay/.user.ini",
+  "cpay/ok.php",
+  "cpay/fail.php",
+];
+
+/** The live server files that are not in `existing` (a Set or array of paths relative to _site/). */
+export function missingServerFiles(existing) {
+  const have = new Set(existing);
+  return LIVE_SERVER_FILES.filter((file) => !have.has(file));
+}
+
 const NOINDEX_META = /<meta name="robots" content="noindex">/;
 
 /**

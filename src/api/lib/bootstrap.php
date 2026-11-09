@@ -69,9 +69,10 @@ function config_problems(array $config): array
     $transport = $mail['transport'] ?? '';
     $mailKeys = array_merge(['from', 'from_name', 'to'], $byTransport[$transport] ?? []);
     $empty = static fn (mixed $value): bool => $value === null || $value === '';
+    $unusable = static fn (mixed $value): bool => $empty($value) || !is_string($value);
     return array_merge(
-        $empty($config['private_dir'] ?? null) ? ['private_dir'] : [],
-        $empty($config['rate']['salt'] ?? null) ? ['rate.salt'] : [],
+        $unusable($config['private_dir'] ?? null) ? ['private_dir'] : [],
+        $unusable(is_array($config['rate'] ?? null) ? ($config['rate']['salt'] ?? null) : null) ? ['rate.salt'] : [],
         isset($byTransport[$transport]) ? [] : ['mail.transport'],
         array_map(
             static fn (string $key): string => "mail.$key",

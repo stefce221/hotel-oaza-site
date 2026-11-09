@@ -7,6 +7,14 @@ test('config_problems names every missing setting', function (): void {
     same(['private_dir', 'rate.salt', 'mail.transport', 'mail.from', 'mail.from_name', 'mail.to'], config_problems([]));
 });
 
+test('config_problems rejects a private_dir or salt that is not a string, by name only', function (): void {
+    $base = smtp_config();
+    same(['private_dir'], config_problems(array_merge($base, ['private_dir' => 42])), 'private_dir as a number');
+    same(['private_dir'], config_problems(array_merge($base, ['private_dir' => ['x']])), 'private_dir as a list');
+    same(['rate.salt'], config_problems(array_merge($base, ['rate' => ['limit' => 5, 'window' => 3600, 'salt' => 12345]])), 'salt as a number');
+    truthy(!str_contains(implode(',', config_problems(array_merge($base, ['rate' => ['salt' => 98765]]))), '98765'), 'no values');
+});
+
 test('config_problems accepts a complete SMTP config', function (): void {
     same([], config_problems([
         'private_dir' => '/home/oazahote/private',
