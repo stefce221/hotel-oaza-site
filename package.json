@@ -11,6 +11,7 @@
     "start": "eleventy --serve --port=5510",
     "build": "cross-env OAZA_ENV=live eleventy && node scripts/check-markers.mjs",
     "build:preview": "cross-env OAZA_ENV=preview PATH_PREFIX=/hotel-oaza-site/ eleventy",
+    "check": "node scripts/check-site.mjs",
     "test": "node --test \"test/**/*.test.mjs\""
   },
   "devDependencies": {
