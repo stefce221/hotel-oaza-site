@@ -20,3 +20,9 @@ function is_form_post(array $server): bool
 {
     return str_starts_with(strtolower((string) ($server['CONTENT_TYPE'] ?? '')), 'application/x-www-form-urlencoded');
 }
+
+/** The salted hash that stands for one visitor in the rate limit files; the address itself is never stored. */
+function visitor_key(string $salt, array $server): string
+{
+    return hash('sha256', $salt . '|' . (string) ($server['REMOTE_ADDR'] ?? ''));
+}

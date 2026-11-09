@@ -36,7 +36,7 @@ if ($result['errors'] !== []) {
     respond_error(422, 'invalid', array_keys($result['errors']));
 }
 
-$visitor = hash('sha256', $config['rate']['salt'] . '|' . ($_SERVER['REMOTE_ADDR'] ?? ''));
+$visitor = visitor_key($config['rate']['salt'], $_SERVER);
 try {
     $limited = rate_limited(
         $config['private_dir'] . '/ratelimit.json',

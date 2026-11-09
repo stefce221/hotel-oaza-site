@@ -6,11 +6,18 @@ declare(strict_types=1);
 
 require_once dirname(__DIR__, 2) . '/api/lib/bootstrap.php';
 
-/** Keeps the push (when it has fields) and shows a short bilingual page. */
+/* These addresses are public, so a stranger could post to them in a loop. Limits keep the hosting quota safe. */
+const CPAY_MAX_BYTES = 16384;
+const CPAY_MAX_FIELDS = 50;
+const CPAY_MAX_VALUE = 1024;
+const CPAY_MAX_FILES = 500;
+const CPAY_MAX_PER_HOUR = 20;
+
+/** Keeps the push (when it has fields and is within the limits) and shows a short bilingual page, whatever happens. */
 function cpay_placeholder(string $kind): void
 {
     if ($_POST !== []) {
-        save_cpay_push($kind, $_POST);
+        save_cpay_push($kind, $_POST, (int) ($_SERVER['CONTENT_LENGTH'] ?? 0));
     }
     http_response_code(200);
     header('Content-Type: text/html; charset=utf-8');
@@ -19,21 +26,72 @@ function cpay_placeholder(string $kind): void
     echo cpay_page();
 }
 
+/** At most CPAY_MAX_FIELDS fields with string names and values, each value cut to CPAY_MAX_VALUE characters. */
+function limit_cpay_fields(array $fields): array
+{
+    $kept = [];
+    foreach ($fields as $name => $value) {
+        if (count($kept) >= CPAY_MAX_FIELDS) {
+            break;
+        }
+        if (is_string($value)) {
+            $kept[$name] = function_exists('mb_substr')
+                ? mb_substr($value, 0, CPAY_MAX_VALUE, 'UTF-8')
+                : substr($value, 0, CPAY_MAX_VALUE);
+        }
+    }
+    return $kept;
+}
+
+/** Why this push must not be saved: a log code ('' when it may be). Never contains a field value. */
+function cpay_refusal(array $config, string $inbox, int $length): string
+{
+    if ($length > CPAY_MAX_BYTES) {
+        return 'cpay_too_large';
+    }
+    if (is_dir($inbox) && count(scandir($inbox) ?: []) - 2 >= CPAY_MAX_FILES) {
+        return 'cpay_inbox_full';
+    }
+    try {
+        $limited = rate_limited(
+            $config['private_dir'] . '/cpay-ratelimit.json',
+            visitor_key($config['rate']['salt'], $_SERVER),
+            CPAY_MAX_PER_HOUR,
+            3600,
+            time(),
+        );
+    } catch (Throwable $e) {
+        return ''; /* a broken counter must not drop a payment notice */
+    }
+    return $limited ? 'cpay_rate_limited' : '';
+}
+
 /** private/cpay-inbox/YYYYMMDD-HHMMSS-<kind>-<random>.json; a failure is logged, never shown. */
-function save_cpay_push(string $kind, array $fields): void
+function save_cpay_push(string $kind, array $fields, int $length): void
 {
     try {
         $config = load_config(config_path());
+    } catch (Throwable $e) {
+        error_log('Hotel Oaza cPay placeholder: ' . $e->getMessage());
+        return;
+    }
+    try {
         $dir = $config['private_dir'] . '/cpay-inbox';
+        $refusal = cpay_refusal($config, $dir, $length);
+        if ($refusal !== '') {
+            log_error($config['private_dir'], $refusal);
+            return;
+        }
         if (!is_dir($dir) && !mkdir($dir, 0700, true)) {
             throw new RuntimeException('cpay_inbox');
         }
-        $record = ['received' => date('c'), 'kind' => $kind, 'fields' => $fields];
+        $record = ['received' => date('c'), 'kind' => $kind, 'fields' => limit_cpay_fields($fields)];
         $file = sprintf('%s/%s-%s-%s.json', $dir, date('Ymd-His'), $kind, bin2hex(random_bytes(4)));
         $json = json_encode($record, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR);
         if (file_put_contents($file, $json) === false) {
             throw new RuntimeException('cpay_write');
         }
+        chmod($file, 0600);
     } catch (Throwable $e) {
         error_log('Hotel Oaza cPay placeholder: ' . $e->getMessage());
     }
