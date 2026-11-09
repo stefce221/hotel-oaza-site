@@ -1,0 +1,14 @@
+{%- set canonical = site.url + (pageKey | pageUrl(lang)) %}
+  <link rel="canonical" href="{{ canonical }}">
+  <link rel="alternate" hreflang="mk" href="{{ site.url }}{{ pageKey | pageUrl('mk') }}">
+  <link rel="alternate" hreflang="en" href="{{ site.url }}{{ pageKey | pageUrl('en') }}">
+  <link rel="alternate" hreflang="x-default" href="{{ site.url }}{{ pageKey | pageUrl('mk') }}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{% ta 'site.name' %}">
+  <meta property="og:title" content="{% ta 'page.' + pageKey + '.title' %}">
+  <meta property="og:description" content="{% ta 'page.' + pageKey + '.description' %}">
+  <meta property="og:url" content="{{ canonical }}">
+  <meta property="og:image" content="{{ site.url }}{{ ogImages[pageKey] or ogImages.default }}">
+  <meta property="og:locale" content="{{ 'mk_MK' if lang == 'mk' else 'en_GB' }}">
+  <meta property="og:locale:alternate" content="{{ 'en_GB' if lang == 'mk' else 'mk_MK' }}">
+  <meta name="twitter:card" content="summary_large_image">

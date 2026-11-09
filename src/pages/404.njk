@@ -1,0 +1,21 @@
+---
+pageKey: "404"
+lang: mk
+langTargetKey: home
+permalink: /404.html
+layout: layouts/base.njk
+---
+<section class="section legal" aria-labelledby="page-title">
+  <div class="wrap legal__wrap">
+    <p class="eyebrow">404</p>
+    <h1 class="h2" id="page-title">{% t 'nf.title' %}</h1>
+    <p class="lede">{% t 'nf.body' %}</p>
+    <p class="teaser-link"><a href="{{ 'home' | pageUrl('mk') }}">{% t 'nf.home' %}</a> · <a href="{{ 'rooms' | pageUrl('mk') }}">{% t 'nav.rooms' %}</a> · <a href="{{ 'contact' | pageUrl('mk') }}">{% t 'nav.contact' %}</a></p>
+
+    <div lang="en" class="legal__body">
+      <h2 class="h3">{% t 'nf.title', 'en' %}</h2>
+      <p class="prose">{% t 'nf.body', 'en' %}</p>
+      <p class="teaser-link"><a href="{{ 'home' | pageUrl('en') }}">{% t 'nf.home', 'en' %}</a> · <a href="{{ 'rooms' | pageUrl('en') }}">{% t 'nav.rooms', 'en' %}</a> · <a href="{{ 'contact' | pageUrl('en') }}">{% t 'nav.contact', 'en' %}</a></p>
+    </div>
+  </div>
+</section>

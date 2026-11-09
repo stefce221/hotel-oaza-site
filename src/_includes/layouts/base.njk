@@ -6,6 +6,12 @@
   <title>{% ta 'page.' + pageKey + '.title' %}</title>
   <meta name="description" content="{% ta 'page.' + pageKey + '.description' %}">
   <meta name="theme-color" content="#fbfcfc">
+  {%- if build.env != "live" %}
+  <meta name="robots" content="noindex">
+  {%- endif %}
+  {%- if pageKey != "404" %}
+  {% include "partials/seo.njk" %}
+  {%- endif %}
   <link rel="icon" href="{% asset '/assets/img/favicon.svg' %}" type="image/svg+xml">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">

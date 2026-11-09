@@ -13,7 +13,8 @@
   "use strict";
 
   var STORE_KEY = "oaza-fx";
-  var SHOW_PANEL = true; /* review tool: set to false once the effects are decided */
+  /* Review tool, hidden on the site: add ?fx=panel to the address to show it. */
+  var SHOW_PANEL = new URLSearchParams(window.location.search).get("fx") === "panel";
   var root = document.documentElement;
   var BASE = root.getAttribute("data-base") || "/"; /* site root with the path prefix, e.g. "/" or "/hotel-oaza-site/" */
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -543,9 +544,10 @@
       note.textContent = "Your browser is blocking storage, so choices can't be saved. Add ?fx=off to the address instead.";
       return;
     }
-    /* drop any ?fx= override so the saved choice wins; a hash-only change would not reload */
-    if (window.location.search) {
-      window.location.replace(window.location.pathname + window.location.hash);
+    /* drop any other ?fx= override so the saved choice wins, but keep ?fx=panel; a hash-only change would not reload */
+    var keep = SHOW_PANEL ? "?fx=panel" : "";
+    if (window.location.search !== keep) {
+      window.location.replace(window.location.pathname + keep + window.location.hash);
     } else {
       window.location.reload();
     }

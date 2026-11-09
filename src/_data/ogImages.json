@@ -1,0 +1,8 @@
+{
+  "default": "/images/exterior-1440.webp",
+  "rooms": "/images/room-large-bed-1440.webp",
+  "weddings": "/images/wedding-1440.webp",
+  "conferences": "/images/seminar-1440.webp",
+  "restaurant": "/images/restaurant-1440.webp",
+  "stip": "/images/location-1296.webp"
+}
