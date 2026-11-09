@@ -1,0 +1,16 @@
+<div class="halls">
+          <div class="halls__head">
+            <h2 class="h3" id="halls-title" data-reveal>{% t 'halls.title' %}</h2>
+            <p class="prose" data-reveal style="--d:1">{% t 'halls.sub' %}</p>
+          </div>
+          <ol class="halls__list">
+            {%- for hall in halls | inOrder(hallOrder) %}
+            <li class="hall" data-reveal data-hall{% if not loop.first %} style="--d:{{ loop.index0 }}"{% endif %}>
+              <p class="hall__name">{% t hall.name %}</p>
+              <p class="hall__cap">{{ hall.capacity }} <small>{% t 'halls.guests' %}</small></p>
+              <div class="hall__bar" style="--w:{{ hall.width }}"></div>
+              <p class="hall__uses">{% t hall.uses %}</p>
+            </li>
+            {%- endfor %}
+          </ol>
+        </div>

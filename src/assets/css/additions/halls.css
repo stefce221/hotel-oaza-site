@@ -1,0 +1,6 @@
+/* The capacity bars fill at once when the visitor prefers reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .hall__bar::after {
+    transition: none;
+  }
+}

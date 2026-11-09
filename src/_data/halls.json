@@ -1,0 +1,5 @@
+{
+  "small": { "capacity": "20–30", "width": "12%", "name": "hall1.name", "uses": "hall1.uses" },
+  "seminar": { "capacity": "80–150", "width": "60%", "name": "hall2.name", "uses": "hall2.uses" },
+  "grand": { "capacity": "250", "width": "100%", "name": "hall3.name", "uses": "hall3.uses" }
+}

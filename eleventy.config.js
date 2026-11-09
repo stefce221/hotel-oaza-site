@@ -5,6 +5,7 @@ import { HtmlBasePlugin } from "@11ty/eleventy";
 import { assetUrl } from "./config/assets.js";
 import { readBuildEnv } from "./config/build-env.js";
 import { loadSite, telHref, viberHref, whatsappHref } from "./config/contact.js";
+import { inOrder } from "./config/lists.js";
 import {
   createTranslator,
   escapeAttr,
@@ -74,6 +75,7 @@ export default function (eleventyConfig) {
   });
 
   eleventyConfig.addFilter("pageUrl", (key, lang) => pageUrl(key, lang));
+  eleventyConfig.addFilter("inOrder", inOrder);
   /* HtmlBasePlugin prefixes src/srcset/href; imagesrcset on the preload link needs this. */
   eleventyConfig.addFilter("srcsetBase", (srcset) =>
     srcset
