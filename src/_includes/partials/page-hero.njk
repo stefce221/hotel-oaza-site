@@ -1,0 +1,18 @@
+<section class="page-hero section" aria-labelledby="page-title">
+      <div class="wrap page-hero__grid">
+        <div class="page-hero__copy">
+          <p class="eyebrow">{% t copyKey + '.eyebrow' %}</p>
+          <h1 class="h2" id="page-title">{% t copyKey + '.title' %}</h1>
+          <p class="lede">{% t copyKey + '.lede' %}</p>
+          {% include "partials/contact-ctas.njk" %}
+        </div>
+        <div class="frame frame--{{ heroFrame }} page-hero__media">
+          <figure class="event-card__media media">
+            <img src="/images/{{ heroImage }}-960.webp" srcset="/images/{{ heroImage }}-640.webp 640w, /images/{{ heroImage }}-960.webp 960w, /images/{{ heroImage }}-1440.webp 1440w"
+                 sizes="(max-width: 900px) 100vw, 720px" width="1440" height="960" fetchpriority="high" decoding="async"
+                 alt="{% ta heroAlt %}">
+            <figcaption class="event-card__note">{% t 'events.note' %}</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>

@@ -1,0 +1,13 @@
+<section class="section" aria-labelledby="faq-title">
+      <div class="wrap">
+        <h2 class="h2" id="faq-title">{% t 'faq.title' %}</h2>
+        <div class="faq">
+          {%- for key in faqKeys %}
+          <details class="faq__item">
+            <summary>{% t 'faq.' + key + '.q' %}</summary>
+            <div class="prose"><p>{% t 'faq.' + key + '.a' %}</p></div>
+          </details>
+          {%- endfor %}
+        </div>
+      </div>
+    </section>

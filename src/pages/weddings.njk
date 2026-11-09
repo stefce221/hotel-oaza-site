@@ -1,0 +1,65 @@
+---
+pageKey: weddings
+copyKey: wed
+heroImage: wedding
+heroFrame: arch
+heroAlt: events.wedAlt
+hallOrder: [grand, seminar, small]
+faqKeys: [deposit, cancel, parking, rooms]
+formType: wedding
+formIntro: wed.form
+barFormLabel: bar.date
+hasForm: true
+pagination:
+  data: languages
+  size: 1
+  alias: lang
+permalink: "{{ pageKey | pageUrl(lang) }}"
+layout: layouts/base.njk
+---
+{% include "partials/page-hero.njk" %}
+
+<section class="section landing-tags" aria-labelledby="occasions-title">
+  <div class="wrap">
+    <h2 class="h3" id="occasions-title">{% t 'wed.occasions.title' %}</h2>
+    <ul class="event-card__tags">{% t 'events.wed.tags' %}</ul>
+  </div>
+</section>
+
+<section class="events section landing-halls" aria-labelledby="halls-title">
+  <div class="wrap">
+    {% include "partials/halls.njk" %}
+  </div>
+</section>
+
+<section class="section l-band" aria-labelledby="care-title">
+  <div class="wrap">
+    <header class="section-head">
+      <p class="eyebrow">{% t 'wed.care.eyebrow' %}</p>
+      <h2 class="h2" id="care-title">{% t 'wed.care.title' %}</h2>
+    </header>
+    <ul class="l-grid l-grid--4">
+      {%- for item in ["menu", "layout", "equipment", "rooms"] %}
+      <li class="l-card"><h3 class="h3">{% t 'wed.care.' + item + '.t' %}</h3><p class="prose">{% t 'wed.care.' + item + '.d' %}</p></li>
+      {%- endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="steps-title">
+  <div class="wrap">
+    <header class="section-head">
+      <p class="eyebrow">{% t 'wed.steps.eyebrow' %}</p>
+      <h2 class="h2" id="steps-title">{% t 'wed.steps.title' %}</h2>
+    </header>
+    <ol class="l-steps">
+      {%- for n in [1, 2, 3, 4] %}
+      <li><p class="prose">{% t 'wed.steps.' + n %}</p></li>
+      {%- endfor %}
+    </ol>
+  </div>
+</section>
+
+{% include "partials/faq.njk" %}
+
+{% include "partials/enquiry-section.njk" %}
