@@ -97,7 +97,7 @@
   }
 }
 
-/* At 360px both labels cannot share one row, so the two boxes stack. */
+/* When the form container is 300px wide or less (a 360px phone with the page padding), both labels cannot share one row, so the two boxes stack. */
 @container (max-width: 300px) {
   .form[data-mode="event"] .fgroup:has(#f-eguests) {
     grid-template-columns: minmax(0, 1fr);

@@ -46,7 +46,8 @@
 
   html.fx-on-roll .teaser-link .fx-roll__sr,
   html.fx-on-roll .event-card__link .fx-roll__sr {
-    position: static;
+    /* !important is needed to beat `.visually-hidden { position: absolute !important }` in base.css */
+    position: static !important;
     width: auto;
     height: auto;
     margin: 0;
