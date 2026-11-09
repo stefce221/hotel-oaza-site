@@ -50,6 +50,9 @@ export function request(port, method, urlPath, { body = "", headers = {} } = {})
 
 /** Starts `php -S 127.0.0.1:<port> -t src` (PHP errors go to `errorLog` when given); resolves with an async stop function. */
 export async function startPhp(port, configPath, { errorLog = null } = {}) {
+  /* Windows lets a second server share a busy port, so look first: an answer now means a stale server. */
+  const stale = await request(port, "GET", "/").then(() => true, () => false);
+  if (stale) throw new Error(`Something already answers on port ${port}: a stale server would be tested instead. Stop it and rerun.`);
   const logArgs = errorLog ? ["-d", `error_log="${errorLog}"`] : [];
   const child = spawn(PHP, [...logArgs, "-S", `127.0.0.1:${port}`, "-t", "src"], {
     env: { ...process.env, OAZA_CONFIG: configPath },
@@ -67,6 +70,10 @@ export async function startPhp(port, configPath, { errorLog = null } = {}) {
     if (startError) throw new Error(`Cannot start ${PHP}: ${startError.message}. Install PHP 8 (Task 25) or set PHP_BIN.`);
     try {
       await request(port, "GET", "/");
+      await new Promise((resolve) => setTimeout(resolve, 150)); /* a child that cannot bind the port exits within moments */
+      if (child.exitCode !== null) {
+        throw new Error(`PHP exited (code ${child.exitCode}) but something still answers on port ${port}: a stale server is running there. Stop it and rerun.`);
+      }
       return stop;
     } catch {
       await new Promise((resolve) => setTimeout(resolve, 100));

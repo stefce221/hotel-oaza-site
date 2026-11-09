@@ -7,28 +7,42 @@ import { makePrivateDir, request, startPhp } from "./helpers/php.mjs";
 const PORT = 8765;
 const ORIGIN = `http://127.0.0.1:${PORT}`;
 const FORM = "application/x-www-form-urlencoded;charset=UTF-8";
+const NO_CONFIG_PORT = 8769;
 const { dir, config } = makePrivateDir();
+const noConfig = makePrivateDir();
 const MAIL = `${dir}/mail/sent.jsonl`;
-let stop;
+const stops = [];
 
 before(async () => {
-  stop = await startPhp(PORT, config);
+  rmSync(noConfig.config); /* the endpoint on NO_CONFIG_PORT finds no config.php */
+  stops.push(await startPhp(PORT, config), await startPhp(NO_CONFIG_PORT, noConfig.config));
 });
 after(async () => {
-  await stop?.();
+  await Promise.all(stops.map((stop) => stop()));
   rmSync(dir, { recursive: true, force: true });
+  rmSync(noConfig.dir, { recursive: true, force: true });
 });
 beforeEach(() => {
   rmSync(`${dir}/ratelimit.json`, { force: true });
   rmSync(MAIL, { force: true });
 });
 
+/** Today in Europe/Skopje plus `days`, as YYYY-MM-DD: the form refuses past dates, so test dates are relative. */
+function inDays(days) {
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Skopje" }).format(new Date());
+  const date = new Date(`${today}T00:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+const ARRIVAL = inDays(60);
+const DEPARTURE = inDays(63);
+
 const BASE = { name: "Test Guest", email: "guest@example.com", phone: "", message: "", page: "contact", lang: "en", website: "" };
 const VALID = {
-  stay: { ...BASE, type: "stay", arrival: "2030-05-20", departure: "2030-05-23", guests: "2", room: "double" },
-  group: { ...BASE, type: "group", arrival: "2030-05-20", departure: "2030-05-23", guests: "10+", room: "any" },
-  wedding: { ...BASE, type: "wedding", arrival: "2030-06-14", eventGuests: "250", page: "weddings" },
-  conference: { ...BASE, type: "conference", arrival: "2030-03-10", eventGuests: "150", company: "Test Company", overnight: "yes", page: "conferences" },
+  stay: { ...BASE, type: "stay", arrival: ARRIVAL, departure: DEPARTURE, guests: "2", room: "double" },
+  group: { ...BASE, type: "group", arrival: ARRIVAL, departure: DEPARTURE, guests: "10+", room: "any" },
+  wedding: { ...BASE, type: "wedding", arrival: inDays(90), eventGuests: "250", page: "weddings" },
+  conference: { ...BASE, type: "conference", arrival: inDays(30), eventGuests: "150", company: "Test Company", overnight: "yes", page: "conferences" },
 };
 const TYPE_LABELS = { stay: "Сместување", group: "Групна резервација", wedding: "Свадба или прослава", conference: "Конференција или семинар" };
 const OK = { success: true, data: null, error: null };
@@ -80,7 +94,7 @@ test("invalid values are listed field by field", async () => {
     [{ ...VALID.wedding, eventGuests: "1000" }, ["eventGuests"]],
     [{ ...VALID.conference, overnight: "maybe" }, ["overnight"]],
     [{ ...VALID.stay, arrival: "2020-01-01" }, ["arrival"]],
-    [{ ...VALID.stay, departure: "2030-05-19" }, ["departure"]],
+    [{ ...VALID.stay, departure: inDays(59) }, ["departure"]],
   ];
   for (const [fields, expected] of cases) {
     const res = await post(fields);
@@ -172,4 +186,24 @@ test("a failed send answers send_failed and logs only the code", async () => {
   } finally {
     mkdirSync(`${dir}/mail`, { recursive: true });
   }
+});
+
+test("a request that names the site only in Referer is accepted", async () => {
+  const res = await request(PORT, "POST", "/api/enquiry.php", {
+    body: new URLSearchParams(VALID.stay).toString(),
+    headers: { "Content-Type": FORM, Referer: `${ORIGIN}/en/contact/` },
+  });
+  assert.equal(res.status, 200);
+  assert.deepEqual(json(res), OK);
+  assert.equal(sent().length, 1);
+});
+
+test("a missing config file answers send_failed in the envelope and sends nothing", async () => {
+  const res = await request(NO_CONFIG_PORT, "POST", "/api/enquiry.php", {
+    body: new URLSearchParams(VALID.stay).toString(),
+    headers: { "Content-Type": FORM, Origin: `http://127.0.0.1:${NO_CONFIG_PORT}` },
+  });
+  assert.equal(res.status, 500);
+  assert.deepEqual(json(res), { success: false, data: null, error: { code: "send_failed" } });
+  assert.equal(existsSync(`${noConfig.dir}/mail/sent.jsonl`), false);
 });
