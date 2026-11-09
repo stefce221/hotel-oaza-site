@@ -45,6 +45,19 @@ Each appears on the site as `[[HOTEL: …]]`, highlighted in yellow on the previ
 - [ ] Before launch, tap the Viber button on an Android phone, an iPhone and a Windows PC with Viber installed. Each must open a chat with +389 70 310 300. If one doesn't, tell the developer which device.
 - [ ] Spam-trap count: the enquiry endpoint writes one line with the time and `spam_trap` to `/home/oazahote/private/logs/errors.log` each time its hidden field catches a bot (nothing about the sender). To see how many: `grep -c spam_trap /home/oazahote/private/logs/errors.log`. The same file lists `send_failed` lines when an email could not be sent; check it if guests say their enquiry failed.
 
+## Right after the first upload
+
+Open each address in a browser (a private window is fine). If anything below differs from what is written, tell the developer which address and what you saw. Some hosts run LiteSpeed instead of Apache, and a few rules then behave differently.
+
+- [ ] These must answer **403 Forbidden**: `/api/lib/validate.php`, `/api/vendor/phpmailer/PHPMailer.php`, `/api/vendor/phpmailer/VERSION`, `/cpay/lib/placeholder.php`, `/.oaza-build.json`, `/api/.user.ini`.
+- [ ] Opening `/api/enquiry.php` in the browser must answer **405** with a short line of JSON text (not a blank page, not a PHP error).
+- [ ] `/cpay/ok.php` must answer **200** and show the short "payment status received" page in Macedonian and English.
+- [ ] If the whole site, every page, answers "500 Internal Server Error" after the upload, the host does not allow `Options` in `.htaccess`. Tell the developer; it is one line to remove.
+- [ ] Create `/home/oazahote/private` with permissions **700** (cPanel File Manager → Change Permissions) before copying `config.php` into it.
+- [ ] The mail login: `username` in `config.php` must be the same mailbox as `from`, and `mail.oazahotel.com.mk` must present a valid certificate for that name (the mail settings page at MKhost says which host name to use). Never switch off certificate checks to make it work; tell the developer instead.
+- [ ] If info@oazahotel.com.mk is read somewhere other than MKhost (for example Gmail or Microsoft 365), set cPanel → Email Routing to **Remote Mail Exchanger** for oazahotel.com.mk. Otherwise enquiries land in an unused mailbox on the server.
+- [ ] Ask MKhost whether a proxy or CDN sits in front of the site. If one does, tell the developer before launch: the visitor limit on enquiries and the redirect to HTTPS both depend on it.
+
 ## Launch (only on the owner's go)
 
 1. Fill every marker above, then run `npm run build` (it must pass) and `npm run check:live` (not only `npm run check`). It fails unless `_site/` is a live build, so a preview or dev build that would hide the site from Google can't be uploaded by mistake.
@@ -52,7 +65,7 @@ Each appears on the site as `[[HOTEL: …]]`, highlighted in yellow on the previ
 3. Back up the old site from `public_html`, and list its addresses.
 4. Upload `_site/` over SSH.
 5. Add a 301 redirect to `.htaccess` for each old address, pointing to the matching new page.
-6. Check that `https://www.oazahotel.com.mk/api/lib/bootstrap.php` and `/cpay/lib/placeholder.php` answer 403, and that `/cpay/ok.php` answers 200.
+6. Do the checks under "Right after the first upload" above (the 403, 405 and 200 answers).
 7. Send a real enquiry from the site and confirm it reaches info@oazahotel.com.mk.
 8. Redirect oazahotel.com (if renewed) to https://www.oazahotel.com.mk/, and malodmor.mk to /restoran/.
 9. Add the site to Google Search Console and submit `https://www.oazahotel.com.mk/sitemap.xml`.
