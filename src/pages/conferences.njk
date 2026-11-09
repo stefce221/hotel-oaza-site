@@ -1,0 +1,69 @@
+---
+pageKey: conferences
+copyKey: conf
+heroImage: seminar
+heroFrame: marks
+heroAlt: events.semAlt
+hallOrder: [seminar, grand, small]
+faqKeys: [invoice, cancel, parking]
+roomsEyebrow: conf.rooms.eyebrow
+formType: conference
+formIntro: conf.form
+barFormLabel: bar.offer
+hasForm: true
+pagination:
+  data: languages
+  size: 1
+  alias: lang
+permalink: "{{ pageKey | pageUrl(lang) }}"
+layout: layouts/base.njk
+---
+{% include "partials/page-hero.njk" %}
+
+<section class="section landing-tags" aria-labelledby="equipment-title">
+  <div class="wrap">
+    <h2 class="h3" id="equipment-title">{% t 'conf.equipment.title' %}</h2>
+    <ul class="event-card__tags">{% t 'events.sem.tags' %}</ul>
+  </div>
+</section>
+
+<section class="events section landing-halls" aria-labelledby="halls-title">
+  <div class="wrap">
+    {% include "partials/halls.njk" %}
+  </div>
+</section>
+
+<section class="section l-band" aria-labelledby="packages-title">
+  <div class="wrap">
+    <header class="section-head">
+      <p class="eyebrow">{% t 'conf.packages.eyebrow' %}</p>
+      <h2 class="h2" id="packages-title">{% t 'conf.packages.title' %}</h2>
+    </header>
+    <ul class="l-grid l-grid--2">
+      {%- for pkg in ["day", "stay"] %}
+      <li class="l-card">
+        <h3 class="h3">{% t 'conf.pkg.' + pkg + '.t' %}</h3>
+        <p class="prose">{% t 'conf.pkg.' + pkg + '.d' %}</p>
+        <p class="l-card__price">{% t 'conf.price' %}</p>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="location section" aria-labelledby="getting-section-title">
+  <div class="wrap">
+    <header class="section-head">
+      <p class="eyebrow">{% t 'conf.getting.eyebrow' %}</p>
+      <h2 class="h2" id="getting-section-title">{% t 'conf.getting.title' %}</h2>
+    </header>
+    {% include "partials/location-bottom.njk" %}
+    <p class="teaser-link"><a class="link-arrow" href="{{ 'stip' | pageUrl(lang) }}"><span>{% t 'teaser.stip.link' %}</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
+  </div>
+</section>
+
+{% include "partials/rooms-teaser.njk" %}
+
+{% include "partials/faq.njk" %}
+
+{% include "partials/enquiry-section.njk" %}

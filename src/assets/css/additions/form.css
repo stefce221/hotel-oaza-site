@@ -78,3 +78,26 @@
 #enquiry-done {
   scroll-margin-top: calc(var(--header-h) + 1rem);
 }
+
+/* Event mode on a narrow form: "Up to 30 guests" was clipped in its half-width box.
+   Give the guests box a little more of the row; the date keeps room for its picker icon. */
+@container (max-width: 440px) {
+  .form[data-mode="event"] .fgroup:has(#f-eguests) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.18fr);
+  }
+
+  .form[data-mode="event"] .fgroup:has(#f-eguests) > .fbox {
+    padding-inline: 0.55rem;
+  }
+
+  .form[data-mode="event"] .fgroup:has(#f-eguests) input[type="date"] {
+    min-width: 0;
+  }
+}
+
+/* At 360px both labels cannot share one row, so the two boxes stack. */
+@container (max-width: 300px) {
+  .form[data-mode="event"] .fgroup:has(#f-eguests) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

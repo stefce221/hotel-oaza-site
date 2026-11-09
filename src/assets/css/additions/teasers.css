@@ -35,3 +35,24 @@
     aspect-ratio: 4 / 3;
   }
 }
+
+/* The letter-roll effect cannot wrap, so a long Macedonian label pushed the arrow past the screen edge.
+   On narrow screens show the plain label, which wraps like normal text, instead of the roll. */
+@media (max-width: 480px) {
+  html.fx-on-roll .teaser-link .fx-roll,
+  html.fx-on-roll .event-card__link .fx-roll {
+    display: none;
+  }
+
+  html.fx-on-roll .teaser-link .fx-roll__sr,
+  html.fx-on-roll .event-card__link .fx-roll__sr {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+    white-space: normal;
+  }
+}
