@@ -1,6 +1,16 @@
 /* Weddings and conferences pages: hero, tag band, halls, cards, steps and FAQ, in today's visual language. */
 .page-hero {
   padding-top: calc(var(--header-h) + var(--section-y) * 0.6);
+  /* The tags row right under the hero belongs to it, so it sits closer. */
+  padding-bottom: calc(var(--section-y) * 0.5);
+}
+
+/* Every .section keeps the one-page site's --section-y above and below. Where two
+   plain (untinted) sections meet, both paddings stack into one hole (about 314px at
+   desktop width), so the second one drops its top padding. */
+:is(.page-weddings, .page-conferences) main > .section:not(.l-band, .rooms-teaser, .contact)
+  + .section:not(.l-band, .rooms-teaser, .contact) {
+  padding-top: 0;
 }
 
 .page-hero__grid {
