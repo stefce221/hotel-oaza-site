@@ -544,10 +544,15 @@
       note.textContent = "Your browser is blocking storage, so choices can't be saved. Add ?fx=off to the address instead.";
       return;
     }
-    /* drop any other ?fx= override so the saved choice wins, but keep ?fx=panel; a hash-only change would not reload */
-    var keep = SHOW_PANEL ? "?fx=panel" : "";
-    if (window.location.search !== keep) {
-      window.location.replace(window.location.pathname + keep + window.location.hash);
+    /* drop any other ?fx= override so the saved choice wins, but keep ?fx=panel and every other parameter;
+       a hash-only change would not reload */
+    var params = new URLSearchParams(window.location.search);
+    if (params.get("fx") !== "panel") params.delete("fx");
+    var query = params.toString();
+    var target = window.location.pathname + (query ? "?" + query : "") + window.location.hash;
+    var current = window.location.pathname + window.location.search + window.location.hash;
+    if (target !== current) {
+      window.location.replace(target);
     } else {
       window.location.reload();
     }
