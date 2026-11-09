@@ -1,7 +1,7 @@
 # Hotel Oaza website: multi-page structure (design)
 
 Date: 2026-11-06
-Status: approved section by section in brainstorming; waiting for the written review
+Status: approved and implemented on branch `feat/multipage-site` (plan `docs/superpowers/plans/2026-11-06-multipage-site.md`).
 
 ## 1. Goal and scope
 
