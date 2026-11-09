@@ -33,9 +33,14 @@ function rate_limited(string $file, string $key, int $limit, int $window, int $n
         $hits = recent_hits(json_decode((string) stream_get_contents($handle), true), $now - $window);
         $limited = count($hits[$key] ?? []) >= $limit;
         $next = $limited ? $hits : [$key => [...($hits[$key] ?? []), $now]] + $hits;
+        $json = json_encode($next, JSON_THROW_ON_ERROR); /* encode first: a failure must not empty the file */
         ftruncate($handle, 0);
         rewind($handle);
-        fwrite($handle, json_encode($next, JSON_THROW_ON_ERROR));
+        $written = fwrite($handle, $json);
+        if ($written === false || $written < strlen($json)) {
+            throw new RuntimeException('rate_write');
+        }
+        fflush($handle);
         return $limited;
     } finally {
         fclose($handle);

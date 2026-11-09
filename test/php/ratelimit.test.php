@@ -28,3 +28,32 @@ test('rate limit: a damaged file starts afresh', function (): void {
     same(false, rate_limited($file, 'a', 5, 3600, 1000));
     unlink($file);
 });
+
+/** A stream that accepts everything but writes nothing, like a full disk. */
+final class FullDiskStream
+{
+    public $context;
+    public function stream_open(string $path, string $mode, int $options, ?string &$opened): bool { return true; }
+    public function stream_lock(int $operation): bool { return true; }
+    public function stream_read(int $count): string { return ''; }
+    public function stream_eof(): bool { return true; }
+    public function stream_tell(): int { return 0; }
+    public function stream_seek(int $offset, int $whence): bool { return true; }
+    public function stream_truncate(int $size): bool { return true; }
+    public function stream_write(string $data): int { return 0; }
+    public function stream_flush(): bool { return true; }
+    public function stream_stat(): array { return []; }
+    public function stream_close(): void {}
+}
+
+test('rate limit: a write that fails is reported, not swallowed', function (): void {
+    stream_wrapper_register('fulldisk', FullDiskStream::class);
+    try {
+        rate_limited('fulldisk://counter', 'a', 5, 3600, 1000);
+        truthy(false, 'should have thrown');
+    } catch (RuntimeException $e) {
+        same('rate_write', $e->getMessage());
+    } finally {
+        stream_wrapper_unregister('fulldisk');
+    }
+});

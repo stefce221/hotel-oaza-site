@@ -25,3 +25,19 @@ test('is_form_post accepts only form-encoded bodies', function (): void {
     truthy(!is_form_post(['CONTENT_TYPE' => 'application/json']), 'json');
     truthy(!is_form_post([]), 'none');
 });
+
+test('visitor_address keeps an IPv4 address and groups IPv6 by its /64', function (): void {
+    same('203.0.113.7', visitor_address('203.0.113.7'), 'IPv4');
+    $a = visitor_address('2001:db8:1:2:aaaa:bbbb:cccc:dddd');
+    same($a, visitor_address('2001:db8:1:2::1'), 'same /64');
+    same('20010db800010002/64', $a, 'format');
+    truthy($a !== visitor_address('2001:db8:1:3::1'), 'another /64');
+    same(visitor_address('2001:0DB8:1:2::'), $a, 'spelling does not matter');
+});
+
+test('visitor_address handles IPv4-mapped IPv6, empty and garbage input', function (): void {
+    same('203.0.113.7', visitor_address('::ffff:203.0.113.7'), 'a mapped address is the IPv4 visitor');
+    same('unknown', visitor_address(''), 'empty');
+    same('unknown', visitor_address('not an address'), 'garbage');
+    same('unknown', visitor_address('999.1.1.1'), 'out of range');
+});
