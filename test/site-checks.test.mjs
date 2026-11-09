@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { extractRefs, headIssues, isExternal, missingFragments, refToFile } from "../scripts/lib/site-checks.mjs";
+import { extractRefs, headIssues, indexingIssues, isExternal, missingFragments, refToFile } from "../scripts/lib/site-checks.mjs";
 
 test("extractRefs collects href, src, action and srcset entries, skipping in-page anchors", () => {
   const html = [
@@ -62,4 +62,46 @@ test("headIssues names what is missing", () => {
 
 test("the 404 page needs no hreflang", () => {
   assert.deepEqual(headIssues(GOOD.replace(/<link[^>]*>/, ""), { notFound: true }), []);
+});
+
+test("refToFile reports a stray % instead of throwing", () => {
+  assert.equal(refToFile("/sobi%/", "/"), false);
+  assert.equal(refToFile("/a%20b/", "/"), "a b/index.html");
+});
+
+const NOINDEX = '<head><meta name="robots" content="noindex"></head>';
+const PLAIN = "<head><title>x</title></head>";
+const LIVE_ROBOTS = "User-agent: *\nAllow: /\n\nSitemap: https://example.mk/sitemap.xml";
+const BLOCK_ROBOTS = "User-agent: *\nDisallow: /";
+
+test("indexingIssues: a clean live build has none, and 404 may carry noindex", () => {
+  const pages = { "index.html": PLAIN, "en/index.html": PLAIN, "404.html": NOINDEX };
+  assert.deepEqual(indexingIssues("live", pages, LIVE_ROBOTS), []);
+});
+
+test("indexingIssues: live flags a stray noindex and names the file", () => {
+  const issues = indexingIssues("live", { "index.html": PLAIN, "sobi/index.html": NOINDEX }, LIVE_ROBOTS);
+  assert.equal(issues.length, 1);
+  assert.match(issues[0], /sobi\/index\.html/);
+  assert.match(issues[0], /noindex/);
+});
+
+test("indexingIssues: live robots.txt needs Allow and Sitemap and no Disallow: /", () => {
+  const noSitemap = indexingIssues("live", { "index.html": PLAIN }, "User-agent: *\nAllow: /");
+  assert.equal(noSitemap.length, 1);
+  assert.match(noSitemap[0], /robots\.txt.*Sitemap/);
+  const blocked = indexingIssues("live", { "index.html": PLAIN }, `${LIVE_ROBOTS}\nDisallow: /`);
+  assert.match(blocked.join("\n"), /robots\.txt.*Disallow/);
+  const noAllow = indexingIssues("live", { "index.html": PLAIN }, "Sitemap: https://example.mk/s.xml");
+  assert.match(noAllow.join("\n"), /robots\.txt.*Allow/);
+});
+
+test("indexingIssues: dev and preview need noindex on every page and Disallow: /", () => {
+  for (const env of ["dev", "preview"]) {
+    assert.deepEqual(indexingIssues(env, { "index.html": NOINDEX, "404.html": NOINDEX }, BLOCK_ROBOTS), []);
+    const issues = indexingIssues(env, { "index.html": NOINDEX, "en/index.html": PLAIN }, LIVE_ROBOTS);
+    assert.equal(issues.length, 2);
+    assert.match(issues[0], /en\/index\.html/);
+    assert.match(issues[1], /robots\.txt.*Disallow/);
+  }
 });

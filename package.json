@@ -13,6 +13,7 @@
     "build": "npm run clean && cross-env OAZA_ENV=live eleventy && node scripts/check-markers.mjs",
     "build:preview": "npm run clean && cross-env OAZA_ENV=preview PATH_PREFIX=/hotel-oaza-site/ eleventy",
     "check": "node scripts/check-site.mjs",
+    "check:live": "node scripts/check-site.mjs --expect=live",
     "test": "node --test \"test/**/*.test.mjs\""
   },
   "devDependencies": {

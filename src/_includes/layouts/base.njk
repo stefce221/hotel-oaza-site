@@ -6,7 +6,7 @@
   <title>{% ta 'page.' + pageKey + '.title' %}</title>
   <meta name="description" content="{% ta 'page.' + pageKey + '.description' %}">
   <meta name="theme-color" content="#fbfcfc">
-  {%- if build.env != "live" %}
+  {%- if build.env != "live" or pageKey == "404" %}
   <meta name="robots" content="noindex">
   {%- endif %}
   {%- if pageKey != "404" %}

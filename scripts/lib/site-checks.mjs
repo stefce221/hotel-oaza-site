@@ -25,11 +25,16 @@ export function isExternal(ref) {
   return /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(ref);
 }
 
-/** "/prefix/sobi/?q" → "sobi/index.html"; null when the URL is outside the path prefix. */
+/** "/prefix/sobi/?q" → "sobi/index.html"; null when the URL is outside the path prefix; false when its % escapes are broken. */
 export function refToFile(ref, prefix) {
   const clean = ref.split(/[?#]/)[0];
   if (!clean.startsWith(prefix)) return null;
-  const rel = decodeURIComponent(clean.slice(prefix.length));
+  let rel;
+  try {
+    rel = decodeURIComponent(clean.slice(prefix.length));
+  } catch {
+    return false;
+  }
   return rel === "" || rel.endsWith("/") ? `${rel}index.html` : rel;
 }
 
@@ -42,5 +47,34 @@ export function headIssues(html, { notFound = false } = {}) {
   const h1 = (html.match(/<h1[\s>]/g) || []).length;
   if (h1 !== 1) issues.push(`h1 ×${h1}`);
   if (!notFound && !/<link rel="alternate" hreflang="x-default"/.test(html)) issues.push("hreflang");
+  return issues;
+}
+
+const NOINDEX_META = /<meta name="robots" content="noindex">/;
+
+/**
+ * Whether the build's pages and robots.txt agree with its env: live is indexable (except 404),
+ * dev and preview are blocked everywhere.
+ * @param {"dev"|"preview"|"live"} env
+ * @param {Record<string, string>} pages relative path → HTML
+ * @param {string} robotsTxt
+ * @returns {string[]} one readable issue per problem
+ */
+export function indexingIssues(env, pages, robotsTxt) {
+  const issues = [];
+  const live = env === "live";
+  for (const [file, html] of Object.entries(pages)) {
+    const hasNoindex = NOINDEX_META.test(html);
+    if (live && hasNoindex && file !== "404.html") issues.push(`${file}: has noindex on a live build`);
+    if (!live && !hasNoindex) issues.push(`${file}: lacks noindex on a ${env} build`);
+  }
+  const has = (re) => re.test(robotsTxt);
+  if (live) {
+    if (!has(/^Allow:\s*\/\s*$/m)) issues.push("robots.txt: live build lacks an Allow: / line");
+    if (!has(/^Sitemap:\s*\S/m)) issues.push("robots.txt: live build lacks a Sitemap: line");
+    if (has(/^Disallow:\s*\/\s*$/m)) issues.push("robots.txt: live build has a Disallow: / line");
+  } else if (!has(/^Disallow:\s*\/\s*$/m)) {
+    issues.push(`robots.txt: ${env} build lacks a Disallow: / line`);
+  }
   return issues;
 }

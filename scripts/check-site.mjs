@@ -5,18 +5,32 @@ import { LANGS, loadDictionaries, loadRuntime, missingKeys } from "../config/i18
 import { findMarkers } from "../config/markers.js";
 import { pageKeys, pageUrl } from "../config/pages.js";
 import { cssSplitIntact } from "./check-css-split.mjs";
-import { extractRefs, headIssues, isExternal, missingFragments, refToFile } from "./lib/site-checks.mjs";
+import { extractRefs, headIssues, indexingIssues, isExternal, missingFragments, refToFile } from "./lib/site-checks.mjs";
 
 const SITE = "_site";
 const problems = [];
-const { env, pathPrefix } = JSON.parse(readFileSync(path.join(SITE, ".oaza-build.json"), "utf8"));
+const BUILD_INFO = path.join(SITE, ".oaza-build.json");
+if (!existsSync(BUILD_INFO)) {
+  console.error("check-site: no build found, run a build first");
+  process.exit(1);
+}
+const { env, pathPrefix } = JSON.parse(readFileSync(BUILD_INFO, "utf8"));
+const expected = process.argv.find((arg) => arg.startsWith("--expect="))?.slice("--expect=".length);
+if (expected && expected !== env) {
+  console.error(`check-site: expected a ${expected} build, found ${env}`);
+  process.exit(1);
+}
 const pages = readdirSync(SITE, { recursive: true })
   .map((rel) => String(rel).split(path.sep).join("/"))
   .filter((rel) => rel.endsWith(".html"));
 
+const pageHtml = Object.fromEntries(pages.map((rel) => [rel, readFileSync(path.join(SITE, rel), "utf8")]));
+const robotsPath = path.join(SITE, "robots.txt");
+if (!existsSync(robotsPath)) problems.push("robots.txt is missing");
+for (const issue of indexingIssues(env, pageHtml, existsSync(robotsPath) ? readFileSync(robotsPath, "utf8") : "")) problems.push(issue);
+
 let links = 0;
-for (const rel of pages) {
-  const html = readFileSync(path.join(SITE, rel), "utf8");
+for (const [rel, html] of Object.entries(pageHtml)) {
   for (const issue of headIssues(html, { notFound: rel === "404.html" })) problems.push(`${rel}: head lacks ${issue}`);
   for (const id of missingFragments(html)) problems.push(`${rel}: in-page link #${id} has no target`);
   if (html.includes('id="enquiry"') && !/\/assets\/js\/enquiry\.js\?v=/.test(html)) problems.push(`${rel}: has the enquiry form but does not load enquiry.js`);
@@ -25,6 +39,7 @@ for (const rel of pages) {
     links += 1;
     const file = refToFile(ref, pathPrefix);
     if (file === null) problems.push(`${rel}: ${ref} is outside ${pathPrefix}`);
+    else if (file === false) problems.push(`${rel}: bad URL encoding in ${ref}`);
     /* The PHP endpoint ships only in the live build; the form shows its failure state elsewhere. */
     else if (file.startsWith("api/") && env !== "live") continue;
     else if (!existsSync(path.join(SITE, file))) problems.push(`${rel}: broken link ${ref}`);
