@@ -1,0 +1,8 @@
+# Only enquiry.php is public; the libraries and PHPMailer are not.
+Options -Indexes
+<FilesMatch ".*">
+  Require all denied
+</FilesMatch>
+<Files "enquiry.php">
+  Require all granted
+</Files>

@@ -49,6 +49,17 @@ export default function (eleventyConfig) {
     "src/assets/js": "assets/js",
   });
 
+  /* PHP and Apache files exist only on MKhost; the public GitHub Pages preview never serves them. */
+  if (ENV === "live") {
+    eleventyConfig.addPassthroughCopy({
+      "src/api": "api",
+      "src/cpay": "cpay",
+      "src/.htaccess": ".htaccess",
+      "src/api/.htaccess": "api/.htaccess",
+      "src/cpay/.htaccess": "cpay/.htaccess",
+    });
+  }
+
   /* Dev and preview builds show markers highlighted; the live build refuses them (scripts/check-markers.mjs). */
   if (ENV !== "live") {
     eleventyConfig.addTransform("hotel-markers", function (content) {
