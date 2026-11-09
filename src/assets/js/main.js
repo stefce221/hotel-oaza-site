@@ -347,33 +347,34 @@
     });
   }
 
-  /* ---------- Mobile action bar ---------- */
-  function initScrollSpy() {
-    if (!("IntersectionObserver" in window)) return;
+  /* ---------- Phone bar: after the hero (at once on inner pages), hidden while a form is on screen ---------- */
+  function initActionBar() {
     var bar = $(".action-bar");
-    var hero = $(".hero");
-    var contact = $("#contact");
-    var heroOut = false;
-    var contactIn = false;
+    if (!bar || !("IntersectionObserver" in window)) return;
+    var hero = $(".hero, .page-hero");
+    var formSection = $("[data-enquiry-section]");
+    var heroOut = !hero;
+    var formIn = false;
 
-    function syncBar() {
-      if (bar) bar.classList.toggle("is-visible", heroOut && !contactIn);
+    function sync() {
+      bar.classList.toggle("is-visible", heroOut && !formIn);
     }
     if (hero) {
       new IntersectionObserver(function (entries) {
         heroOut = !entries[0].isIntersecting;
-        syncBar();
+        sync();
       }).observe(hero);
     }
-    if (contact) {
+    if (formSection) {
       new IntersectionObserver(
         function (entries) {
-          contactIn = entries[0].isIntersecting;
-          syncBar();
+          formIn = entries[0].isIntersecting;
+          sync();
         },
         { threshold: 0.15 }
-      ).observe(contact);
+      ).observe(formSection);
     }
+    if (!hero && !formSection) sync();
   }
 
   function init() {
@@ -385,7 +386,7 @@
     initRooms();
     initBooking();
     initMap();
-    initScrollSpy();
+    initActionBar();
   }
 
   if (document.readyState === "loading") {

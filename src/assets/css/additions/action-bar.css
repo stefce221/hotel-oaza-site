@@ -1,0 +1,13 @@
+/* Phone bar with four buttons: same height, colours and phone-only display as today's two-button bar. */
+.action-bar--quad {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.action-bar--quad a {
+  flex-direction: column;
+  gap: 0.3rem;
+  padding-inline: 0.25rem;
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+}

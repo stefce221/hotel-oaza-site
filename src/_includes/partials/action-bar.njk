@@ -1,4 +1,10 @@
-<nav class="action-bar" aria-label="{% ta 'bar.label' %}">
-    <a href="tel:+38970310300"><svg aria-hidden="true"><use href="#i-phone"/></svg><span>{% t 'bar.call' %}</span></a>
-    <a href="#contact"><svg aria-hidden="true"><use href="#i-mail"/></svg><span>{% t 'bar.enquire' %}</span></a>
+<nav class="action-bar action-bar--quad" aria-label="{% ta 'bar.label' %}">
+    <a href="{% telHref %}"><svg aria-hidden="true"><use href="#i-phone"/></svg><span>{% t 'bar.call' %}</span></a>
+    <a href="{% viberHref %}"><svg aria-hidden="true"><use href="#i-viber"/></svg><span>Viber</span></a>
+    <a href="{% waHref pageKey %}"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg><span>WhatsApp</span></a>
+    {%- if barFormLabel %}
+    <a href="#enquiry"><svg aria-hidden="true"><use href="#i-mail"/></svg><span>{% t barFormLabel %}</span></a>
+    {%- else %}
+    <a href="{% contactHref 'stay' %}"><svg aria-hidden="true"><use href="#i-mail"/></svg><span>{% t 'bar.enquire' %}</span></a>
+    {%- endif %}
   </nav>
