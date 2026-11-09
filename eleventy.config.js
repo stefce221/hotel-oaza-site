@@ -44,7 +44,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addWatchTarget(I18N_DIR);
   eleventyConfig.addWatchTarget("src/assets/css/");
   eleventyConfig.addPassthroughCopy({
-    "src/images": "images",
+    "src/images/*.webp": "images",
     "src/assets/img": "assets/img",
     "src/assets/js": "assets/js",
   });

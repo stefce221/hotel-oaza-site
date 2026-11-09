@@ -4,10 +4,10 @@
    JS/CSS (the originals are React + Motion/GSAP). Nothing here is required
    by main.js; every effect is additive and can be removed on its own.
 
-   Three ways back:
-   1. The "New effects" panel (bottom-left) switches each effect on or off.
-   2. Adding ?fx=off to the address turns all of them off for that visit.
-   3. _backup/2026-09-27_before-21st/revert.ps1 restores the previous site.
+   Switching them:
+   1. The review panel appears only with ?fx=panel in the address; it
+      switches each effect on or off and remembers the choice.
+   2. ?fx=off or ?fx=on in the address overrides the saved choice.
    ========================================================================== */
 (function () {
   "use strict";
