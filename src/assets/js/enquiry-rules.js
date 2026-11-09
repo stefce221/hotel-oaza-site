@@ -11,8 +11,14 @@
   var OVERNIGHT = ["no", "yes"];
   var LIMITS = { name: 100, email: 200, phone: 40, company: 150, message: 2000 };
   var UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign"];
-  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  /* ASCII dot-atom address, as PHP's filter_var accepts it: no leading, trailing or doubled dots in the local part
+     (at most 64 characters, checked in isEmail); domain labels of letters, digits and inner hyphens; a letter-only top level of 2+. */
+  var EMAIL_RE = /^[A-Za-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z]{2,}$/;
   var ISO_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+  function isEmail(value) {
+    return EMAIL_RE.test(value) && value.indexOf("@") <= 64;
+  }
 
   function isEventType(type) {
     return EVENT_TYPES.indexOf(type) > -1;
@@ -30,15 +36,23 @@
     return d.toISOString().slice(0, 10);
   }
 
-  /* Today in the visitor's time zone, as YYYY-MM-DD. */
-  /* Today at the hotel, so the browser and the server (Europe/Skopje) agree on which dates are past. */
+  /* Today at the hotel, so the browser and the server (Europe/Skopje) agree on which dates are past.
+     Built from formatToParts, since the en-CA text format is a convention; falls back to the local date. */
   function todayIso() {
     var d = new Date();
     try {
-      return d.toLocaleDateString("en-CA", { timeZone: "Europe/Skopje" });
+      var parts = {};
+      new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Skopje", year: "numeric", month: "2-digit", day: "2-digit" })
+        .formatToParts(d)
+        .forEach(function (part) {
+          parts[part.type] = part.value;
+        });
+      var iso = parts.year + "-" + parts.month + "-" + parts.day;
+      if (ISO_RE.test(iso)) return iso;
     } catch (e) {
-      return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+      /* fall through to the local date */
     }
+    return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   }
 
   /* Characters, not UTF-16 units, to match the server's count. */
@@ -72,7 +86,7 @@
   }
 
   function checkText(errors, values, field, required) {
-    var value = (values[field] || "").trim();
+    var value = (values[field] || "").replace(/\r\n?/g, "\n").trim();
     if (!value) {
       if (required) errors[field] = "required";
     } else if (count(value) > LIMITS[field]) {
@@ -91,7 +105,7 @@
     checkChoice(errors, values, "type", TYPES);
     checkText(errors, values, "name", true);
     checkText(errors, values, "email", true);
-    if (!errors.email && !EMAIL_RE.test(values.email.trim())) errors.email = "email";
+    if (!errors.email && !isEmail(values.email.trim())) errors.email = "email";
     checkText(errors, values, "phone", false);
     checkText(errors, values, "message", false);
     if (values.type === "conference") {

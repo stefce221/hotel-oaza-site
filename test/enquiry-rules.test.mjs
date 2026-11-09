@@ -124,3 +124,9 @@ test("todayIso is the date at the hotel (Europe/Skopje), like the server", () =>
   vm.runInNewContext(readFileSync("src/assets/js/enquiry-rules.js", "utf8"), box);
   assert.equal(box.window.oazaEnquiryRules.todayIso(), "2026-11-07");
 });
+
+test("todayIso always matches the ISO date pattern", () => {
+  const box = { window: {}, URLSearchParams };
+  vm.runInNewContext(readFileSync("src/assets/js/enquiry-rules.js", "utf8"), box);
+  assert.match(box.window.oazaEnquiryRules.todayIso(), /^\d{4}-\d{2}-\d{2}$/);
+});
