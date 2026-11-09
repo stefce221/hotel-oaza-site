@@ -5,6 +5,14 @@ declare(strict_types=1);
 
 require __DIR__ . '/lib/bootstrap.php';
 
+/* Anything unexpected ends as a plain send_failed: only the class name is logged, as a message could quote the config. */
+set_exception_handler(static function (Throwable $e): void {
+    error_log('Hotel Oaza enquiry: uncaught ' . get_class($e));
+    if (!headers_sent()) {
+        respond_error(500, 'send_failed');
+    }
+});
+
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     header('Allow: POST');
     respond_error(405, 'bad_request');
@@ -19,7 +27,8 @@ if (!is_form_post($_SERVER)) {
 try {
     $config = load_config(config_path());
 } catch (Throwable $e) {
-    error_log('Hotel Oaza enquiry: ' . $e->getMessage());
+    /* Only a RuntimeException's message is safe to log; a ParseError in config.php quotes the code around the error. */
+    error_log('Hotel Oaza enquiry: ' . ($e instanceof RuntimeException ? $e->getMessage() : get_class($e) . ' on line ' . $e->getLine()));
     respond_error(500, 'send_failed');
 }
 

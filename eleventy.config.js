@@ -57,6 +57,8 @@ export default function (eleventyConfig) {
       "src/.htaccess": ".htaccess",
       "src/api/.htaccess": "api/.htaccess",
       "src/cpay/.htaccess": "cpay/.htaccess",
+      "src/api/.user.ini": "api/.user.ini",
+      "src/cpay/.user.ini": "cpay/.user.ini",
     });
   }
 

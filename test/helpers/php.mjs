@@ -48,9 +48,10 @@ export function request(port, method, urlPath, { body = "", headers = {} } = {})
   });
 }
 
-/** Starts `php -S 127.0.0.1:<port> -t src`; resolves with an async stop function. */
-export async function startPhp(port, configPath) {
-  const child = spawn(PHP, ["-S", `127.0.0.1:${port}`, "-t", "src"], {
+/** Starts `php -S 127.0.0.1:<port> -t src` (PHP errors go to `errorLog` when given); resolves with an async stop function. */
+export async function startPhp(port, configPath, { errorLog = null } = {}) {
+  const logArgs = errorLog ? ["-d", `error_log="${errorLog}"`] : [];
+  const child = spawn(PHP, [...logArgs, "-S", `127.0.0.1:${port}`, "-t", "src"], {
     env: { ...process.env, OAZA_CONFIG: configPath },
     stdio: "ignore",
   });

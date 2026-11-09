@@ -2,7 +2,7 @@
 /* Hotel Oaza — checks on the incoming request. */
 declare(strict_types=1);
 
-/** True when Origin (or, without it, Referer) names this host, port included. */
+/** True when Origin (or, without it, Referer) names this host, port included (a scheme's default port may be left out). */
 function same_origin(array $server): bool
 {
     $source = (string) ($server['HTTP_ORIGIN'] ?? $server['HTTP_REFERER'] ?? '');
@@ -11,8 +11,12 @@ function same_origin(array $server): bool
     if ($host === '' || !is_array($parts) || !isset($parts['host'])) {
         return false;
     }
-    $origin = strtolower($parts['host'] . (isset($parts['port']) ? ':' . $parts['port'] : ''));
-    return $origin === $host;
+    $scheme = strtolower((string) ($parts['scheme'] ?? ''));
+    $defaultPort = $scheme === 'https' ? 443 : ($scheme === 'http' ? 80 : 0);
+    $port = isset($parts['port']) && $parts['port'] !== $defaultPort ? ':' . $parts['port'] : '';
+    $origin = strtolower($parts['host']) . $port;
+    /* The Host header has no scheme, so either default port is dropped from it. */
+    return $origin === preg_replace('/:(80|443)$/', '', $host);
 }
 
 /** True for a form-encoded body, which is what the enquiry form sends. */

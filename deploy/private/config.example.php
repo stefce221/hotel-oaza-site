@@ -8,6 +8,7 @@ return [
         'transport' => 'smtp',
         'host' => 'mail.oazahotel.com.mk',
         'port' => 465,
+        /* 'ssl' (port 465) or 'tls' (port 587). */
         'secure' => 'ssl',
         'username' => '',
         'password' => '',
@@ -17,6 +18,7 @@ return [
         'to' => 'info@oazahotel.com.mk',
     ],
     'rate' => [
+        /* Enquiries per visitor per window: a whole number from 1; the window is in seconds, from 60. */
         'limit' => 5,
         'window' => 3600,
         /* A long random string; create one with: php -r "echo bin2hex(random_bytes(32)), PHP_EOL;" */

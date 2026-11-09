@@ -41,3 +41,11 @@ test('visitor_address handles IPv4-mapped IPv6, empty and garbage input', functi
     same('unknown', visitor_address('not an address'), 'garbage');
     same('unknown', visitor_address('999.1.1.1'), 'out of range');
 });
+
+test('same_origin ignores the default port on either side', function (): void {
+    truthy(same_origin(['HTTP_ORIGIN' => 'https://www.oazahotel.com.mk', 'HTTP_HOST' => 'www.oazahotel.com.mk:443']), 'Host with :443');
+    truthy(same_origin(['HTTP_ORIGIN' => 'https://www.oazahotel.com.mk:443', 'HTTP_HOST' => 'www.oazahotel.com.mk']), 'Origin with :443');
+    truthy(same_origin(['HTTP_ORIGIN' => 'http://localhost', 'HTTP_HOST' => 'localhost:80']), 'http and :80');
+    truthy(!same_origin(['HTTP_ORIGIN' => 'https://www.oazahotel.com.mk', 'HTTP_HOST' => 'www.oazahotel.com.mk:8443']), 'another port still differs');
+    truthy(!same_origin(['HTTP_ORIGIN' => 'https://www.oazahotel.com.mk:80', 'HTTP_HOST' => 'www.oazahotel.com.mk']), ':80 is not the default for https');
+});

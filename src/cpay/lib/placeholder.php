@@ -72,7 +72,7 @@ function save_cpay_push(string $kind, array $fields, int $length): void
     try {
         $config = load_config(config_path());
     } catch (Throwable $e) {
-        error_log('Hotel Oaza cPay placeholder: ' . $e->getMessage());
+        error_log('Hotel Oaza cPay placeholder: ' . ($e instanceof RuntimeException ? $e->getMessage() : get_class($e) . ' on line ' . $e->getLine()));
         return;
     }
     try {
@@ -93,7 +93,7 @@ function save_cpay_push(string $kind, array $fields, int $length): void
         }
         chmod($file, 0600);
     } catch (Throwable $e) {
-        error_log('Hotel Oaza cPay placeholder: ' . $e->getMessage());
+        error_log('Hotel Oaza cPay placeholder: ' . ($e instanceof RuntimeException ? $e->getMessage() : get_class($e) . ' on line ' . $e->getLine()));
     }
 }
 

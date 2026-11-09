@@ -15,6 +15,9 @@ ErrorDocument 404 /404.html
 <FilesMatch "^\.">
   Require all denied
 </FilesMatch>
+# FilesMatch only sees file names, so a dot-folder (/.git/config) needs this rule too.
+# /.well-known/ stays open: AutoSSL renews the certificate through it.
+RedirectMatch 404 "/\.(?!well-known/)"
 
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"
