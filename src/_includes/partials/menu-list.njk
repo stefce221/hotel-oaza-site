@@ -1,5 +1,5 @@
 <ul class="menu__list">
       {%- for key in pages.nav %}
-      <li><a class="menu__link" href="{{ key | pageUrl(lang) }}"{% if key == pageKey %} aria-current="page"{% endif %}><small>{{ "0" + loop.index }}</small><span>{% t 'nav.' + key %}</span></a></li>
+      <li><a class="menu__link" href="{{ key | pageUrl(lang) }}"{% if key == pageKey %} aria-current="page"{% endif %}><small aria-hidden="true">{{ "0" + loop.index }}</small><span>{% t 'nav.' + key %}</span></a></li>
       {%- endfor %}
     </ul>

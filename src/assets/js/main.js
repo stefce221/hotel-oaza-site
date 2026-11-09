@@ -93,6 +93,13 @@
         toggle.focus();
       }
     });
+    /* Past the desktop breakpoint the overlay is hidden, so release the body lock and the inert page. */
+    var desktop = window.matchMedia("(min-width: 1180px)");
+    var onDesktop = function (e) {
+      if (e.matches && document.body.classList.contains("menu-open")) setOpen(false);
+    };
+    if (desktop.addEventListener) desktop.addEventListener("change", onDesktop);
+    else desktop.addListener(onDesktop);
   }
 
   /* ---------- Reveal on scroll ---------- */

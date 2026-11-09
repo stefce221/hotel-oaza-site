@@ -17,10 +17,12 @@
   </header>
 
   <div class="menu" id="menu" inert>
-    {% include "partials/menu-list.njk" %}
+    <nav aria-label="{% ta 'nav.label' %}">
+      {% include "partials/menu-list.njk" %}
+    </nav>
     <div class="menu__foot">
       <div class="brand-rule brand-rule--start" style="--rule-bg: var(--c-mist)" aria-hidden="true"></div>
       <p>{% t 'menu.reception' %}</p>
-      <p><a href="tel:+38970310300">+389 70 310 300</a> · <a href="mailto:info@oazahotel.com.mk">info@oazahotel.com.mk</a></p>
+      <p><a href="{% telHref %}">{{ site.phone.display }}</a> · <a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
     </div>
   </div>

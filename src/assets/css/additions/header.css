@@ -8,3 +8,9 @@
   background: var(--c-ink);
   color: var(--c-paper);
 }
+
+/* The mobile menu scrolls when it is taller than the screen (landscape phones, 320x568). */
+.menu {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
