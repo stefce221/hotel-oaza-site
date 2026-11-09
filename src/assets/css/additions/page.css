@@ -1,5 +1,5 @@
 /* Inner pages: the first section clears the fixed header (on Home the hero does this). */
-.page-inner #main > :first-child:not(.page-hero) {
+.page-inner main > :first-child:not(.page-hero) {
   padding-top: calc(var(--header-h) + var(--section-y) * 0.6);
 }
 

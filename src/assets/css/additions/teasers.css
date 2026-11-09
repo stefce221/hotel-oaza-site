@@ -19,10 +19,6 @@
   justify-self: start;
 }
 
-.aqua .teaser-link .link-arrow {
-  color: inherit;
-}
-
 /* A long label (Macedonian at phone width) wraps instead of squeezing the arrow to nothing. */
 .teaser-link .link-arrow,
 .event-card__link {
