@@ -81,6 +81,7 @@ Open each address in a browser (a private window is fine). If anything below dif
 8. Send a real enquiry from the site and confirm it reaches info@oazahotel.com.mk.
 9. Redirect oazahotel.com (if renewed) to https://www.oazahotel.com.mk/, and malodmor.mk to /restoran/.
 10. Add the site to Google Search Console and submit `https://www.oazahotel.com.mk/sitemap.xml`.
+11. On the hotel's Facebook page, change the website link from oazahotel.com to https://www.oazahotel.com.mk/. The site's footer now links to that page.
 
 ## Later projects
 

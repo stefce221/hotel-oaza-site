@@ -14,6 +14,9 @@
           <li><a href="{% telHref %}">{{ site.phone.display }}</a></li>
           <li><a href="{% viberHref %}">Viber</a> / <a href="{% waHref pageKey %}">WhatsApp</a>: {{ site.phone.local }}</li>
           <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+          {%- if site.social and site.social.facebook %}
+          <li><a href="{{ site.social.facebook }}" target="_blank" rel="noopener">Facebook<span class="visually-hidden"> {% t 'footer.newtab' %}</span></a></li>
+          {%- endif %}
         </ul>
       </div>
       <div>

@@ -26,7 +26,7 @@ Macedonian is the main language and lives at the root; English lives under `/en/
 
 | Key | Page | MK | EN | Content |
 |---|---|---|---|---|
-| home | Home | `/` | `/en/` | Today's hero (with the availability form) and intro, unchanged. Then one teaser per page, in today's order: rooms, restaurant, events (the two existing event cards, now linking to weddings and conferences), AquaBella, Štip. A teaser is a shortened version of today's section: eyebrow, heading, lede, one image and a link. The full enquiry form moves to Contact, so Home ends with the Štip teaser and the footer. |
+| home | Home | `/` | `/en/` | Today's hero (with the availability form) and intro, unchanged. Then one teaser per page, in today's order: rooms, restaurant, events (the two existing event cards, now linking to weddings and conferences), AquaBella, Štip. A teaser is a shortened version of today's section: eyebrow, heading, lede, one image and a link. The full enquiry form moves to Contact; Home ends with the closing band (section 4) and the footer. |
 | rooms | Rooms | `/sobi/` | `/en/rooms/` | Today's rooms section in full: 4 room types, amenities, check-in card |
 | weddings | Weddings & celebrations | `/svadbi/` | `/en/weddings/` | Landing page (section 3) |
 | conferences | Conferences & seminars | `/seminari/` | `/en/conferences/` | Landing page (section 3) |
@@ -59,7 +59,7 @@ Each page works on its own: a visitor arriving from an ad finds everything, incl
 | 4 | What we take care of: menu, layout, equipment, rooms upstairs for guests travelling in | Packages: a day package (hall, coffee breaks, lunch) and one with an overnight stay. Each shows "price on request" until the hotel supplies prices. |
 | 5 | How it works: send the date and guest count → we call back and you visit → you confirm → your day | Getting here: address, about an hour from Skopje Airport, on-site parking, link to the Štip page |
 | 6 | Gallery of real weddings (optional block) | Rooms for participants, with a link to Rooms |
-| 7 FAQ | Deposit and cancellation (both answered by linking to Terms), parking, guest rooms | Invoices for companies, cancellation (linking to Terms), parking |
+| 7 FAQ | Deposit and cancellation (for events both are stated in the offer; cancellation links to Terms for stays), parking, guest rooms | Invoices for companies, cancellation (as on Weddings), parking |
 | 8 Form | Shared enquiry form, "Wedding or celebration" preselected | Shared enquiry form, "Conference or seminar" preselected |
 
 **Facts and photos**
@@ -83,6 +83,7 @@ Each page works on its own: a visitor arriving from an ad finds everything, incl
 | WhatsApp | `https://wa.me/38970310300?text=<message for the page>` |
 | Email | info@oazahotel.com.mk |
 | Address | Tošo Arsov 32, 2000 Štip |
+| Facebook | `https://www.facebook.com/profile.php?id=100091824055013` (`social.facebook`; the build refuses a link that is not https) |
 | Operator (MK) | МБС Угостителство и трговија ДООЕЛ Штип · ЕДБ 4029018520675 |
 | Operator (EN) | MBS Ugostitelstvo i trgovija DOOEL Štip · Tax no. 4029018520675 |
 
@@ -104,6 +105,7 @@ Each page works on its own: a visitor arriving from an ad finds everything, incl
 
 - Today's footer and columns.
 - The Contact column adds "Viber / WhatsApp: 070 310 300", with both links.
+- The Contact column links the hotel's Facebook page in a new tab. The same address is `sameAs` in the Hotel structured data.
 - The bottom row carries Terms · Privacy · Card payments, the operator line and ©.
 - Card logos (Visa, Mastercard, Visa Secure, Mastercard ID Check) are added in the cPay project.
 
@@ -114,6 +116,13 @@ Each page works on its own: a visitor arriving from an ad finds everything, incl
 - **The 4th button depends on the page.** On weddings and conferences it jumps to the page's own form, labelled "Request a date" or "Request an offer". On every other page it opens Contact.
 - **Viber and WhatsApp both open a chat**, from which the guest taps call. Neither app has a reliable direct-call link.
 - **The phone on +389 70 310 300 must be signed in to both apps and watched by reception.** The free WhatsApp Business app adds working hours and an automatic away message. This is a step for the hotel, not part of the build.
+
+### Closing band (added 2026-11-10)
+
+- **Home, Rooms, AquaBella and Štip end with it**, because they have no form of their own (`partials/closing-cta.njk`).
+- **It carries** the "Plan your stay" heading and lede of the contact form, a button to Contact with `type=stay`, Viber and WhatsApp buttons, and the reception phone.
+- **Pages that already ask** (Weddings, Conferences, Contact, Restaurant) and the policy pages do not get it.
+- The FAQ on Weddings and Conferences sits beside its heading on wide screens, with the phone number under the heading.
 
 ### Enquiry form (one shared component)
 

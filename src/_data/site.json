@@ -3,6 +3,7 @@
   "phone": { "e164": "+38970310300", "display": "+389 70 310 300", "local": "070 310 300" },
   "email": "info@oazahotel.com.mk",
   "address": { "street": "Tošo Arsov 32", "postcode": "2000", "city": "Štip", "country": "MK" },
+  "social": { "facebook": "https://www.facebook.com/profile.php?id=100091824055013" },
   "operator": {
     "mk": "МБС Угостителство и трговија ДООЕЛ Штип · ЕДБ 4029018520675",
     "en": "MBS Ugostitelstvo i trgovija DOOEL Štip · Tax no. 4029018520675"

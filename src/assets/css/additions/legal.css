@@ -3,6 +3,11 @@
   max-width: 46rem;
 }
 
+/* The label sits clear of the title, as it does in every other section. */
+.legal__wrap .h2 {
+  margin-top: 1.375rem;
+}
+
 .legal__updated {
   margin-top: 0.75rem;
   font-size: var(--fs-small);
@@ -22,6 +27,11 @@
 .legal__body p + p,
 .legal__body ul {
   margin-top: 1rem;
+}
+
+/* A phone number is one thing to tap or read out, so it never breaks across lines. */
+.legal__body a[href^="tel:"] {
+  white-space: nowrap;
 }
 
 .hotel-marker {

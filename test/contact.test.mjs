@@ -14,14 +14,16 @@ after(() => {
   for (const dir of tempDirs) rmSync(dir, { recursive: true, force: true });
 });
 
-/** Write a site.json that is the real one with `phone` replaced, and return its path. */
-function siteFileWithPhone(phone) {
+/** Write a site.json that is the real one with some top-level values replaced, and return its path. */
+function siteFileWith(overrides) {
   const dir = mkdtempSync(path.join(tmpdir(), "oaza-site-"));
   tempDirs.push(dir);
   const file = path.join(dir, "site.json");
-  writeFileSync(file, JSON.stringify({ ...site, phone }));
+  writeFileSync(file, JSON.stringify({ ...site, ...overrides }));
   return file;
 }
+
+const siteFileWithPhone = (phone) => siteFileWith({ phone });
 
 test("call and Viber links use +389 70 310 300", () => {
   assert.equal(telHref(site), "tel:+38970310300");
@@ -79,4 +81,32 @@ test("loadSite accepts the shortest and longest E.164 numbers", () => {
   for (const e164 of ["+12345678", "+123456789012345"]) {
     assert.equal(loadSite(siteFileWithPhone({ ...site.phone, e164 })).phone.e164, e164);
   }
+});
+
+test("the Facebook link is the hotel's page, by its https address", () => {
+  assert.equal(site.social.facebook, "https://www.facebook.com/profile.php?id=100091824055013");
+});
+
+test("loadSite refuses a social link that is not a plain https address", () => {
+  const bad = [
+    "http://www.facebook.com/oaza",
+    "www.facebook.com/oaza",
+    "javascript:alert(1)",
+    "https://www.facebook.com/a b",
+    "https://www.facebook.com/a\\b",
+    'https://www.facebook.com/"onclick=',
+    "https://",
+    "",
+    42,
+    null,
+  ];
+  for (const url of bad) {
+    assert.throws(() => loadSite(siteFileWith({ social: { facebook: url } })), /social\.facebook/, JSON.stringify(url));
+  }
+  assert.throws(() => loadSite(siteFileWith({ social: "https://www.facebook.com/" })), /social/);
+  assert.throws(() => loadSite(siteFileWith({ social: ["https://www.facebook.com/"] })), /social/);
+});
+
+test("loadSite accepts a site without social links", () => {
+  assert.equal(loadSite(siteFileWith({ social: undefined })).social, undefined);
 });

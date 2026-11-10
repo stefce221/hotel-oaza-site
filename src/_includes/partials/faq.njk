@@ -1,7 +1,11 @@
 {%- if faqKeys and faqKeys.length %}
-<section class="section" aria-labelledby="faq-title">
-      <div class="wrap">
-        <h2 class="h2" id="faq-title">{% t 'faq.title' %}</h2>
+<section class="section faq-section" aria-labelledby="faq-title">
+      <div class="wrap faq-section__grid">
+        <div class="faq-section__head">
+          <h2 class="h2" id="faq-title">{% t 'faq.title' %}</h2>
+          <p class="faq-section__more">{% t 'faq.more' %}</p>
+          <p class="faq-section__tel"><a class="phone-display" href="{% telHref %}">{{ site.phone.display }}</a></p>
+        </div>
         <div class="faq">
           {%- for key in faqKeys %}
           <details class="faq__item">

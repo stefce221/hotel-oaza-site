@@ -20,6 +20,11 @@
   align-items: center;
 }
 
+/* The label sits clear of the title, as it does in every other section. */
+.page-hero__copy .h2 {
+  margin-top: 1.375rem;
+}
+
 .page-hero__copy .lede {
   margin-top: 1.25rem;
 }
@@ -34,6 +39,21 @@
 .btn__icon {
   width: 18px;
   height: 18px;
+}
+
+/* The phone number set large, where calling is the next step (FAQ, closing band). */
+.phone-display {
+  font-family: var(--font-heading);
+  font-size: var(--fs-h3);
+  line-height: 1.1;
+  white-space: nowrap;
+  background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat;
+  transition: background-size var(--dur-med) var(--ease-out);
+}
+
+.phone-display:hover,
+.phone-display:focus-visible {
+  background-size: 100% 1px;
 }
 
 .landing-tags .event-card__tags {
@@ -106,9 +126,27 @@
   color: var(--text-muted);
 }
 
-.faq {
-  max-width: 52rem;
-  margin-top: 2rem;
+/* FAQ: on wide screens the heading stays beside the questions instead of leaving the right half empty. */
+.faq-section__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.5fr);
+  gap: 2rem clamp(2rem, 6vw, 6rem);
+  align-items: start;
+}
+
+.faq-section__head {
+  position: sticky;
+  top: calc(var(--header-h) + 2rem);
+}
+
+.faq-section__more {
+  max-width: 22rem;
+  margin-top: 1.25rem;
+  color: var(--text-2);
+}
+
+.faq-section__tel {
+  margin-top: 0.75rem;
 }
 
 .faq__item {
@@ -150,8 +188,18 @@
 
 @media (max-width: 900px) {
   .page-hero__grid,
-  .l-grid--2 {
+  .l-grid--2,
+  .faq-section__grid {
     grid-template-columns: 1fr;
+  }
+
+  /* The frame around the photo reaches above it, so the buttons need more room over it. */
+  .page-hero__grid {
+    row-gap: 3.5rem;
+  }
+
+  .faq-section__head {
+    position: static;
   }
 
   .l-grid--4,

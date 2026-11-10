@@ -1,0 +1,23 @@
+<section class="closer section" aria-labelledby="closer-title">
+      <div class="wrap">
+        <div class="brand-rule brand-rule--start" aria-hidden="true"></div>
+        <div class="closer__grid">
+          <div class="closer__copy">
+            <h2 class="h2" id="closer-title" data-reveal>{% t 'contact.title' %}</h2>
+            <p class="lede" data-reveal style="--d:1">{% t 'contact.lede' %}</p>
+          </div>
+          <div class="closer__actions" data-reveal style="--d:2">
+            <div class="contact-ctas">
+              <a class="btn btn--accent" href="{% contactHref 'stay' %}"><span>{% t 'hero.cta' %}</span><svg class="btn__arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+              <a class="btn btn--ghost" href="{% viberHref %}" aria-label="{% ta 'cta.viber' %}"><svg class="btn__icon" aria-hidden="true"><use href="#i-viber"/></svg><span>Viber</span></a>
+              <a class="btn btn--ghost" href="{% waHref pageKey %}" aria-label="{% ta 'cta.whatsapp' %}"><svg class="btn__icon" aria-hidden="true"><use href="#i-whatsapp"/></svg><span>WhatsApp</span></a>
+            </div>
+            <p class="closer__reception">
+              <span class="closer__label">{% t 'contact.rec.t' %}</span>
+              <a class="phone-display" href="{% telHref %}">{{ site.phone.display }}</a>
+              <span class="closer__note">{% t 'contact.rec.d' %}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>

@@ -2,15 +2,31 @@
 import { readFileSync } from "node:fs";
 
 const E164 = /^\+[1-9]\d{7,14}$/;
+/* A social link goes into an href and into the JSON-LD, so it is a plain https address:
+   no spaces, quotes, angle brackets or backslashes. */
+const HTTPS_URL = /^https:\/\/[^\s"'<>\\]+$/;
 
-/** Read site.json; the phone number must be in E.164 form (+, then 8 to 15 digits) so the links work. */
+/** Read site.json; the phone number must be in E.164 form (+, then 8 to 15 digits) so the links work,
+    and every social link must be an https address. */
 export function loadSite(file = new URL("../src/_data/site.json", import.meta.url)) {
   const site = JSON.parse(readFileSync(file, "utf8"));
   const e164 = site.phone?.e164;
   if (typeof e164 !== "string" || !E164.test(e164)) {
     throw new Error(`site.json: phone.e164 must be an E.164 number such as +38970310300, got ${JSON.stringify(e164)}`);
   }
+  assertSocialLinks(site.social);
   return site;
+}
+
+function assertSocialLinks(social = {}) {
+  if (social === null || typeof social !== "object" || Array.isArray(social)) {
+    throw new Error("site.json: social must map a name to an https:// address");
+  }
+  for (const [name, url] of Object.entries(social)) {
+    if (typeof url !== "string" || !HTTPS_URL.test(url)) {
+      throw new Error(`site.json: social.${name} must be an https:// address, got ${JSON.stringify(url)}`);
+    }
+  }
 }
 
 export function telHref(site) {

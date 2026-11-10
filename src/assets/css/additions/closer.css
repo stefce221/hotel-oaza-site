@@ -1,0 +1,65 @@
+/* Closing band: a page without its own enquiry form ends with a way to ask.
+   The buttons and the large phone number are .contact-ctas and .phone-display from landing.css. */
+.closer__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 2.5rem clamp(2rem, 5vw, 5rem);
+  align-items: center;
+  margin-top: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+/* After a plain section both paddings would stack into one hole, so the rule alone marks the break. */
+.location + .closer {
+  padding-top: 0;
+}
+
+.closer__copy .lede {
+  max-width: 34rem;
+  margin-top: 1.25rem;
+}
+
+/* One wide button over two equal ones, so the three never wrap unevenly; on the narrowest phones they stack. */
+.closer .contact-ctas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  max-width: 26rem;
+  margin-top: 0;
+}
+
+.closer .contact-ctas .btn {
+  padding-inline: 1rem;
+}
+
+.closer .contact-ctas .btn--accent {
+  grid-column: 1 / -1;
+}
+
+.closer__reception {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1.25rem;
+  margin-top: 2rem;
+}
+
+.closer__label {
+  flex-basis: 100%;
+  font-family: var(--font-display);
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.closer__note {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+}
+
+@media (max-width: 900px) {
+  /* minmax(0, …): a plain 1fr track would grow to fit two button columns on a 320px phone. */
+  .closer__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
