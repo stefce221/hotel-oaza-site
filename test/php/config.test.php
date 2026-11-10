@@ -31,12 +31,43 @@ test('the example config leaves exactly the secrets and the mailbox to fill in',
     same(['rate.salt', 'mail.from', 'mail.username', 'mail.password'], config_problems($example));
 });
 
+test("the example config lists cPay's push address", function (): void {
+    $example = require __DIR__ . '/../../deploy/private/config.example.php';
+    same(['80.77.147.43'], $example['cpay']['push_ips'] ?? null);
+});
+
+test('config_problems accepts cPay push addresses and rejects anything but a list of IPv4 addresses, by name only', function (): void {
+    same([], config_problems(smtp_config(['cpay' => ['push_ips' => ['80.77.147.43']]])), 'one address');
+    same([], config_problems(smtp_config(['cpay' => ['push_ips' => []]])), 'an empty list');
+    same([], config_problems(smtp_config(['cpay' => []])), 'a section without the list');
+    same(['cpay.push_ips'], config_problems(smtp_config(['cpay' => ['push_ips' => '80.77.147.43']])), 'text, not a list');
+    same(['cpay.push_ips'], config_problems(smtp_config(['cpay' => ['push_ips' => ['80.77.147.43 ']]])), 'a trailing space');
+    same(['cpay.push_ips'], config_problems(smtp_config(['cpay' => ['push_ips' => ['cpay.com.mk']]])), 'a host name');
+    same(['cpay.push_ips'], config_problems(smtp_config(['cpay' => ['push_ips' => ['2001:db8::1']]])), 'IPv6');
+    same(['cpay.push_ips'], config_problems(smtp_config(['cpay' => ['push_ips' => [80]]])), 'a number');
+    same(['cpay.push_ips'], config_problems(smtp_config(['cpay' => 'x'])), 'a section that is not a list');
+    truthy(!str_contains(implode(',', config_problems(smtp_config(['cpay' => ['push_ips' => ['not-an-ip']]]))), 'not-an-ip'), 'no values');
+});
+
 test('load_config refuses a missing file', function (): void {
     try {
         load_config(__DIR__ . '/no-such-config.php');
         truthy(false, 'should have thrown');
     } catch (RuntimeException $e) {
         same('config_missing', $e->getMessage());
+    }
+});
+
+test('load_config refuses a cpay section that is not a list of addresses, without quoting it', function (): void {
+    $path = (string) tempnam(sys_get_temp_dir(), 'oaza-config-');
+    file_put_contents($path, '<?php return ' . var_export(smtp_config(['cpay' => ['push_ips' => '80.77.147.43']]), true) . ';');
+    try {
+        load_config($path);
+        truthy(false, 'should have thrown');
+    } catch (RuntimeException $e) {
+        same('config_incomplete: cpay.push_ips', $e->getMessage());
+    } finally {
+        unlink($path);
     }
 });
 

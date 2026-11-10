@@ -27,6 +27,21 @@ function int_between(mixed $value, int $min, int $max): bool
     return is_int($value) && $value >= $min && $value <= $max;
 }
 
+/** True for a 'cpay' section whose push_ips (it may be left out) is a list of IPv4 addresses and nothing else. */
+function push_ips_ok(mixed $cpay): bool
+{
+    $ips = is_array($cpay) ? ($cpay['push_ips'] ?? []) : null;
+    if (!is_array($ips)) {
+        return false;
+    }
+    foreach ($ips as $ip) {
+        if (!is_string($ip) || filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
+            return false;
+        }
+    }
+    return true;
+}
+
 /**
  * Values that are present but wrong, as dotted names. Empty values are reported as missing instead.
  * @return string[]
@@ -54,6 +69,9 @@ function config_invalid(array $config, array $mail): array
         if (($mail['secure'] ?? null) !== null && $mail['secure'] !== '' && !in_array($mail['secure'], ['ssl', 'tls'], true)) {
             $invalid[] = 'mail.secure';
         }
+    }
+    if (array_key_exists('cpay', $config) && !push_ips_ok($config['cpay'])) {
+        $invalid[] = 'cpay.push_ips';
     }
     return $invalid;
 }

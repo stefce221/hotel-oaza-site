@@ -44,7 +44,10 @@ Each appears on the site as `[[HOTEL: …]]`, highlighted in yellow on the previ
 - [ ] Create `/home/oazahote/private/` outside `public_html` with permissions **700** (cPanel File Manager → Change Permissions). Then copy `deploy/private/config.example.php` there as `config.php` and fill in the mailbox, its password and a random salt.
 - [ ] The mail login: `username` in `config.php` must be the same mailbox as `from`, and `mail.oazahotel.com.mk` must present a valid certificate for that name (the mail settings page at MKhost says which host name to use). Never switch off certificate checks to make it work; tell the developer instead.
 - [ ] If info@oazahotel.com.mk is read somewhere other than MKhost (for example Gmail or Microsoft 365), set cPanel → Email Routing to **Remote Mail Exchanger** for oazahotel.com.mk. Otherwise enquiries land in an unused mailbox on the server.
-- [ ] Ask MKhost whether a proxy or CDN sits in front of the site. If one does, tell the developer before launch: the visitor limit on enquiries and the redirect to HTTPS both depend on it.
+- [ ] Ask MKhost whether a proxy or CDN sits in front of the site. If one does, tell the developer before launch: the visitor limit on enquiries, the redirect to HTTPS and the recognition of cPay's address all depend on it.
+- [ ] Keep the `cpay` lines in `config.php` as they are in the example. They name the address cPay sends its payment notices from (`80.77.147.43`, given by CaSys in January 2025). The hotel charges cards in batches, and only notices from that address are kept without the hourly cap. If CaSys ever names a new address, change it there.
+- [ ] After every later change to `config.php`, send one test enquiry from the site. If it fails, `config.php` has a mistake, and until it is fixed cPay's payment notices are answered but not saved.
+- [ ] Ask MKhost support to confirm that their firewall and ModSecurity let `80.77.147.43` send POST requests to `/cpay/ok.php` and `/cpay/fail.php`, also when dozens arrive within a few minutes.
 - [ ] In cPanel → Email Deliverability, fix SPF and DKIM for oazahotel.com.mk if it reports problems.
 - [ ] Set up WhatsApp (ideally WhatsApp Business) and Viber on +389 70 310 300, so the new buttons reach someone.
 - [ ] Before launch, tap the Viber button on an Android phone, an iPhone and a Windows PC with Viber installed. Each must open a chat with +389 70 310 300. If one doesn't, tell the developer which device.
@@ -75,4 +78,8 @@ Open each address in a browser (a private window is fine). If anything below dif
 ## Later projects
 
 - cPay card payments: the payment form, the staff page for Booking.com virtual cards and the card logos. They replace `src/cpay/`. The cPay project must also add a retention period and privacy text for the payment-status records the placeholders keep in `private/cpay-inbox` and `cpay-ratelimit.json`.
+  - On 2026-11-09 Komercijalna banka confirmed that the hotel's cPay merchant is registered to www.oazahotel.com.mk with `/cpay/ok.php` and `/cpay/fail.php`. No card can be charged online until the payment page exists on that domain.
+  - The payment request to cPay must be a POST with the `application/x-www-form-urlencoded` content type. CaSys asked for this in June and September 2026; the old Wix page sent a GET.
+  - Two things are assumed, not confirmed in writing: the checksum key issued on 2025-05-20 still works after the domain change, and cPay still sends from `80.77.147.43`. If the first test payment fails its checksum, or its notices don't arrive, ask CaSys (ecommerce@casys.com.mk) about these two first.
+  - Right after the payment page goes live, make one test payment and check that its notices arrive: a file in `private/cpay-inbox` and the "Order Status" email from cPay. Then report the result to the bank (e-commerce@kb.mk) and CaSys, as the cPay specification asks after a domain change.
 - The effects decision. Review the effects at any page with `?fx=panel`.

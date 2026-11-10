@@ -7,10 +7,14 @@ import path from "node:path";
 
 export const PHP = process.env.PHP_BIN || "php";
 
-/** A private folder with config.php (file transport). Paths use forward slashes, which PHP accepts on Windows. */
-export function makePrivateDir() {
+/**
+ * A private folder with config.php (file transport). Paths use forward slashes, which PHP accepts on Windows.
+ * `cpayPushIps` adds the config's cpay.push_ips list (the addresses cPay's own pushes come from).
+ */
+export function makePrivateDir({ cpayPushIps = null } = {}) {
   const dir = mkdtempSync(path.join(tmpdir(), "oaza-php-")).replace(/\\/g, "/");
   const config = `${dir}/config.php`;
+  const cpay = cpayPushIps ? `\n    'cpay' => ['push_ips' => [${cpayPushIps.map((ip) => `'${ip}'`).join(", ")}]],` : "";
   mkdirSync(`${dir}/mail`);
   writeFileSync(
     config,
@@ -24,7 +28,7 @@ return [
         'from_name' => 'Hotel Oaza website',
         'to' => 'info@oazahotel.com.mk',
     ],
-    'rate' => ['limit' => 5, 'window' => 3600, 'salt' => 'test-salt'],
+    'rate' => ['limit' => 5, 'window' => 3600, 'salt' => 'test-salt'],${cpay}
 ];
 `,
   );

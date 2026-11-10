@@ -24,4 +24,10 @@ return [
         /* A long random string; create one with: php -r "echo bin2hex(random_bytes(32)), PHP_EOL;" */
         'salt' => '',
     ],
+    'cpay' => [
+        /* The address cPay (CaSys) sends its payment notices from, as CaSys gave it in January 2025.
+           Notices from it are kept without the hourly cap that applies to everyone else. IPv4 only;
+           change it only if CaSys names a new address. */
+        'push_ips' => ['80.77.147.43'],
+    ],
 ];

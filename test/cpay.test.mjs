@@ -1,28 +1,42 @@
 import { after, before, test } from "node:test";
 import assert from "node:assert/strict";
-import { existsSync, readdirSync, readFileSync, rmSync, statSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { makePrivateDir, request, startPhp } from "./helpers/php.mjs";
 
 /* /cpay/ok.php and /cpay/fail.php are registered with CaSys; until the cPay project they keep each push. */
 const PORT = 8766;
 const FLOOD_PORT = 8767;
+const CPAY_PORT = 8770;
 const FORM = { "Content-Type": "application/x-www-form-urlencoded" };
 const { dir, config } = makePrivateDir();
 const flood = makePrivateDir();
+/* PHP's test server sees every request as 127.0.0.1, so here that address stands in for cPay's own. */
+const cpay = makePrivateDir({ cpayPushIps: ["127.0.0.1"] });
 const INBOX = `${dir}/cpay-inbox`;
 const stops = [];
 
 before(async () => {
-  stops.push(await startPhp(PORT, config), await startPhp(FLOOD_PORT, flood.config));
+  stops.push(await startPhp(PORT, config), await startPhp(FLOOD_PORT, flood.config), await startPhp(CPAY_PORT, cpay.config));
 });
 after(async () => {
   await Promise.all(stops.map((stop) => stop()));
   rmSync(dir, { recursive: true, force: true });
   rmSync(flood.dir, { recursive: true, force: true });
+  rmSync(cpay.dir, { recursive: true, force: true });
 });
 
 const files = (folder, kind) => (existsSync(folder) ? readdirSync(folder).filter((name) => name.includes(`-${kind}-`)) : []);
 const inbox = (kind) => files(INBOX, kind);
+const log = (folder) => (existsSync(`${folder}/logs/errors.log`) ? readFileSync(`${folder}/logs/errors.log`, "utf8") : "");
+
+/** Adds empty files to an inbox until it holds `total`. */
+function fillInbox(folder, total) {
+  mkdirSync(folder, { recursive: true });
+  for (let i = readdirSync(folder).length; i < total; i += 1) {
+    writeFileSync(`${folder}/seed-${String(i).padStart(5, "0")}.json`, "{}");
+  }
+  assert.equal(readdirSync(folder).length, total);
+}
 
 test("a push to /cpay/ok.php is answered 200 and kept in the private folder", async () => {
   const res = await request(PORT, "POST", "/cpay/ok.php", {
@@ -97,4 +111,36 @@ test("the 21st push within the hour from one visitor saves nothing, and still an
   assert.match(last.body, /Payment status received/);
   assert.equal(before + 19, files(folder, "ok").length, "20 pushes in the hour in all, the first one was the array test");
   assert.match(readFileSync(`${flood.dir}/logs/errors.log`, "utf8"), / cpay_rate_limited\n/);
+});
+
+test("pushes from cPay's own address are all kept, past the hourly cap", async () => {
+  const folder = `${cpay.dir}/cpay-inbox`;
+  for (let i = 0; i < 30; i += 1) {
+    const res = await request(CPAY_PORT, "POST", "/cpay/ok.php", { body: `Details2=BATCH${i}`, headers: FORM });
+    assert.equal(res.status, 200);
+  }
+  assert.equal(files(folder, "ok").length, 30, "a batch of card charges sends more than 20 pushes within the hour");
+  assert.doesNotMatch(log(cpay.dir), /cpay_rate_limited/);
+});
+
+test("an inbox with 500 files takes nothing more from a stranger", async () => {
+  fillInbox(INBOX, 500);
+  const res = await request(PORT, "POST", "/cpay/ok.php", { body: "Details2=LATE", headers: FORM });
+  assert.equal(res.status, 200);
+  assert.equal(readdirSync(INBOX).length, 500);
+  assert.match(log(dir), / cpay_inbox_full\n/);
+});
+
+test("cPay's own pushes are still kept past 500 files, and stop at 5000", async () => {
+  const folder = `${cpay.dir}/cpay-inbox`;
+  fillInbox(folder, 500);
+  await request(CPAY_PORT, "POST", "/cpay/fail.php", { body: "Details2=PAST500", headers: FORM });
+  assert.equal(readdirSync(folder).length, 501);
+  assert.equal(files(folder, "fail").length, 1);
+  assert.doesNotMatch(log(cpay.dir), /cpay_inbox_full/);
+  fillInbox(folder, 5000);
+  const res = await request(CPAY_PORT, "POST", "/cpay/fail.php", { body: "Details2=PAST5000", headers: FORM });
+  assert.equal(res.status, 200);
+  assert.equal(readdirSync(folder).length, 5000);
+  assert.match(log(cpay.dir), / cpay_inbox_full\n/);
 });

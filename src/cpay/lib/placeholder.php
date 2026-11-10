@@ -12,6 +12,17 @@ const CPAY_MAX_FIELDS = 50;
 const CPAY_MAX_VALUE = 1024;
 const CPAY_MAX_FILES = 500;
 const CPAY_MAX_PER_HOUR = 20;
+/* The hotel charges cards in batches (two dozen payments within half an hour, each pushed at least twice),
+   so pushes from cPay's own addresses (cpay.push_ips in the config) skip the hourly cap and get more room. */
+const CPAY_MAX_FILES_FROM_CPAY = 5000;
+
+/** True when the request comes straight from one of cPay's addresses in the config. Forwarded headers never count. */
+function from_cpay(array $config, array $server): bool
+{
+    $listed = is_array($config['cpay'] ?? null) ? ($config['cpay']['push_ips'] ?? []) : [];
+    $address = visitor_address((string) ($server['REMOTE_ADDR'] ?? ''));
+    return $address !== 'unknown' && is_array($listed) && in_array($address, $listed, true);
+}
 
 /** Keeps the push (when it has fields and is within the limits) and shows a short bilingual page, whatever happens. */
 function cpay_placeholder(string $kind): void
@@ -44,13 +55,17 @@ function limit_cpay_fields(array $fields): array
 }
 
 /** Why this push must not be saved: a log code ('' when it may be). Never contains a field value. */
-function cpay_refusal(array $config, string $inbox, int $length): string
+function cpay_refusal(array $config, string $inbox, int $length, bool $fromCpay): string
 {
     if ($length > CPAY_MAX_BYTES) {
         return 'cpay_too_large';
     }
-    if (is_dir($inbox) && count(scandir($inbox) ?: []) - 2 >= CPAY_MAX_FILES) {
+    $maxFiles = $fromCpay ? CPAY_MAX_FILES_FROM_CPAY : CPAY_MAX_FILES;
+    if (is_dir($inbox) && count(scandir($inbox) ?: []) - 2 >= $maxFiles) {
         return 'cpay_inbox_full';
+    }
+    if ($fromCpay) {
+        return ''; /* a batch of charges must be kept whole */
     }
     try {
         $limited = rate_limited(
@@ -77,7 +92,7 @@ function save_cpay_push(string $kind, array $fields, int $length): void
     }
     try {
         $dir = $config['private_dir'] . '/cpay-inbox';
-        $refusal = cpay_refusal($config, $dir, $length);
+        $refusal = cpay_refusal($config, $dir, $length, from_cpay($config, $_SERVER));
         if ($refusal !== '') {
             log_error($config['private_dir'], $refusal);
             return;
