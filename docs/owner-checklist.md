@@ -8,17 +8,24 @@ What only the hotel and the owner can do. Spec: `docs/superpowers/specs/2026-11-
 - [ ] If the first push already happened before the source was switched, switch it now, then run the workflow once: Actions → Preview → "Run workflow". If GitHub offers a starter workflow during the switch, don't commit it; the repo already has `.github/workflows/pages.yml`.
 - [ ] Approve the push. Every push updates the preview link your friend uses.
 
-## Facts the hotel must supply (the live build refuses to run without them)
+## Facts the hotel supplied (filled in on 2026-11-10)
 
-Each appears on the site as `[[HOTEL: …]]`, highlighted in yellow on the preview.
+The live build still refuses any `[[HOTEL: …]]` marker, so a new open question can be added the same way.
 
-- [ ] Deposit rules for stays and events: when, how much, by when (Terms)
-- [ ] Cancellation and no-show rules for stays and events (Terms)
-- [ ] Refund timing: within how many days (Terms, Card payments)
-- [ ] How long enquiry emails are kept, and when they are deleted (Privacy)
-- [ ] Registered address of MBS Ugostitelstvo i trgovija DOOEL Štip (Privacy, Card payments)
-- [ ] Confirmation that companies get an invoice for events, and which company details are needed (Conferences FAQ)
-- [ ] When the markers in the policy pages are filled in, also update their "last updated" date (`legal.updated` in `src/i18n/en/legal.json` and `src/i18n/mk/legal.json`).
+- [x] Deposit (Terms): the offer says whether a deposit is needed, how much it is and by when it is paid. The owner's choice.
+- [x] Cancellation and no-show (Terms): a stay can be cancelled free of charge up to 3 days before arrival; after that, or when the guest does not arrive, the first night is charged. This is the "Flexible – 3 days" policy from the Booking.com extranet; the no-show part was suggested by the developer and approved by the owner. Events follow the offer.
+- [x] Refund timing (Terms, Card payments): within 14 days of the cancellation. Suggested by the developer, approved by the owner.
+- [x] Enquiry emails (Privacy): kept for 12 months after the last message, then deleted. Suggested by the developer, approved by the owner.
+- [x] Registered address of MBS (Privacy, Card payments): Tošo Arsov 32, 2000 Štip, as in the invoice details of the Booking.com extranet.
+- [x] Invoices for companies (Conferences FAQ): yes; the hotel needs the company's full name, address and tax number (ЕДБ). Suggested by the developer, approved by the owner.
+- [x] "Last updated" date of the policy pages: 10 November 2026. Change it again whenever these texts change (`legal.updated` in `src/i18n/en/legal.json` and `src/i18n/mk/legal.json`).
+
+What these answers still ask of the hotel:
+
+- [ ] Compare the registered address with the company's extract from the Central Registry (тековна состојба). If it differs, tell the developer.
+- [ ] Decide who deletes enquiry emails older than 12 months from the info@ mailbox, and how often. The Privacy page promises it.
+- [ ] Booking.com shows other times than this site: check-in from 12:00 and check-out until 11:00 there, from 14:00 and until 12:00 here. Decide which is right and correct the other.
+- [ ] Booking.com lists room service and a free airport shuttle. This site offers neither. If the hotel doesn't offer them, remove them from the Booking.com listing.
 
 ## Content that improves the site (optional; the site works without it)
 
@@ -64,7 +71,7 @@ Open each address in a browser (a private window is fine). If anything below dif
 
 ## Launch (only on the owner's go)
 
-1. Fill every marker above, then run `npm run build` (it must pass) and `npm run check:live` (not only `npm run check`). It fails unless `_site/` is a live build, so a preview or dev build that would hide the site from Google can't be uploaded by mistake.
+1. Run `npm run build` (it must pass; it fails if a `[[HOTEL: …]]` marker is left) and `npm run check:live` (not only `npm run check`). It fails unless `_site/` is a live build, so a preview or dev build that would hide the site from Google can't be uploaded by mistake.
 2. Back up the old site from `public_html`, and list its addresses.
 3. Empty `public_html`, keeping `.well-known`.
 4. Switch the account to PHP 8.x in cPanel.
