@@ -46,9 +46,10 @@ What these answers still ask of the hotel:
 ## Server, before launch
 
 - [x] The account runs PHP 8.3 since 2026-11-10 (cPanel → Select PHP Version → Account Global Settings → 8.3 → Apply), with `mbstring` and `openssl` on. cPanel also offers 8.1, 8.2 and 8.4.
-- [ ] Create the sending mailbox web@oazahotel.com.mk in cPanel → Email Accounts. `config.php` already names it as the sender.
+- [x] The sending mailbox web@oazahotel.com.mk exists since 2026-11-10, and `config.php` names it as the sender.
 - [x] The site must sit directly in `/home/oazahote/public_html`, because the endpoint looks for `config.php` in `/home/oazahote/private`. cPanel confirms it: oazahotel.com.mk is the main domain and its folder is `/public_html` (2026-11-10).
-- [ ] `/home/oazahote/private/` exists with permissions 700 and holds `config.php` (600) since 2026-11-10, filled in except for two values. Type them in with cPanel → File Manager → Edit: the password of web@oazahotel.com.mk and a long random salt.
+- [x] `/home/oazahote/private/` (permissions 700) holds `config.php` (600), complete since 2026-11-10.
+- [ ] The salt in `config.php` is short. A long random one is better (64 characters from `openssl rand -hex 32`); it can be swapped in at any time with cPanel → File Manager → Edit, followed by one test enquiry.
 - [x] The mail login: `mail.oazahotel.com.mk` presents a valid certificate for that name on port 465 (checked on 2026-11-10). `username` in `config.php` must stay the same mailbox as `from`. Never switch off certificate checks to make it work; tell the developer instead.
 - [x] Mail for oazahotel.com.mk is received at MKhost (the domain's mail address points to the same server and cPanel's routing is local, 2026-11-10), so Email Routing stays as it is. If the hotel ever moves its mail to Gmail or Microsoft 365, set cPanel → Email Routing to **Remote Mail Exchanger** then.
 - [ ] Ask MKhost whether a proxy sits in front of the site. Seen from outside there is none: www.oazahotel.com.mk and oazahotel.com.mk point straight to MKhost's server (176.9.126.180) and it answers as Apache (2026-11-10). If MKhost says otherwise, tell the developer before launch: the visitor limit on enquiries, the redirect to HTTPS and the recognition of cPay's address all depend on it.
@@ -72,7 +73,7 @@ Open each address in a browser (a private window is fine). If anything below dif
 
 ## Launch (only on the owner's go)
 
-Steps 1 to 7 were done on 2026-11-10 with commit `7f67dd9`. Steps 8 to 11 are open. A later upload repeats steps 1, 4 and 7.
+Steps 1 to 8 were done on 2026-11-10 with commit `7f67dd9`. For step 8, the site accepted a test enquiry and the server's delivery log shows it delivered to info@oazahotel.com.mk; the hotel should still look for it in the inbox. Steps 9 to 11 are open. A later upload repeats steps 1, 4 and 7.
 
 1. Run `npm run build` (it must pass; it fails if a `[[HOTEL: …]]` marker is left) and `npm run check:live` (not only `npm run check`). It fails unless `_site/` is a live build, so a preview or dev build that would hide the site from Google can't be uploaded by mistake.
 2. Move the old site out of `public_html` into a folder beside it (for example `/home/oazahote/old-site-2026-11/`), so it can be looked at later but no longer opened from the internet. Delete the break-in files instead of moving them. MKhost also keeps its own daily backups (portal → Hosting → Backup на податоци).
