@@ -5,3 +5,4 @@ _backup/
 IMAGE-PROMPTS.md
 node_modules/
 _site/
+_upload/

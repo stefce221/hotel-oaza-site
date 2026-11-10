@@ -1,6 +1,6 @@
 # Hotel Oaza on MKhost. Copied only by the live build.
-# On the server cPanel adds its own PHP-version block to this file, and an upload replaces the file:
-# check the PHP version after every upload (docs/owner-checklist.md).
+# The PHP version is an account setting in cPanel (Select PHP Version), not a line in this file,
+# so an upload that replaces this file keeps it (docs/owner-checklist.md).
 
 Options -Indexes
 DirectoryIndex index.html
