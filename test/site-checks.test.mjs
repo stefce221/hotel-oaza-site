@@ -107,8 +107,13 @@ test("indexingIssues: dev and preview need noindex on every page and Disallow: /
 });
 
 test("missingServerFiles lists the live server files that are absent", () => {
-  const all = [".htaccess", "api/.htaccess", "api/.user.ini", "api/enquiry.php", "cpay/.htaccess", "cpay/.user.ini", "cpay/ok.php", "cpay/fail.php"];
+  const all = [
+    ".htaccess", "api/.htaccess", "api/.user.ini", "api/enquiry.php", "cpay/.htaccess", "cpay/.user.ini", "cpay/ok.php", "cpay/fail.php",
+    "naplata/.htaccess", "naplata/.user.ini", "naplata/index.php", "naplata/start.php",
+  ];
   assert.deepEqual(missingServerFiles(new Set(all)), []);
   assert.deepEqual(missingServerFiles(all.filter((file) => file !== "api/.user.ini" && file !== "cpay/fail.php")), ["api/.user.ini", "cpay/fail.php"]);
-  assert.equal(missingServerFiles([]).length, 8);
+  /* The staff page without its .htaccess would be open to everyone, so a build without it must not pass. */
+  assert.deepEqual(missingServerFiles(all.filter((file) => file !== "naplata/.htaccess")), ["naplata/.htaccess"]);
+  assert.equal(missingServerFiles([]).length, 12);
 });

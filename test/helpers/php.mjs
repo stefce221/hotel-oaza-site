@@ -8,27 +8,63 @@ import path from "node:path";
 export const PHP = process.env.PHP_BIN || "php";
 
 /**
+ * Complete cPay payment settings for tests: the merchant of the specification's first sample and its public test
+ * key, with return addresses on a host that does not exist. Pass as `makePrivateDir({ cpay: TEST_CPAY })`, or
+ * spread it to change one setting.
+ */
+export const TEST_CPAY = Object.freeze({
+  merchant_id: "1000000003",
+  merchant_name: "Bookstore",
+  key: "TEST_PASS",
+  ok_url: "https://www.oazahotel.test/cpay/ok.php",
+  fail_url: "https://www.oazahotel.test/cpay/fail.php",
+  max_amount: 300000,
+});
+
+/** Text as a PHP string in single quotes: there only the backslash and the single quote need escaping. */
+function phpString(text) {
+  return `'${String(text).replace(/\\/g, "\\\\").replace(/'/g, "\\'")}'`;
+}
+
+/** One cPay setting as PHP code: text quoted and escaped, a number bare. Anything else is a mistake in the test. */
+function phpSetting(name, value) {
+  if (typeof value === "string") return phpString(value);
+  if (typeof value === "number" && Number.isFinite(value)) return String(value);
+  throw new TypeError(`cPay setting "${name}" must be text or a number`);
+}
+
+/** The config's 'cpay' line, or nothing when the test asks for neither push addresses nor payment settings. */
+function cpaySection(pushIps, settings) {
+  const entries = [
+    ...(pushIps ? [`'push_ips' => [${pushIps.map(phpString).join(", ")}]`] : []),
+    ...Object.entries(settings ?? {}).map(([name, value]) => `${phpString(name)} => ${phpSetting(name, value)}`),
+  ];
+  return entries.length > 0 ? `\n    'cpay' => [${entries.join(", ")}],` : "";
+}
+
+/**
  * A private folder with config.php (file transport). Paths use forward slashes, which PHP accepts on Windows.
  * `cpayPushIps` adds the config's cpay.push_ips list (the addresses cPay's own pushes come from).
+ * `cpay` adds further cPay settings (see TEST_CPAY): text is written as a PHP string, a number as it is.
  */
-export function makePrivateDir({ cpayPushIps = null } = {}) {
+export function makePrivateDir({ cpayPushIps = null, cpay = null } = {}) {
+  const cpayLine = cpaySection(cpayPushIps, cpay); /* first, so a mistake in the test leaves no folder behind */
   const dir = mkdtempSync(path.join(tmpdir(), "oaza-php-")).replace(/\\/g, "/");
   const config = `${dir}/config.php`;
-  const cpay = cpayPushIps ? `\n    'cpay' => ['push_ips' => [${cpayPushIps.map((ip) => `'${ip}'`).join(", ")}]],` : "";
   mkdirSync(`${dir}/mail`);
   writeFileSync(
     config,
     `<?php
 return [
-    'private_dir' => '${dir}',
+    'private_dir' => ${phpString(dir)},
     'mail' => [
         'transport' => 'file',
-        'file' => '${dir}/mail/sent.jsonl',
+        'file' => ${phpString(`${dir}/mail/sent.jsonl`)},
         'from' => 'web@oazahotel.com.mk',
         'from_name' => 'Hotel Oaza website',
         'to' => 'info@oazahotel.com.mk',
     ],
-    'rate' => ['limit' => 5, 'window' => 3600, 'salt' => 'test-salt'],${cpay}
+    'rate' => ['limit' => 5, 'window' => 3600, 'salt' => 'test-salt'],${cpayLine}
 ];
 `,
   );

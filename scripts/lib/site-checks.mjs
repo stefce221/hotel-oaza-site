@@ -60,6 +60,11 @@ export const LIVE_SERVER_FILES = [
   "cpay/.user.ini",
   "cpay/ok.php",
   "cpay/fail.php",
+  /* The staff page for card charges. Its .htaccess is what asks for the password. */
+  "naplata/.htaccess",
+  "naplata/.user.ini",
+  "naplata/index.php",
+  "naplata/start.php",
 ];
 
 /** The live server files that are not in `existing` (a Set or array of paths relative to _site/). */

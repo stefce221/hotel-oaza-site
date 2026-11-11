@@ -19,7 +19,8 @@ function respond_error(int $status, string $code, array $fields = []): void
     respond($status, $fields === [] ? ['code' => $code] : ['code' => $code, 'fields' => $fields]);
 }
 
-/** One line per error, timestamp and code only — never personal data. Falls back to PHP's own log. */
+/** One line per error: a timestamp and a code, never a submitted value. The one addition is the cPay handler's: the
+    address of an unlisted sender of a verified notice (cpay_push_from_unlisted). Falls back to PHP's own log. */
 function log_error(string $privateDir, string $code): void
 {
     $dir = $privateDir . '/logs';

@@ -34,7 +34,8 @@ cd /k/ClaudeProjects/playwright-toolkit && npx playwright test --config=tests/ho
 | `src/_data/` | Contact facts (`site.json`), page addresses (`pages.json`), halls, share images |
 | `src/assets/css/` | `sections/` is today's CSS split and never edited; new rules go in `additions/` |
 | `src/api/` | `enquiry.php` and its libraries; PHPMailer in `src/api/vendor/phpmailer/` |
-| `src/cpay/` | Placeholders for the addresses registered with CaSys |
+| `src/cpay/` | `ok.php` and `fail.php` (the addresses registered with CaSys) receive cPay's payment notices; `lib/` holds the cPay libraries, closed to the web |
+| `src/naplata/` | The staff page for charging Booking.com virtual cards, behind a password |
 | `deploy/private/config.example.php` | Template for the server's private config |
 
 ## Text changes

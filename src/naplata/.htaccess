@@ -1,0 +1,20 @@
+# The staff page for card charges: a password for everyone, over HTTPS only.
+# The users are made in cPanel (Directory Privacy), which writes the password file named below.
+# Without that file the server refuses everyone. These lines are part of the site: an upload keeps them.
+Options -Indexes
+DirectoryIndex index.php
+ErrorDocument 401 default
+AuthType Basic
+AuthName "Hotel Oaza"
+AuthUserFile "/home/oazahote/.htpasswds/public_html/naplata/passwd"
+Require valid-user
+# The password is never asked for over plain HTTP.
+<If "%{HTTPS} != 'on'">
+  Require all denied
+</If>
+# Only index.php and start.php are served. Nothing here may ever grant access:
+# a grant inside FilesMatch would take the place of the password.
+# "naplata" is the folder's own name: /naplata (no slash) is matched against it and must reach the redirect to /naplata/.
+<FilesMatch "^(?!(?:index|start)\.php$|naplata$).+">
+  Require all denied
+</FilesMatch>

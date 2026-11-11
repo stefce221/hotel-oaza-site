@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/../../src/cpay/lib/placeholder.php';
+require_once __DIR__ . '/../../src/cpay/lib/inbox.php';
 
 test('from_cpay is true only for an address listed in cpay.push_ips', function (): void {
     $config = ['cpay' => ['push_ips' => ['80.77.147.43']]];

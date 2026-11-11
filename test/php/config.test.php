@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../src/api/lib/bootstrap.php';
+require_once __DIR__ . '/../../src/cpay/lib/settings.php';
 
 test('config_problems names every missing setting', function (): void {
     same(['private_dir', 'rate.salt', 'mail.transport', 'mail.from', 'mail.from_name', 'mail.to'], config_problems([]));
@@ -47,6 +48,55 @@ test('config_problems accepts cPay push addresses and rejects anything but a lis
     same(['cpay.push_ips'], config_problems(smtp_config(['cpay' => ['push_ips' => [80]]])), 'a number');
     same(['cpay.push_ips'], config_problems(smtp_config(['cpay' => 'x'])), 'a section that is not a list');
     truthy(!str_contains(implode(',', config_problems(smtp_config(['cpay' => ['push_ips' => ['not-an-ip']]]))), 'not-an-ip'), 'no values');
+});
+
+test('the example config leaves exactly the three cPay values to fill in on the server', function (): void {
+    $example = require __DIR__ . '/../../deploy/private/config.example.php';
+    same(['cpay.merchant_id', 'cpay.merchant_name', 'cpay.key'], cpay_problems($example));
+    same(['', '', ''], [$example['cpay']['merchant_id'] ?? null, $example['cpay']['merchant_name'] ?? null, $example['cpay']['key'] ?? null], 'empty in the repository');
+});
+
+test('the example config names the live return addresses and the largest charge', function (): void {
+    $example = require __DIR__ . '/../../deploy/private/config.example.php';
+    same('https://www.oazahotel.com.mk/cpay/ok.php', $example['cpay']['ok_url'] ?? null);
+    same('https://www.oazahotel.com.mk/cpay/fail.php', $example['cpay']['fail_url'] ?? null);
+    same(300000, $example['cpay']['max_amount'] ?? null);
+    $filled = array_replace($example['cpay'], ['merchant_id' => '1000000003', 'merchant_name' => 'Bookstore', 'key' => 'TEST_PASS']);
+    same([], cpay_problems(['cpay' => $filled]), 'complete once the three values are typed in');
+    same('www.oazahotel.com.mk', cpay_settings(['cpay' => $filled])['host']);
+});
+
+test('config_problems is unchanged by any cPay payment setting, missing or wrong', function (): void {
+    $wrong = [
+        'merchant_id' => 'not-digits', 'merchant_name' => "it's", 'key' => '', 'payment_url' => 'http://pay.example.com/',
+        'hash' => 'sha256', 'ok_url' => 'x', 'fail_url' => 'y', 'max_amount' => '300000', 'retention_days' => 1,
+    ];
+    same([], config_problems(smtp_config(['cpay' => $wrong])), 'every payment setting wrong');
+    same([], config_problems(smtp_config(['cpay' => ['push_ips' => ['80.77.147.43']] + $wrong])), 'beside the push addresses');
+    same([], config_problems(smtp_config(['cpay' => ['key' => ['a list']]])), 'a key that is not text');
+    same(['cpay.push_ips'], config_problems(smtp_config(['cpay' => ['push_ips' => 'x'] + $wrong])), 'only the push addresses are its business');
+    $complete = [
+        'merchant_id' => '1000000003', 'merchant_name' => 'Bookstore', 'key' => 'TEST_PASS', 'max_amount' => 300000,
+        'ok_url' => 'https://www.oazahotel.test/cpay/ok.php', 'fail_url' => 'https://www.oazahotel.test/cpay/fail.php',
+    ];
+    same([], config_problems(smtp_config(['cpay' => $complete])), 'complete payment settings');
+    same(['rate.salt'], config_problems(array_replace(smtp_config(['cpay' => $complete]), ['rate' => []])), 'the other sections are still checked');
+});
+
+test('load_config accepts a config whose cPay payment settings are missing or wrong', function (): void {
+    $path = (string) tempnam(sys_get_temp_dir(), 'oaza-config-');
+    $config = smtp_config(['cpay' => ['push_ips' => ['80.77.147.43'], 'merchant_id' => 'not-digits', 'hash' => 'sha256']]);
+    file_put_contents($path, '<?php return ' . var_export($config, true) . ';');
+    try {
+        same($config, load_config($path));
+        same(
+            ['cpay.merchant_id', 'cpay.merchant_name', 'cpay.key', 'cpay.hash', 'cpay.ok_url', 'cpay.fail_url', 'cpay.max_amount'],
+            cpay_problems(load_config($path)),
+            'cpay_problems is where they are reported',
+        );
+    } finally {
+        unlink($path);
+    }
 });
 
 test('load_config refuses a missing file', function (): void {
@@ -118,4 +168,14 @@ test('config_path ignores OAZA_CONFIG outside the command line and the dev serve
     putenv('OAZA_CONFIG=/tmp/oaza-test-config.php');
     same('/tmp/oaza-test-config.php', config_path(), 'honoured on the CLI');
     putenv('OAZA_CONFIG');
+});
+
+test('the bootstrap functions that are handed the whole config, cpay.key included, mark it #[\SensitiveParameter]', function (): void {
+    foreach (['config_problems' => 'config', 'config_invalid' => 'config', 'push_ips_ok' => 'cpay'] as $function => $parameter) {
+        $marked = array_filter(
+            (new ReflectionFunction($function))->getParameters(),
+            static fn (ReflectionParameter $p): bool => $p->getName() === $parameter && $p->getAttributes(SensitiveParameter::class) !== [],
+        );
+        truthy($marked !== [], "$function(\$$parameter) is marked #[\\SensitiveParameter]");
+    }
 });

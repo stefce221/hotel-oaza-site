@@ -7,5 +7,5 @@ Options -Indexes
   Require all granted
 </FilesMatch>
 # Refuse bodies over 64 KB before PHP sees them. LiteSpeed may ignore this line;
-# the size check in lib/placeholder.php is the real guard.
+# the size check in lib/notice.php is the real guard.
 LimitRequestBody 65536

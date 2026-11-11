@@ -31,6 +31,10 @@ try {
     error_log('Hotel Oaza enquiry: ' . ($e instanceof RuntimeException ? $e->getMessage() : get_class($e) . ' on line ' . $e->getLine()));
     respond_error(500, 'send_failed');
 }
+if (config_warned($config)) {
+    /* config.php raised a warning while it loaded (its message reached no log): the form goes on, cPay is not set up. */
+    log_error($config['private_dir'], CONFIG_WARNING);
+}
 
 /* The spam trap: people never fill the hidden "website" field. Answer as if sent.
    The hit is counted in the log (timestamp and code only), so nothing about the sender is kept. */

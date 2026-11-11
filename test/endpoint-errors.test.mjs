@@ -33,7 +33,8 @@ test("a config that does not parse answers send_failed and the log keeps no frag
   assert.doesNotMatch(log, new RegExp(SECRET));
 });
 
-test("the cPay placeholder logs a broken config the same way and still answers 200", async () => {
+/* Fields that are not a notice of cPay's; a notice gets 500 here, so that cPay tries again (cpay-notice.test.mjs). */
+test("the cPay addresses log a broken config the same way and still answer 200 to what is not a notice", async () => {
   const res = await request(PORT, "POST", "/cpay/ok.php", { body: "a=1", headers: { "Content-Type": "application/x-www-form-urlencoded" } });
   assert.equal(res.status, 200);
   assert.match(res.body, /Payment status received/);

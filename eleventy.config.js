@@ -54,11 +54,14 @@ export default function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy({
       "src/api": "api",
       "src/cpay": "cpay",
+      "src/naplata": "naplata",
       "src/.htaccess": ".htaccess",
       "src/api/.htaccess": "api/.htaccess",
       "src/cpay/.htaccess": "cpay/.htaccess",
+      "src/naplata/.htaccess": "naplata/.htaccess",
       "src/api/.user.ini": "api/.user.ini",
       "src/cpay/.user.ini": "cpay/.user.ini",
+      "src/naplata/.user.ini": "naplata/.user.ini",
     });
   }
 

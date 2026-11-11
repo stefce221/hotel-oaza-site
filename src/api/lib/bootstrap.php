@@ -1,5 +1,5 @@
 <?php
-/* Hotel Oaza — shared setup for api/enquiry.php and the cPay placeholders: PHP settings, libraries, config. */
+/* Hotel Oaza — shared setup for api/enquiry.php, the cPay addresses and the staff page: PHP settings, libraries, config. */
 declare(strict_types=1);
 
 ini_set('display_errors', '0');
@@ -13,6 +13,10 @@ require_once __DIR__ . '/mailer.php';
 require_once __DIR__ . '/ratelimit.php';
 require_once __DIR__ . '/request.php';
 require_once __DIR__ . '/response.php';
+
+/* The mark load_config() puts on a config that raised a warning while it loaded; also the log code and the name
+   cpay_problems() (cpay/lib/settings.php) reports it by. */
+const CONFIG_WARNING = 'config_warning';
 
 /** OAZA_CONFIG (tests, command line and dev server only), else private/config.php three levels above api/lib/: /home/oazahote/private on MKhost. */
 function config_path(): string
@@ -28,7 +32,7 @@ function int_between(mixed $value, int $min, int $max): bool
 }
 
 /** True for a 'cpay' section whose push_ips (it may be left out) is a list of IPv4 addresses and nothing else. */
-function push_ips_ok(mixed $cpay): bool
+function push_ips_ok(#[\SensitiveParameter] mixed $cpay): bool
 {
     $ips = is_array($cpay) ? ($cpay['push_ips'] ?? []) : null;
     if (!is_array($ips)) {
@@ -46,7 +50,7 @@ function push_ips_ok(mixed $cpay): bool
  * Values that are present but wrong, as dotted names. Empty values are reported as missing instead.
  * @return string[]
  */
-function config_invalid(array $config, array $mail): array
+function config_invalid(#[\SensitiveParameter] array $config, array $mail): array
 {
     $rate = is_array($config['rate'] ?? null) ? $config['rate'] : [];
     $invalid = [];
@@ -80,7 +84,7 @@ function config_invalid(array $config, array $mail): array
  * The settings that are missing, empty or wrong, as dotted names (never values).
  * @return string[]
  */
-function config_problems(array $config): array
+function config_problems(#[\SensitiveParameter] array $config): array
 {
     $mail = is_array($config['mail'] ?? null) ? $config['mail'] : [];
     $byTransport = ['smtp' => ['host', 'port', 'secure', 'username', 'password'], 'file' => ['file']];
@@ -100,16 +104,64 @@ function config_problems(array $config): array
     );
 }
 
-/** The private config; throws RuntimeException naming what is wrong (never a value). */
+/**
+ * The private config; throws RuntimeException naming what is wrong (never a value).
+ * A config that raised a warning, notice or deprecation while it was compiled or ran is still returned, with
+ * CONFIG_WARNING set: the enquiry form goes on, and cpay_problems() reports it, so cPay counts as not set up (design 6).
+ */
 function load_config(string $path): array
 {
     if (!is_file($path)) {
         throw new RuntimeException('config_missing');
     }
-    $config = require $path;
+    [$config, $warnings] = required_config($path);
     $problems = is_array($config) ? config_problems($config) : ['config.php must return an array'];
     if ($problems !== []) {
         throw new RuntimeException('config_incomplete: ' . implode(', ', $problems));
     }
-    return $config;
+    return $warnings > 0 ? [CONFIG_WARNING => true] + $config : $config;
+}
+
+/**
+ * What config.php returns, and how many warnings, notices and deprecations PHP raised while it ran. None of them
+ * reaches PHP's own log, which is still the server's at that moment (private_php_log() moves it after the load): the
+ * likeliest, "Undefined variable", quotes what follows a '$' in a value between double quotes, a piece of the key.
+ * Their messages are never kept. The file runs in a scope without variables, so every such '$' raises one.
+ * A warning PHP raises while it compiles the file (an octal escape past \377 between double quotes, which it quotes)
+ * reaches no error handler: log_errors is off while the file loads, and such a warning counts as one when PHP has it
+ * as its last error afterwards. Under opcache it may be raised only on the request that compiles the file; a key
+ * mangled that way then fails at cPay (checksum refused), it never charges a wrong amount.
+ * log_errors and the caller's error handler are back afterwards, also when the file throws. A fatal error while the
+ * file loads (not a ParseError, which is thrown) ends the request with nothing logged: a price paid so that no
+ * message about config.php, which may quote the key, reaches the server's log.
+ * @return array{0: mixed, 1: int}
+ */
+function required_config(string $path): array
+{
+    $warnings = 0;
+    $logErrors = ini_set('log_errors', '0');
+    error_clear_last();
+    set_error_handler(static function () use (&$warnings): bool {
+        $warnings++;
+        return true; /* handled: PHP logs nothing */
+    });
+    try {
+        $config = (static function () {
+            return require func_get_arg(0);
+        })($path);
+        $compiled = error_get_last() !== null ? 1 : 0;
+    } finally {
+        error_clear_last(); /* the message is not kept */
+        restore_error_handler();
+        if ($logErrors !== false) {
+            ini_set('log_errors', $logErrors);
+        }
+    }
+    return [$config, $warnings + $compiled];
+}
+
+/** True for a config that raised a warning while it loaded (see load_config()). */
+function config_warned(#[\SensitiveParameter] array $config): bool
+{
+    return ($config[CONFIG_WARNING] ?? false) === true;
 }

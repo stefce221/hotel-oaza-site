@@ -29,5 +29,25 @@ return [
            Notices from it are kept without the hourly cap that applies to everyone else. IPv4 only;
            change it only if CaSys names a new address. */
         'push_ips' => ['80.77.147.43'],
+
+        /* The lines below are for the staff page /naplata/, where reception charges Booking.com cards.
+           The page says "Наплатата не е поставена до крај" until the three empty values are filled in. */
+
+        /* The hotel's merchant number at cPay. Digits only, between the quotes. */
+        'merchant_id' => '',
+        /* The hotel's merchant name, letter for letter as CaSys registered it.
+           Only Latin letters, digits, spaces and the signs @ - / ? = & are accepted. */
+        'merchant_name' => '',
+        /* The cPay checksum key: the secret CaSys gave the hotel.
+           The owner types it in here, in the copy of this file that is on the server.
+           It never goes into git and never into an e-mail.
+           Keep the key between the single quotes; never use double quotes: a $ in the key would cut it short. */
+        'key' => '',
+        /* The two addresses cPay reports every payment to. They are registered with CaSys: do not change them. */
+        'ok_url' => 'https://www.oazahotel.com.mk/cpay/ok.php',
+        'fail_url' => 'https://www.oazahotel.com.mk/cpay/fail.php',
+        /* The largest amount one charge may have, in whole denars. The page refuses a larger amount:
+           it is most likely a typing mistake. A plain number: no quotes, no dots, no commas. */
+        'max_amount' => 300000,
     ],
 ];

@@ -3,7 +3,9 @@ import assert from "node:assert/strict";
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { makePrivateDir, request, startPhp } from "./helpers/php.mjs";
 
-/* /cpay/ok.php and /cpay/fail.php are registered with CaSys; until the cPay project they keep each push. */
+/* /cpay/ok.php and /cpay/fail.php are registered with CaSys. Fields that are not a notice of cPay's (no return
+   checksum), and every notice while the config has no cPay key, are kept as raw copies under the limits below and
+   answered with the neutral page. What a verified notice does is in cpay-notice.test.mjs. */
 const PORT = 8766;
 const FLOOD_PORT = 8767;
 const CPAY_PORT = 8770;

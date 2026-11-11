@@ -1,7 +1,7 @@
 import { after, before, beforeEach, test } from "node:test";
 import assert from "node:assert/strict";
-import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
-import { makePrivateDir, request, startPhp } from "./helpers/php.mjs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { makePrivateDir, request, startPhp, TEST_CPAY } from "./helpers/php.mjs";
 
 /* POST /api/enquiry.php on PHP's built-in server; mail goes to a JSON-lines file. */
 const PORT = 8765;
@@ -206,4 +206,26 @@ test("a missing config file answers send_failed in the envelope and sends nothin
   assert.equal(res.status, 500);
   assert.deepEqual(json(res), { success: false, data: null, error: { code: "send_failed" } });
   assert.equal(existsSync(`${noConfig.dir}/mail/sent.jsonl`), false);
+});
+
+test("a config that raises a warning while it loads still sends the enquiry, and its private log names config_warning", async () => {
+  const warned = makePrivateDir({ cpay: TEST_CPAY });
+  const code = readFileSync(warned.config, "utf8");
+  const quoted = code.replace("'key' => 'TEST_PASS'", "'key' => \"TEST_$PASS\""); /* PHP reads $PASS as a variable */
+  assert.notEqual(quoted, code, "the key is between double quotes now");
+  writeFileSync(noConfig.config, quoted); /* the endpoint on NO_CONFIG_PORT reads it with the next request */
+  try {
+    const res = await request(NO_CONFIG_PORT, "POST", "/api/enquiry.php", {
+      body: new URLSearchParams(VALID.stay).toString(),
+      headers: { "Content-Type": FORM, Origin: `http://127.0.0.1:${NO_CONFIG_PORT}` },
+    });
+    assert.equal(res.status, 200, "a mistake in the cPay part does not stop the enquiry form");
+    assert.deepEqual(json(res), OK);
+    assert.equal(readFileSync(`${warned.dir}/mail/sent.jsonl`, "utf8").split("\n").filter(Boolean).length, 1);
+    const lines = readFileSync(`${warned.dir}/logs/errors.log`, "utf8").split("\n").filter(Boolean);
+    assert.deepEqual(lines.map((line) => line.slice(line.indexOf(" ") + 1)), ["config_warning"], "the code, once");
+  } finally {
+    rmSync(noConfig.config, { force: true });
+    rmSync(warned.dir, { recursive: true, force: true });
+  }
 });
